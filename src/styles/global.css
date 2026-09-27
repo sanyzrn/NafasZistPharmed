@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --red: #b61615;
+  --ink: #171717;
+  --muted: #6f6f6f;
+  --paper: #f8f7f4;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: 'Vazirmatn', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+a { color: inherit; }
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 32px;
+}
+
+.glow {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(182,22,21,.14) 0%, rgba(182,22,21,0) 70%);
+  animation: breathe 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.card {
+  width: min(760px, 100%);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(182,22,21,.18);
+  border-radius: 999px;
+  background: rgba(255,255,255,.68);
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 6px rgba(182,22,21,.08);
+}
+
+h1 {
+  margin: 28px 0 14px;
+  font-size: clamp(42px, 7vw, 78px);
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  font-weight: 700;
+}
+
+h1 span { color: var(--red); }
+
+p {
+  margin: 0 auto;
+  max-width: 620px;
+  color: var(--muted);
+  line-height: 2;
+  font-size: clamp(15px, 2vw, 18px);
+}
+
+.brand {
+  margin-top: 36px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.en {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: #999;
+  direction: ltr;
+}
+
+@keyframes breathe {
+  0%,100% { transform: scale(.88); opacity: .65; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .page { padding: 24px; }
+  h1 { letter-spacing: -.8px; }
+}
