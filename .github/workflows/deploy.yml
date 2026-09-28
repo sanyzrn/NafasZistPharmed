@@ -6,6 +6,7 @@ on:
       - main
   workflow_dispatch:
 
+# Keep deployment tied to every update on main, including merged PRs.
 jobs:
   deploy:
     runs-on: ubuntu-latest
