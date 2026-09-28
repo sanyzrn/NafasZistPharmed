@@ -1,8 +1,11 @@
 ---
 /**
- * The product list rendered as a formulary index: grouped by therapeutic
- * category, one row per product. On the home page a filter lets clinicians
- * jump to a category without scrolling (real content, real sequence).
+ * The product list as a formulary index: grouped by therapeutic category,
+ * one large typographic row per product. On precise pointers a product
+ * photo follows the cursor (src/scripts/interactions.ts → initPreview);
+ * on touch screens each row shows its own thumbnail.
+ * Product names carry a view-transition-name so they morph into the
+ * product page title on navigation.
  */
 import { productCategories } from '../data/site';
 import type { Locale } from '../i18n/index';
@@ -12,14 +15,14 @@ import Icon from './Icon.astro';
 
 interface Props {
   locale: Locale;
-  /** Limit to these slugs (keeps category grouping). Defaults to all. */
   only?: string[];
   headingLevel?: 'h2' | 'h3' | 'h4';
-  /** Shows the category filter chips (home page). */
   filter?: boolean;
+  /** Give names a view-transition-name (only one list per page may). */
+  morph?: boolean;
 }
 
-const { locale, only, headingLevel = 'h3', filter = false } = Astro.props;
+const { locale, only, headingLevel = 'h3', filter = false, morph = true } = Astro.props;
 const t = makeT(locale);
 const Heading = headingLevel;
 const groups = productCategories(locale)
@@ -31,18 +34,14 @@ const groups = productCategories(locale)
 const uid = `idx-${locale}-${only ? only.join('-') : 'all'}`;
 ---
 
-<div class="index" data-index={uid}>
+<div class="index" data-index={uid} data-preview-list>
   {filter && groups.length > 1 && (
     <div class="index__filter" role="group" aria-label={t('filterAll')}>
-      <button class="index__chip" type="button" data-filter="*" aria-pressed="true">{t('filterAll')}</button>
+      <button class="chip" type="button" data-filter="*" aria-pressed="true">{t('filterAll')}</button>
       {groups.map((group) => (
-        <button
-          class="index__chip"
-          type="button"
-          data-filter={group.key}
-          aria-pressed="false"
-        >
+        <button class="chip" type="button" data-filter={group.key} aria-pressed="false">
           {t(`cat_${group.key}` as never)}
+          <span class="chip__count">{group.items.length.toLocaleString(locale === 'fa' ? 'fa-IR' : locale)}</span>
         </button>
       ))}
     </div>
@@ -54,30 +53,30 @@ const uid = `idx-${locale}-${only ? only.join('-') : 'all'}`;
       <ul class="index__rows">
         {group.items.map((p) => (
           <li>
-            <a class="index__row" href={withLocale(`/products/${p.slug}`, locale)}>
+            <a class="index__row" href={withLocale(`/products/${p.slug}`, locale)} data-preview={p.image}>
               <span class="index__thumb">
                 <img src={p.image} alt="" width="160" height="160" loading="lazy" decoding="async" />
               </span>
               <span class="index__main">
-                <span class="index__name">
+                <span class="index__name" style={morph ? `view-transition-name: name-${p.slug}` : undefined}>
                   {p.name}
-                  {p.latinName && (
-                    <bdi class="index__latin" lang="en" dir="ltr">
-                      {p.latinName}
-                    </bdi>
-                  )}
                 </span>
                 <span class="index__form">
                   <Bidi text={p.subtitle} />
                 </span>
               </span>
-              {p.genericLatin ? (
-                <bdi class="index__generic" lang="en" dir="ltr">
-                  {p.genericLatin}
-                </bdi>
-              ) : (
-                <span class="index__generic"></span>
-              )}
+              <span class="index__meta">
+                {p.latinName && (
+                  <bdi class="index__latin" lang="en" dir="ltr">
+                    {p.latinName}
+                  </bdi>
+                )}
+                {p.genericLatin && (
+                  <bdi class="index__generic" lang="en" dir="ltr">
+                    {p.genericLatin}
+                  </bdi>
+                )}
+              </span>
               <span class="index__go" aria-hidden="true">
                 <Icon name="arrow" />
               </span>
@@ -90,10 +89,7 @@ const uid = `idx-${locale}-${only ? only.join('-') : 'all'}`;
 </div>
 
 <script>
-  /**
-   * Category filter: chips toggle group visibility. No library, no reflow of
-   * anything outside the index. aria-pressed carries the state.
-   */
+  /** Category filter: chips toggle group visibility; aria-pressed carries state. */
   document.querySelectorAll<HTMLElement>('[data-index]').forEach((index) => {
     if (!index.querySelector('[data-filter]')) return;
     const chips = Array.from(index.querySelectorAll<HTMLButtonElement>('[data-filter]'));
@@ -101,10 +97,17 @@ const uid = `idx-${locale}-${only ? only.join('-') : 'all'}`;
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
         const key = chip.dataset.filter ?? '*';
-        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
-        groups.forEach((group) => {
-          group.hidden = key !== '*' && group.dataset.group !== key;
-        });
+        const apply = () => {
+          chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+          groups.forEach((group) => {
+            group.hidden = key !== '*' && group.dataset.group !== key;
+          });
+        };
+        // same-document view transition: rows slide into their new places
+        const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+        if (doc.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          doc.startViewTransition(apply);
+        } else apply();
       });
     });
   });

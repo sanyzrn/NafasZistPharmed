@@ -9,4 +9,4 @@ Persian (RTL) corporate site for نفس زیست فارمد.
 | `npm run build` | Build to `./dist/` (deployed by `.github/workflows/deploy.yml`) |
 | `npm run preview` | Preview the build |
 
-Design rationale: `DESIGN_PLAN.md`. Change log, tokens, fonts, placeholders: `REDESIGN_NOTES.md`.
+Design rationale (phase 3, "Particle & Breath"): `DESIGN_PLAN.md`. Change log, tokens, fonts, placeholders: `REDESIGN_NOTES.md`.

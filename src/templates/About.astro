@@ -33,27 +33,22 @@ const gallery = [
 ---
 
 <Base locale={locale} title={about.metaTitle} description={about.metaDescription} path="/about">
-  <PageIntro title={t('aboutPageTitle')} lead={t('aboutPageLead')} />
+  <PageIntro title={t('aboutPageTitle')} lead={t('aboutPageLead')}>
+    <figure class="media media--reveal about-hero-media" data-reveal>
+      <img
+        src={gallery[1]}
+        alt={t('aboutCompanyImgAlt')}
+        width="1600"
+        height="900"
+        decoding="async"
+      />
+    </figure>
+  </PageIntro>
 
   <section class="section" id="nafas-story" aria-labelledby={`story-${locale}`}>
     <div class="container split">
-      <div class="stack" style="--stack-gap: var(--sp-5)">
-        <h2 class="heading__title" id={`story-${locale}`}>{t('aboutStoryTitle')}</h2>
-        <div class="prose">
-          {about.story.map((p) => <p><Bidi text={p} /></p>)}
-        </div>
-      </div>
-      <div class="stack" style="--stack-gap: var(--sp-5)">
-        <figure class="media media--wide">
-          <img
-            src="https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas6.jpg"
-            alt={t('aboutCompanyImgAlt')}
-            width="1200"
-            height="800"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
+      <div class="stack" style="--stack-gap: var(--sp-6)">
+        <h2 class="display-3" id={`story-${locale}`}>{t('aboutStoryTitle')}</h2>
         <dl class="facts">
           <div class="facts__item">
             <dt class="facts__term">{t('factFounded')}</dt>
@@ -69,58 +64,62 @@ const gallery = [
           </div>
         </dl>
       </div>
+      <div class="prose">
+        {about.story.map((p) => <p><Bidi text={p} /></p>)}
+      </div>
     </div>
   </section>
 
-  <section class="section section--air" aria-labelledby={`timeline-${locale}`}>
-    <div class="container section-body">
-      <div class="heading">
-        <h2 class="heading__title" id={`timeline-${locale}`}>{t('aboutTimelineTitle')}</h2>
-        <p class="heading__lead">{t('aboutTimelineLead')}</p>
+  <section class="timeline-sec section--night" data-hscroll aria-labelledby={`timeline-${locale}`}>
+    <div class="timeline-sec__sticky">
+      <div class="container heading">
+        <h2 class="display-2" id={`timeline-${locale}`}>{t('aboutTimelineTitle')}</h2>
+        <p class="lead">{t('aboutTimelineLead')}</p>
       </div>
-      <ol class="timeline">
-        {about.timeline.map((step) => (
-          <li class="timeline__item">
-            <span class="timeline__marker" aria-hidden="true"></span>
-            <span class="timeline__year">{step.year}</span>
-            <div class="stack" style="--stack-gap: var(--sp-1)">
+      <div class="container">
+        <ol class="timeline" data-hscroll-track>
+          {about.timeline.map((step) => (
+            <li class="timeline__item">
+              <span class="timeline__marker" aria-hidden="true"></span>
+              <span class="timeline__year">{step.year}</span>
               <h3 class="timeline__title">{step.title}</h3>
               <p class="timeline__body"><Bidi text={step.body} /></p>
-            </div>
-          </li>
-        ))}
-      </ol>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div class="container timeline-progress" aria-hidden="true"><span></span></div>
     </div>
   </section>
 
   <section class="section" aria-labelledby={`mission-${locale}`}>
     <div class="container section-body">
       <div class="heading">
-        <h2 class="heading__title" id={`mission-${locale}`}>{t('aboutMissionTitle')}</h2>
-        <p class="heading__lead">{t('aboutMissionLead')}</p>
+        <h2 class="display-2" id={`mission-${locale}`}>{t('aboutMissionTitle')}</h2>
+        <p class="lead">{t('aboutMissionLead')}</p>
       </div>
-      <dl class="defs defs--two">
+      <dl class="missions">
         {about.missions.map((m) => (
-          <div class="defs__row">
-            <dt class="defs__term">{m.title}</dt>
-            <dd class="defs__desc"><Bidi text={m.body} /></dd>
+          <div class="mission">
+            <dt class="mission__title">{m.title}</dt>
+            <dd class="mission__body"><Bidi text={m.body} /></dd>
           </div>
         ))}
       </dl>
     </div>
   </section>
 
-  <section class="section" aria-labelledby={`values-${locale}`}>
-    <div class="container split">
+  <section class="section section--flush-top" aria-labelledby={`values-${locale}`}>
+    <div class="container section-body">
       <div class="heading">
-        <h2 class="heading__title" id={`values-${locale}`}>{t('aboutValuesTitle')}</h2>
-        <p class="heading__lead">{t('aboutValuesLead')}</p>
+        <h2 class="display-2" id={`values-${locale}`}>{t('aboutValuesTitle')}</h2>
+        <p class="lead">{t('aboutValuesLead')}</p>
       </div>
-      <dl class="defs">
+      <dl class="values">
         {about.values.map((v) => (
-          <div class="defs__row">
-            <dt class="defs__term">{v.title}</dt>
-            <dd class="defs__desc"><Bidi text={v.body} /></dd>
+          <div class="value">
+            <dt class="value__term">{v.title}</dt>
+            <dd class="value__desc"><Bidi text={v.body} /></dd>
           </div>
         ))}
       </dl>
@@ -128,11 +127,11 @@ const gallery = [
   </section>
 
   <section class="section section--flush-top" aria-labelledby={`gallery-${locale}`}>
-    <div class="container section-body">
-      <div class="heading">
-        <h2 class="heading__title" id={`gallery-${locale}`}>{t('aboutGalleryTitle')}</h2>
+    <div class="section-body">
+      <div class="container heading">
+        <h2 class="display-2" id={`gallery-${locale}`}>{t('aboutGalleryTitle')}</h2>
       </div>
-      <ul class="gallery">
+      <ul class="gallery" tabindex="0" aria-labelledby={`gallery-${locale}`}>
         {gallery.map((src, i) => (
           <li class="gallery__item">
             <img
@@ -141,7 +140,7 @@ const gallery = [
                 .replace('{n}', digits(String(i + 1), locale))
                 .replace('{total}', digits(String(gallery.length), locale))}
               width="800"
-              height="600"
+              height="1000"
               loading="lazy"
               decoding="async"
             />
@@ -151,10 +150,10 @@ const gallery = [
     </div>
   </section>
 
-  <section class="section section--air" aria-labelledby={`jobs-${locale}`}>
+  <section class="section section--surface" aria-labelledby={`jobs-${locale}`}>
     <div class="container split split--center">
       <div class="stack" style="--stack-gap: var(--sp-5)">
-        <h2 class="heading__title" id={`jobs-${locale}`}>{t('aboutJobsTitle')}</h2>
+        <h2 class="display-3" id={`jobs-${locale}`}>{t('aboutJobsTitle')}</h2>
         <p class="prose prose--muted"><Bidi text={t('aboutJobsLead')} /></p>
         <div>
           <a class="btn btn--primary" href={siteData.jobs} target="_blank" rel="noopener noreferrer">

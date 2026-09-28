@@ -1,13 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import BreathField from '../components/BreathField.astro';
+import BreathStory from '../components/BreathStory.astro';
 import Icon from '../components/Icon.astro';
 import ProductIndex from '../components/ProductIndex.astro';
 import SiteForm from '../components/SiteForm.astro';
-import HeroSlider from '../components/HeroSlider.astro';
-import { news, site } from '../data/site';
-import { digits, withLocale, type Locale } from '../i18n/index';
-import { makeT } from '../i18n/index';
+import { news, products, site } from '../data/site';
+import { digits, makeT, withLocale, type Locale } from '../i18n/index';
 
 interface Props {
   locale: Locale;
@@ -19,24 +17,28 @@ const siteData = site(locale);
 const newsItems = news(locale);
 const year = digits('1398', locale);
 const l = (path: string) => withLocale(path, locale);
+const count = t('productsCount').replace('{n}', digits(String(products(locale).length), locale));
 ---
 
 <Base locale={locale} title={t('homeMetaTitle')} description={t('homeMetaDescription')} path="/">
-  <HeroSlider {locale} />
-
   <section class="hero" aria-labelledby="hero-title">
-    <BreathField />
-    <div class="container hero__inner">
-      <h1 class="hero__title" id="hero-title">{siteData.tagline}</h1>
-      <p class="hero__lead">{t('homeHeroLead')}</p>
-      <div class="actions hero__actions">
-        <a class="btn btn--primary" href="#products">
-          {t('homeProductsCta')}
-          <Icon name="arrow" />
-        </a>
-        <a class="btn btn--quiet" href={l('/about')}>{t('homeAboutCta')}</a>
+    <canvas class="hero__canvas" data-particles data-text={t('heroWord')} aria-hidden="true"></canvas>
+    <div class="container hero__grid">
+      <div class="hero__box" data-particles-box aria-hidden="true">
+        <span class="hero__fallback">{t('heroWord')}</span>
       </div>
-      <dl class="facts">
+      <div class="hero__copy">
+        <h1 class="hero__title" id="hero-title">{siteData.tagline}</h1>
+        <p class="hero__lead">{t('homeHeroLead')}</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#products">
+            {t('homeProductsCta')}
+            <Icon name="arrow" />
+          </a>
+          <a class="btn btn--ghost" href={l('/about')}>{t('homeAboutCta')}</a>
+        </div>
+      </div>
+      <dl class="facts hero__facts">
         <div class="facts__item">
           <dt class="facts__term">{t('factFounded')}</dt>
           <dd class="facts__value">{year}</dd>
@@ -51,31 +53,29 @@ const l = (path: string) => withLocale(path, locale);
         </div>
       </dl>
     </div>
+    <p class="hero__hint" aria-hidden="true">
+      <span class="hero__hint-dot"></span>
+      <span class="hint-fine">{t('heroHint')}</span>
+      <span class="hint-touch">{t('heroHintTouch')}</span>
+    </p>
   </section>
 
-  <section class="section section--flush-top" id="products" aria-labelledby="products-title">
+  <BreathStory {locale} />
+
+  <section class="section" id="products" aria-labelledby="products-title">
     <div class="container section-body">
-      <div class="heading">
-        <h2 class="heading__title" id="products-title">{t('productsIndexTitle')}</h2>
-        <p class="heading__lead">{t('productsIndexLead')}</p>
+      <div class="heading heading--row">
+        <h2 class="display-2" id="products-title">{t('productsIndexTitle')}</h2>
+        <p class="heading__count">{count}</p>
+        <p class="lead">{t('productsIndexLead')}</p>
       </div>
       <ProductIndex {locale} filter />
     </div>
   </section>
 
-  <section class="section section--air" aria-labelledby="about-title">
-    <div class="container split split--center">
-      <div class="stack" style="--stack-gap: var(--sp-5)">
-        <h2 class="heading__title" id="about-title">{t('homeAboutTitle')}</h2>
-        <p class="prose prose--muted">{t('homeAboutLead')}</p>
-        <div>
-          <a class="link" href={l('/about')}>
-            {t('homeAboutLink')}
-            <Icon name="arrow" />
-          </a>
-        </div>
-      </div>
-      <figure class="media media--wide">
+  <section class="section section--surface" aria-labelledby="about-title">
+    <div class="container split split--center about-band">
+      <figure class="media media--reveal" data-reveal>
         <img
           src="https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas6-1024x683.jpg"
           alt={t('homeAboutImgAlt')}
@@ -85,25 +85,33 @@ const l = (path: string) => withLocale(path, locale);
           decoding="async"
         />
       </figure>
+      <div class="stack" style="--stack-gap: var(--sp-5)">
+        <h2 class="display-3" id="about-title">{t('homeAboutTitle')}</h2>
+        <p class="lead">{t('homeAboutLead')}</p>
+        <div>
+          <a class="link link--big" href={l('/about')}>
+            {t('homeAboutLink')}
+            <Icon name="arrow" />
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="news-title">
     <div class="container section-body">
       <div class="heading">
-        <h2 class="heading__title" id="news-title">{t('newsTitle')}</h2>
+        <h2 class="display-2" id="news-title">{t('newsTitle')}</h2>
       </div>
       <ul class="news">
-        {newsItems.map((n) => (
-          <li>
-            <a class="news__row" href={n.href} target="_blank" rel="noopener noreferrer">
+        {newsItems.map((n, i) => (
+          <li class={i === 0 ? 'news__item news__item--lead' : 'news__item'}>
+            <a class="news__card" href={n.href} target="_blank" rel="noopener noreferrer">
               <span class="news__thumb">
-                <img src={n.image} alt="" width="240" height="180" loading="lazy" decoding="async" />
+                <img src={n.image} alt="" width="640" height="480" loading="lazy" decoding="async" />
               </span>
-              <span class="news__main">
-                <span class="news__date">{n.date}</span>
-                <span class="news__title">{n.title}</span>
-              </span>
+              <span class="news__date">{n.date}</span>
+              <span class="news__title">{n.title}</span>
               <span class="news__ext">
                 <Icon name="external" label={t('inNewWindow')} />
               </span>
@@ -116,34 +124,49 @@ const l = (path: string) => withLocale(path, locale);
 
   <section class="section section--flush-top" aria-label={t('pathwaysPatientsTitle')}>
     <div class="container pathways">
-      <div class="pathways__item">
-        <h2 class="pathways__title">{t('pathwaysPatientsTitle')}</h2>
-        <p class="pathways__text">{t('pathwaysPatientsText')}</p>
-        <a class="btn btn--quiet" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
+      <a class="pathway" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
+        <h2 class="pathway__title">{t('pathwaysPatientsTitle')}</h2>
+        <p class="pathway__text">{t('pathwaysPatientsText')}</p>
+        <span class="pathway__cta">
           {t('patientPortalLogin')}
           <Icon name="external" />
-        </a>
-      </div>
-      <div class="pathways__item">
-        <h2 class="pathways__title">{t('pathwaysJobsTitle')}</h2>
-        <p class="pathways__text">{t('pathwaysJobsText')}</p>
-        <a class="btn btn--quiet" href={siteData.jobs} target="_blank" rel="noopener noreferrer">
+          <span class="sr-only">{t('inNewWindow')}</span>
+        </span>
+      </a>
+      <a class="pathway pathway--alt" href={siteData.jobs} target="_blank" rel="noopener noreferrer">
+        <h2 class="pathway__title">{t('pathwaysJobsTitle')}</h2>
+        <p class="pathway__text">{t('pathwaysJobsText')}</p>
+        <span class="pathway__cta">
           {t('viewJobs')}
           <Icon name="external" />
-        </a>
-      </div>
+          <span class="sr-only">{t('inNewWindow')}</span>
+        </span>
+      </a>
     </div>
   </section>
 
-  <section class="section section--air" aria-labelledby="forms-title">
-    <div class="container section-body">
+  <section class="section section--surface" aria-labelledby="forms-title">
+    <div class="container forms-wrap">
       <div class="heading">
-        <h2 class="heading__title" id="forms-title">{t('formsTitle')}</h2>
-        <p class="heading__lead">{t('formsLead')}</p>
+        <h2 class="display-2" id="forms-title">{t('formsTitle')}</h2>
+        <p class="lead">{t('formsLead')}</p>
       </div>
-      <div class="forms">
-        <SiteForm {locale} kind="report" headingLevel="h3" />
-        <SiteForm {locale} kind="consult" headingLevel="h3" />
+      <div class="forms" data-tabs>
+        <div class="tabs" role="tablist" aria-label={t('formsTabs')}>
+          <span class="tabs__ink" aria-hidden="true"></span>
+          <button class="tabs__tab" type="button" role="tab" id="tab-report" aria-controls="panel-report" aria-selected="true">
+            {t('formReportTitle')}
+          </button>
+          <button class="tabs__tab" type="button" role="tab" id="tab-consult" aria-controls="panel-consult" aria-selected="false">
+            {t('formConsultTitle')}
+          </button>
+        </div>
+        <div class="forms__panel" id="panel-report" role="tabpanel" aria-labelledby="tab-report">
+          <SiteForm {locale} kind="report" headingLevel="h3" />
+        </div>
+        <div class="forms__panel" id="panel-consult" role="tabpanel" aria-labelledby="tab-consult">
+          <SiteForm {locale} kind="consult" headingLevel="h3" />
+        </div>
       </div>
     </div>
   </section>

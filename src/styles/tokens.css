@@ -1,83 +1,88 @@
-/* Design tokens. Every colour, size, radius, shadow and motion value used by
-   the site is defined here; components reference tokens only.
-   Dark values are declared with CSS light-dark() so one token row serves both
-   themes and a JS-off page still follows prefers-color-scheme. */
+/* Design tokens — "Particle & Breath".
+   Every colour, size, radius, shadow and motion value lives here.
+   Light/dark values use light-dark() so a JS-off page still follows the OS. */
 @layer tokens {
   :root {
-    /* ── colour: derived from the logo red (#B61615) ──
-       Light values are the Phase 1 palette. Dark values are the same cool
-       slate hue pushed down ("night air"), not a neutral grey-black. */
-    --c-red: light-dark(#b61615, #cc2b28);        /* logo red; lifted for dark surfaces */
-    --c-red-deep: light-dark(#86100f, #e4574f);   /* Ember: hover / red as text */
-    --c-red-strong: light-dark(#86100f, #b61615); /* primary button fill (AA label both themes) */
-    --c-ink: light-dark(#1b2124, #e9eef1);        /* Graphite / Mist: primary text */
-    --c-slate: light-dark(#55616a, #9faeb7);      /* Slate / Haze: secondary text */
-    --c-air: light-dark(#edf1f2, #182025);        /* Air: quiet surfaces */
-    --c-air-deep: light-dark(#e2e9eb, #1f2a30);   /* Air, one step down */
-    --c-paper: light-dark(#fafbfb, #10171b);      /* Paper: page background */
-    --c-white: light-dark(#ffffff, #232f36);      /* raised card surface */
-    --c-glow: light-dark(transparent, rgba(228, 130, 118, 0.09));
+    /* ── colour ──
+       Oxygen   #E8EEEE  cool mineral page, like a clean-room wall
+       Petrol   #0C2A35  ink, and the always-dark "inside the lung" sections
+       Nafas    #C3161C  the logo red: action, and the active dose particle
+       Alveoli  #F1C6BF  lung-tissue pink, used only in the breath story
+       Slate    #45606A  secondary text (AA on Oxygen and Surface) */
+    --c-bg: light-dark(#e8eeee, #081c24);
+    --c-surface: light-dark(#f4f7f7, #0e2831);
+    --c-surface-2: light-dark(#dae4e5, #13323c);
+    --c-ink: light-dark(#0c2a35, #e3ecee);
+    --c-ink-soft: light-dark(#45606a, #9ab3bb);
+    --c-red: light-dark(#c3161c, #ff5a52);
+    --c-red-ink: light-dark(#a51218, #ff7f77);
+    --c-btn: #c3161c;
+    --c-btn-hover: #9c0f14;
+    --c-alveoli: light-dark(#f1c6bf, #6b3036);
 
-    /* derived, never used for text */
-    --c-line: light-dark(color-mix(in srgb, #1b2124 11%, transparent), rgba(233, 238, 241, 0.13));
-    --c-line-strong: light-dark(color-mix(in srgb, #1b2124 22%, transparent), rgba(233, 238, 241, 0.24));
-    --c-red-tint: light-dark(color-mix(in srgb, #b61615 7%, #fafbfb), rgba(204, 43, 40, 0.16));
-    --c-red-haze: light-dark(color-mix(in srgb, #b61615 16%, transparent), rgba(204, 43, 40, 0.3));
-    --c-glass: light-dark(color-mix(in srgb, #fafbfb 78%, transparent), rgba(16, 23, 27, 0.78));
-    --c-scrim: light-dark(color-mix(in srgb, #1b2124 28%, transparent), rgba(2, 6, 8, 0.55));
-    --c-focus: light-dark(#b61615, #e4574f);
+    /* the "inside" sections stay petrol in both themes */
+    --c-night: #0a2530;
+    --c-night-2: #0f313d;
+    --c-night-ink: #e3ecee;
+    --c-night-soft: #93aeb7;
+
+    --c-line: light-dark(rgba(12, 42, 53, 0.14), rgba(227, 236, 238, 0.14));
+    --c-line-strong: light-dark(rgba(12, 42, 53, 0.3), rgba(227, 236, 238, 0.3));
+    --c-glass: light-dark(rgba(244, 247, 247, 0.72), rgba(8, 28, 36, 0.72));
+    --c-focus: light-dark(#c3161c, #ff7f77);
 
     color-scheme: light dark;
   }
 
-  /* Explicit user choice wins over the system; the head bootstrap sets
-     data-theme before first paint, so no wrong-theme flash. */
   :root[data-color-mode='light'] { color-scheme: light; }
   :root[data-color-mode='dark'] { color-scheme: dark; }
 
-  /* Per-locale families: Estedad (fa, unchanged), IBM Plex Sans Arabic (ar),
-     IBM Plex Sans variable latin+cyrillic (en, ru). */
+  /* ── per-locale families ── */
   :root,
   :root[lang='fa'] {
     --font-sans: 'Estedad', 'Segoe UI', Tahoma, system-ui, sans-serif;
-    /* Persian body needs a larger size and taller line box than Latin */
     --fs-base: 1.0625rem;
     --lh-body: 1.95;
+    --lh-display: 1.12;
+    --fw-display: 850;
+    --fw-thin: 200;
   }
 
   :root[lang='ar'] {
     --font-sans: 'IBM Plex Sans Arabic', 'Estedad', Tahoma, system-ui, sans-serif;
-    /* Arabic script: slightly smaller body, no extra tracking, same air */
     --fs-base: 1rem;
     --lh-body: 1.9;
+    --lh-display: 1.2;
+    --fw-display: 700;
+    --fw-thin: 300;
   }
 
   :root[lang='en'],
   :root[lang='ru'] {
     --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
-    /* Latin/Cyrillic: standard body size, tighter line box than Persian */
     --fs-base: 1rem;
-    --lh-body: 1.75;
+    --lh-body: 1.7;
+    --lh-display: 0.98;
+    --fw-display: 700;
+    --fw-thin: 200;
   }
 
   :root {
-    /* ── type ── */
-    --fs-xs: 0.8125rem;   /* 13 */
-    --fs-s: 0.9375rem;    /* 15 */
-    --fs-m: 1.3125rem;    /* 21 */
-    --fs-l: 1.625rem;     /* 26 */
-    --fs-xl: clamp(1.75rem, 1.2rem + 2.2vw, 2.5rem);
-    --fs-hero: clamp(2.5rem, 1.1rem + 6.4vw, 6rem);
-    --lh-heading: 1.5;
-    --lh-hero: 1.32;
-    --fw-hero: 250;
-    --fw-light: 300;
+    /* ── type ── heavy display against hairline-thin leads */
+    --fs-xs: 0.8125rem;
+    --fs-s: 0.9375rem;
+    --fs-m: 1.25rem;
+    --fs-l: clamp(1.4rem, 1.1rem + 1vw, 1.75rem);
+    --fs-xl: clamp(1.9rem, 1.2rem + 2.6vw, 3.25rem);
+    --fs-2xl: clamp(2.5rem, 1.2rem + 5vw, 5.25rem);
+    --fs-display: clamp(3.25rem, 0.8rem + 10vw, 11rem);
+    --lh-heading: 1.35;
     --fw-regular: 400;
     --fw-medium: 500;
-    --fw-strong: 650;
-    --measure: 38rem;     /* ~70 Persian characters */
+    --fw-bold: 700;
+    --measure: 36rem;
 
-    /* ── space (4px base, airy steps) ── */
+    /* ── space ── */
     --sp-1: 0.25rem;
     --sp-2: 0.5rem;
     --sp-3: 0.75rem;
@@ -87,37 +92,28 @@
     --sp-7: 3rem;
     --sp-8: 4.5rem;
     --sp-9: 7rem;
-    --section-y: clamp(4rem, 2.5rem + 6vw, 8.5rem);
-    --gutter: clamp(1.15rem, 0.6rem + 3vw, 3rem);
-    --container: 78rem;
+    --section-y: clamp(4.5rem, 2.5rem + 7vw, 10rem);
+    --gutter: clamp(1rem, 0.4rem + 3vw, 3rem);
+    --container: 84rem;
 
-    /* ── radius: follows hierarchy, not one value for everything ── */
-    --r-s: 10px;      /* inputs, small controls */
-    --r-m: 18px;      /* menus, panels */
-    --r-l: 32px;      /* imagery, large surfaces */
-    --r-pill: 999px;  /* buttons, chips */
+    /* ── radius: by hierarchy ── */
+    --r-s: 8px;
+    --r-m: 16px;
+    --r-l: 28px;
+    --r-pill: 999px;
 
-    /* ── elevation: floating layers only; dark leans on borders + glow ── */
-    --shadow-float: 0 1px 2px light-dark(rgba(27, 33, 36, 0.06), rgba(0, 0, 0, 0.4)),
-      0 18px 48px -12px light-dark(rgba(27, 33, 36, 0.18), rgba(0, 0, 0, 0.55));
-    --shadow-glow: 0 10px 30px -10px light-dark(rgba(182, 22, 21, 0.45), rgba(228, 87, 79, 0.35));
-    --blur-glass: blur(16px) saturate(1.15);
+    --shadow-float: 0 1px 2px light-dark(rgba(12, 42, 53, 0.08), rgba(0, 0, 0, 0.4)),
+      0 24px 60px -18px light-dark(rgba(12, 42, 53, 0.35), rgba(0, 0, 0, 0.7));
+    --blur-glass: blur(18px) saturate(1.2);
 
     /* ── motion: an inhale is short, an exhale is long ── */
     --ease-breath: cubic-bezier(0.37, 0, 0.18, 1);
-    --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
-    --dur-quick: 160ms;
-    --dur-soft: 320ms;
-    --dur-inhale: 2200ms;
-    --dur-exhale: 3200ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --dur-quick: 180ms;
+    --dur-soft: 420ms;
+    --dur-slow: 900ms;
 
-    --header-h: 4.5rem;
-    --bottom-bar-h: 4.25rem;
-  }
-
-  /* Russian text runs ~20–30% longer than English: keep headings and hero
-     measure readable by letting them take more room, never truncate. */
-  :root[lang='ru'] {
-    --lh-hero: 1.22;
+    --header-h: 4.75rem;
   }
 }

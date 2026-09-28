@@ -1,6 +1,5 @@
-/* Layout primitives. Rule: only .section sets vertical padding; components
-   never set outer margins — parents space children with gap. This keeps
-   section spacing from being cancelled by component selectors. */
+/* Layout primitives. Only .section sets vertical padding; components never
+   set outer margins — parents space children with gap. */
 @layer layout {
   .container {
     width: min(100% - var(--gutter) * 2, var(--container));
@@ -15,8 +14,23 @@
     padding-block-start: 0;
   }
 
-  .section--air {
-    background: var(--c-air);
+  .section--surface {
+    background: var(--c-surface);
+  }
+
+  /* "inside the lung": petrol in both themes */
+  .section--night {
+    background: var(--c-night);
+    color: var(--c-night-ink);
+    --c-ink: var(--c-night-ink);
+    --c-ink-soft: var(--c-night-soft);
+    --c-line: rgba(227, 236, 238, 0.14);
+    --c-line-strong: rgba(227, 236, 238, 0.32);
+    --c-red: #ff5a52;
+    --c-red-ink: #ff8a82;
+    --c-focus: #ff8a82;
+    --c-surface: var(--c-night-2);
+    color-scheme: dark;
   }
 
   .stack {
@@ -29,8 +43,6 @@
     max-inline-size: var(--measure);
   }
 
-  /* Asymmetric two-column split: text column at the inline-start (right in
-     RTL), the wider "air" column at the inline-end. */
   .split {
     display: grid;
     gap: var(--sp-7) var(--sp-8);
@@ -67,11 +79,11 @@
     position: fixed;
     inset-block-start: var(--sp-3);
     inset-inline-start: var(--sp-3);
-    z-index: 100;
+    z-index: 200;
     padding: var(--sp-2) var(--sp-4);
     border-radius: var(--r-pill);
     background: var(--c-ink);
-    color: var(--c-white);
+    color: var(--c-bg);
     font-size: var(--fs-s);
     translate: 0 -200%;
     transition: translate var(--dur-quick) var(--ease-out);

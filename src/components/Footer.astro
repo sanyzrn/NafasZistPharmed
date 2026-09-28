@@ -1,10 +1,9 @@
 ---
 import { nav, products, site } from '../data/site';
 import type { Locale } from '../i18n/index';
-import { localeMeta, makeT, withLocale } from '../i18n/index';
+import { makeT, withLocale } from '../i18n/index';
 import Icon from './Icon.astro';
 import Langs from './Langs.astro';
-import Logo from './Logo.astro';
 
 interface Props {
   locale: Locale;
@@ -16,24 +15,15 @@ const siteData = site(locale);
 const pages = nav(locale).filter((item) => !item.hasMenu);
 ---
 
-<footer class="site-footer">
+<footer class="site-footer section--night">
   <div class="container site-footer__grid">
-    <div class="stack" style="--stack-gap: var(--sp-5)">
-      <a class="brand" href={withLocale('/', locale)} aria-label={`${siteData.name}، ${t('home')}`}>
-        <Logo class="brand__mark" />
-        <span class="brand__text">
-          <span class="brand__name">{siteData.name}</span>
-          <span class="brand__latin" lang="en" dir="ltr">{siteData.nameEn}</span>
-        </span>
-      </a>
-      <div class="stack" style="--stack-gap: var(--sp-2)">
-        <p class="site-footer__label">{siteData.tagline}</p>
-        <p class="site-footer__claim">{siteData.claim}</p>
-      </div>
+    <div class="site-footer__intro">
+      <p class="site-footer__tagline">{siteData.tagline}</p>
+      <p class="site-footer__claim">{siteData.claim}</p>
       <ul class="socials" aria-label={t('socialNetworks')}>
-        <li><a class="link" href={siteData.instagram} target="_blank" rel="noopener noreferrer">{siteData.instagramLabel}</a></li>
-        <li><a class="link" href={siteData.linkedin} target="_blank" rel="noopener noreferrer">{siteData.linkedinLabel}</a></li>
-        <li><a class="link" href={siteData.bale} target="_blank" rel="noopener noreferrer">{siteData.baleLabel}</a></li>
+        <li><a class="chip" href={siteData.instagram} target="_blank" rel="noopener noreferrer">{siteData.instagramLabel}</a></li>
+        <li><a class="chip" href={siteData.linkedin} target="_blank" rel="noopener noreferrer">{siteData.linkedinLabel}</a></li>
+        <li><a class="chip" href={siteData.bale} target="_blank" rel="noopener noreferrer">{siteData.baleLabel}</a></li>
       </ul>
     </div>
 
@@ -50,28 +40,23 @@ const pages = nav(locale).filter((item) => !item.hasMenu);
     <div>
       <h2 class="site-footer__title">{t('footerContactTitle')}</h2>
       <div class="site-footer__contact">
-        <div class="stack" style="--stack-gap: var(--sp-1)">
-          <a class="link" href={siteData.phoneHref}>
-            <Icon name="phone" />
-            <bdi dir="ltr">{siteData.phone}</bdi>
-          </a>
-          <a class="link" href={siteData.emailHref}>
-            <Icon name="mail" />
-            <bdi dir="ltr">{siteData.email}</bdi>
-          </a>
-        </div>
+        <a class="site-footer__big" href={siteData.phoneHref}>
+          <bdi dir="ltr">{siteData.phone}</bdi>
+        </a>
+        <a class="link" href={siteData.emailHref}>
+          <Icon name="mail" />
+          <bdi dir="ltr">{siteData.email}</bdi>
+        </a>
         <address class="site-footer__addr">
           <span class="site-footer__label">{t('hqLabel')}</span>{siteData.hq}
-          <br />
-          <a class="link" href={siteData.mapHq} target="_blank" rel="noopener noreferrer">{t('hqMapLink')}</a>
+          <a class="link" href={siteData.mapHq} target="_blank" rel="noopener noreferrer"><Icon name="pin" />{t('hqMapLink')}</a>
         </address>
         <address class="site-footer__addr">
           <span class="site-footer__label">{t('factoryLabel')}</span>{siteData.factory}
-          <br />
-          <a class="link" href={siteData.mapFactory} target="_blank" rel="noopener noreferrer">{t('factoryMapLink')}</a>
+          <a class="link" href={siteData.mapFactory} target="_blank" rel="noopener noreferrer"><Icon name="pin" />{t('factoryMapLink')}</a>
         </address>
         <div>
-          <a class="btn btn--quiet" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
+          <a class="btn btn--ghost" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
             {t('patientPortalLogin')}
             <Icon name="external" />
           </a>
@@ -79,6 +64,10 @@ const pages = nav(locale).filter((item) => !item.hasMenu);
       </div>
     </div>
   </div>
+
+  <!-- The last thing on every page: the word itself, breathing. Its weight
+       inhales and exhales on the variable axis; decorative only. -->
+  <p class="site-footer__word" aria-hidden="true">{t('heroWord')}</p>
 
   <div class="container site-footer__bottom">
     <p>{t('copyright')}</p>

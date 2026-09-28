@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import BottomNav from '../components/BottomNav.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../data/site';
@@ -26,8 +25,8 @@ const canonical = new URL(canonicalPath, url.origin).href;
 const ogLocale = localeMeta[locale].og;
 
 const alt = (target: Locale) => new URL(withLocale(contentPath ?? url.pathname, target), url.origin).href;
-const themeColorLight = '#fafbfb';
-const themeColorDark = '#10171b';
+const themeColorLight = '#e8eeee';
+const themeColorDark = '#081c24';
 ---
 
 <!doctype html>
@@ -99,6 +98,30 @@ const themeColorDark = '#10171b';
       <slot />
     </main>
     <Footer {locale} />
-    <BottomNav {locale} />
+    <script>
+      import { initParticles } from '../scripts/particles';
+      import {
+        initDrawer,
+        initHeader,
+        initHorizontal,
+        initPreview,
+        initReveal,
+        initSplit,
+        initTabs,
+        initTilt,
+      } from '../scripts/interactions';
+      import { initStory } from '../scripts/story';
+
+      initHeader();
+      initDrawer();
+      initSplit();
+      initParticles();
+      initStory();
+      initPreview();
+      initTilt();
+      initReveal();
+      initHorizontal();
+      initTabs();
+    </script>
   </body>
 </html>
