@@ -1,7 +1,7 @@
 ---
 import { nav, products, site } from '../data/site';
 import type { Locale } from '../i18n/index';
-import { makeT, withLocale } from '../i18n/index';
+import { digits, makeT, withLocale } from '../i18n/index';
 import Icon from './Icon.astro';
 import Langs from './Langs.astro';
 
@@ -65,9 +65,20 @@ const pages = nav(locale).filter((item) => !item.hasMenu);
     </div>
   </div>
 
-  <!-- The last thing on every page: the word itself, breathing. Its weight
-       inhales and exhales on the variable axis; decorative only. -->
-  <p class="site-footer__word" aria-hidden="true">{t('heroWord')}</p>
+  <!-- The last thing on every page: a live breath trace. Press and hold to
+       breathe in, let go to breathe out (src/scripts/breath.ts). -->
+  <div class="breathline" data-breathline tabindex="0" role="group" aria-labelledby={`breath-${locale}`}>
+    <div class="container breathline__head">
+      <p class="breathline__count" id={`breath-${locale}`}>
+        {t('breathCountBefore')}<span class="breathline__n" data-breath-count>{digits('1', locale)}</span>{t('breathCountAfter')}
+      </p>
+      <p class="breathline__hint">
+        <span class="breathline__phase" data-breath-phase data-in={t('breathIn')} data-out={t('breathOut')} aria-hidden="true">{t('breathIn')}</span>
+        <span class="breathline__how">{t('breathHint')}</span>
+      </p>
+    </div>
+    <canvas class="breathline__canvas" aria-hidden="true"></canvas>
+  </div>
 
   <div class="container site-footer__bottom">
     <p>{t('copyright')}</p>

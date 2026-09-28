@@ -18,6 +18,19 @@
 
 ---
 
+### Phase 3.1 (feedback round)
+- Mobile menu is now a compact popover under the menu button (like DbsWebsite_2's
+  Nav): two-line button folds into a cross; outside tap, Escape, link tap close it;
+  focus is kept inside while open. The full-screen dialog is gone.
+- Home category filter fixed: `.index__group { display: grid }` was overriding the
+  `hidden` attribute.
+- The hollow footer word is replaced by a live breath trace (`src/scripts/breath.ts`):
+  a spirometer-style line in #B61615 that breathes ~15×/min; press-and-hold (or Space)
+  inhales, release exhales; a sentence counts roughly how many breaths the visitor has
+  taken since arriving (sessionStorage `nzp-arrived`).
+- One red only: every red/pink/salmon value is now `#B61615` (pressed shade `#8E1110`).
+  On dark surfaces, red *text* becomes ink (contrast), red stays on marks/lines/fills.
+
 ## Phase 1 notes (historical)
 
 ## Assumptions (one line each)

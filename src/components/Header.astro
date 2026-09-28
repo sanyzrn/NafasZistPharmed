@@ -27,7 +27,7 @@ const navItems = nav(locale).map((item) => ({
   ...item,
   href: withLocale(item.href, locale),
 }));
-const drawerId = `drawer-${locale}`;
+const drawerId = `mobile-nav-${locale}`;
 ---
 
 <header class="site-header" data-header>
@@ -112,55 +112,65 @@ const drawerId = `drawer-${locale}`;
         aria-expanded="false"
         aria-controls={drawerId}
         aria-label={t('menuOpen')}
-        data-drawer-open
+        data-label-open={t('menuOpen')}
+        data-label-close={t('menuClose')}
+        data-pop-toggle
       >
         <span class="menu-btn__lines" aria-hidden="true"><span></span><span></span></span>
       </button>
     </div>
   </div>
   <span class="site-header__progress" aria-hidden="true"></span>
-</header>
-
-<dialog class="drawer" id={drawerId} data-drawer aria-label={t('mainNav')}>
-  <div class="drawer__inner container">
-    <div class="drawer__top">
-      <span class="brand__name">{siteData.name}</span>
-      <button class="drawer__close" type="button" data-drawer-close aria-label={t('menuClose')}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
-      </button>
-    </div>
-    <ul class="drawer__nav">
-      {navItems.filter((item) => !item.hasMenu).map((item, i) => (
-        <li style={`--i:${i}`}>
-          <a class="drawer__link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-            {t(item.key)}
-          </a>
-        </li>
-      ))}
-    </ul>
-    <div class="drawer__products">
-      <p class="drawer__label">{t('products')}</p>
-      <ul class="drawer__plist">
-        {products(locale).map((p, i) => (
-          <li style={`--i:${i + 3}`}>
-            <a href={withLocale(`/products/${p.slug}`, locale)}>
-              <span>{p.name}</span>
-              <span class="drawer__cat">{t(`cat_${p.categoryKey}` as never)}</span>
+  <!-- Mobile menu: a compact popover anchored under the menu button at the
+       inline-end corner (not a full-screen takeover). -->
+  <div class="pop" data-pop inert>
+    <nav class="pop__panel" id={drawerId} aria-label={t('mainNav')}>
+      <ul class="pop__list">
+        {navItems.filter((item) => !item.hasMenu).map((item) => (
+          <li>
+            <a class="pop__link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+              {t(item.key)}
             </a>
           </li>
         ))}
       </ul>
-    </div>
-    <div class="drawer__foot">
-      <a class="link" href={siteData.phoneHref}><Icon name="phone" /><bdi dir="ltr">{siteData.phone}</bdi></a>
-      <a class="link" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
-        {t('patientPortalCta')}
-        <Icon name="external" />
-      </a>
-      <Langs current={locale} />
-    </div>
+      <div class="pop__group">
+        <p class="pop__label">{t('products')}</p>
+        <ul class="pop__list">
+          {products(locale).map((p) => (
+            <li>
+              <a
+                class="pop__link pop__link--product"
+                href={withLocale(`/products/${p.slug}`, locale)}
+                aria-current={path.endsWith(`/products/${p.slug}`) ? 'page' : undefined}
+              >
+                <span class="pop__thumb" aria-hidden="true">
+                  <img src={p.image} alt="" width="64" height="64" loading="lazy" decoding="async" />
+                </span>
+                <span class="pop__name">{p.name}</span>
+                <span class="pop__cat">{t(`cat_${p.categoryKey}` as never)}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="pop__group pop__langs">
+        <Langs current={locale} />
+      </div>
+      <div class="pop__group pop__foot">
+        <a class="btn btn--primary pop__cta" href={siteData.phoneHref}>
+          <Icon name="phone" />
+          <bdi dir="ltr">{siteData.phone}</bdi>
+        </a>
+        <a class="pop__portal" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
+          {t('patientPortalCta')}
+          <Icon name="external" />
+          <span class="sr-only">{t('inNewWindow')}</span>
+        </a>
+      </div>
+    </nav>
   </div>
-</dialog>
+</header>
 
 <script>
   import { initProductMenu } from '../scripts/menu';

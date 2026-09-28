@@ -159,5 +159,10 @@
   "storyCta": "About Tiotoriva",
   "storyNote": "Schematic illustration; not a substitute for the instructions for use.",
   "productsCount": "{n} products",
-  "notFoundHint": "Push the particles around with your pointer."
+  "notFoundHint": "Push the particles around with your pointer.",
+  "breathCountBefore": "Since you arrived at Nafas, you have taken about ",
+  "breathCountAfter": " breaths.",
+  "breathIn": "Inhale",
+  "breathOut": "Exhale",
+  "breathHint": "Press and hold to breathe in; let go to breathe out."
 }

@@ -39,54 +39,76 @@ export function initHeader(): void {
   update();
 }
 
-/** Mobile menu: a native modal <dialog> (focus trap + Escape for free) that
- *  opens as an expanding circle from the button — an inhale. */
+/** Mobile menu: a compact popover under the menu button. The two lines of
+ *  the button fold into a cross; outside click, Escape, a link tap or
+ *  reaching desktop width close it. Focus moves in on open, is kept inside
+ *  (panel + button) while open, and returns to the button on close. */
 export function initDrawer(): void {
-  const dialog = document.querySelector<HTMLDialogElement>('[data-drawer]');
-  const opener = document.querySelector<HTMLButtonElement>('[data-drawer-open]');
-  if (!dialog || !opener || typeof dialog.showModal !== 'function') return;
-  const closer = dialog.querySelector<HTMLButtonElement>('[data-drawer-close]');
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const pop = document.querySelector<HTMLElement>('[data-pop]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-pop-toggle]');
+  if (!header || !pop || !toggle) return;
 
-  const origin = () => {
-    const r = opener.getBoundingClientRect();
-    dialog.style.setProperty('--ox', `${r.left + r.width / 2}px`);
-    dialog.style.setProperty('--oy', `${r.top + r.height / 2}px`);
+  const focusables = () =>
+    [toggle, ...pop.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')].filter(
+      (el) => el.offsetParent !== null,
+    );
+
+  const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+
+  const set = (open: boolean, returnFocus = true) => {
+    if (open === isOpen()) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', (open ? toggle.dataset.labelClose : toggle.dataset.labelOpen) ?? '');
+    pop.toggleAttribute('inert', !open);
+    pop.dataset.open = String(open);
+    header.toggleAttribute('data-menu-open', open);
+    document.documentElement.toggleAttribute('data-scroll-lock', open);
+    if (open) {
+      header.removeAttribute('data-hidden');
+      window.setTimeout(() => pop.querySelector<HTMLElement>('a[href]')?.focus({ preventScroll: true }), 30);
+    } else if (returnFocus) {
+      toggle.focus({ preventScroll: true });
+    }
   };
 
-  const open = () => {
-    origin();
-    dialog.showModal();
-    opener.setAttribute('aria-expanded', 'true');
-    document.documentElement.style.overflow = 'hidden';
-  };
+  toggle.addEventListener('click', () => set(!isOpen()));
 
-  const close = () => {
-    if (!dialog.open || dialog.dataset.closing) return;
-    const done = () => {
-      dialog.removeAttribute('data-closing');
-      dialog.close();
-      opener.setAttribute('aria-expanded', 'false');
-      document.documentElement.style.overflow = '';
-      opener.focus({ preventScroll: true });
-    };
-    if (reduced()) return done();
-    dialog.dataset.closing = 'true';
-    window.setTimeout(done, 460);
-  };
-
-  opener.addEventListener('click', open);
-  closer?.addEventListener('click', close);
-  dialog.addEventListener('cancel', (e) => {
-    e.preventDefault();
-    close();
-  });
-  dialog.addEventListener('click', (e) => {
-    if ((e.target as HTMLElement).closest('a')) {
-      document.documentElement.style.overflow = '';
+  document.addEventListener('keydown', (e) => {
+    if (!isOpen()) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      set(false);
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const items = focusables();
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
     }
   });
+
+  const outside = (e: Event) => {
+    if (!isOpen()) return;
+    const target = e.target as Node;
+    if (pop.contains(target) || toggle.contains(target)) return;
+    set(false, false);
+  };
+  document.addEventListener('mousedown', outside);
+  document.addEventListener('touchstart', outside, { passive: true });
+
+  pop.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) set(false, false);
+  });
+
   window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
-    if (e.matches && dialog.open) close();
+    if (e.matches) set(false, false);
   });
 }
 

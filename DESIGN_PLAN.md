@@ -14,17 +14,16 @@ identity is built from that: powder particles, airflow, and the path of one brea
 |---|---|---|
 | Oxygen | `#E8EEEE` | page (cool clean-room mineral, not cream, not white) |
 | Petrol | `#0C2A35` | ink; and the always-dark "inside the lung" sections |
-| Nafas Red | `#C3161C` | logo red: actions, and the active dose particle |
-| Alveoli | `#F1C6BF` | lung-tissue pink, used only in the breath story |
+| Nafas Red | `#B61615` | the only red: actions, marks, the active dose particle |
 | Slate | `#45606A` | secondary text (AA) |
 
-Dark theme pushes the same petrol hue down (`#081C24`) and lifts red to `#FF5A52` for graphics.
+Dark theme pushes the same petrol hue down (`#081C24`); red stays `#B61615` (red text turns to ink on dark for contrast).
 
 ## Type
 Estedad variable (fa) / IBM Plex Sans Arabic (ar) / IBM Plex Sans variable (en, ru).
 Contrast of weight is the personality: display headings at 850–900, leads at a hairline 200.
-The variable axis is used as motion: the footer word inhales/exhales its weight; the four
-company values gain weight when you reach for them.
+The variable axis is used as motion: the four company values gain weight when you reach for
+them. The footer ends with a live breath trace the visitor can take over (press and hold).
 
 ## Signature moments (motion budget)
 1. **Home hero — the powder word.** «نفس» (or *Nafas*) rendered as ~3,000 particles on canvas.
@@ -36,7 +35,7 @@ company values gain weight when you reach for them.
    reaches the alveoli. Particles travel along the actual SVG airway paths.
 3. Answering motion only elsewhere: floating product preview that follows the cursor over the
    formulary, product-name morph between pages (cross-document View Transitions), iris-reveal
-   images, pinned horizontal timeline on /about, circular "inhale" mobile menu, particle halo
+   images, pinned horizontal timeline on /about, compact popover mobile menu, particle halo
    around product images, a scatterable 404.
 
 Everything runs off-screen-paused and collapses to a still frame under `prefers-reduced-motion`.
