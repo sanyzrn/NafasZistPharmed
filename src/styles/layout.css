@@ -26,9 +26,9 @@
     --c-ink-soft: var(--c-night-soft);
     --c-line: rgba(227, 236, 238, 0.14);
     --c-line-strong: rgba(227, 236, 238, 0.32);
-    --c-red: #ff5a52;
-    --c-red-ink: #ff8a82;
-    --c-focus: #ff8a82;
+    --c-red: #b61615;
+    --c-red-ink: var(--c-night-ink);
+    --c-focus: var(--c-night-ink);
     --c-surface: var(--c-night-2);
     color-scheme: dark;
   }

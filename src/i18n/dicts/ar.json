@@ -159,5 +159,10 @@
   "storyCta": "عن تيوتوريفا",
   "storyNote": "الرسم توضيحي ولا يغني عن تعليمات الاستعمال.",
   "productsCount": "{n} مستحضرات",
-  "notFoundHint": "حرّك الجزيئات بالمؤشر."
+  "notFoundHint": "حرّك الجزيئات بالمؤشر.",
+  "breathCountBefore": "منذ وصولك إلى موقع نفس، تنفّستَ نحو ",
+  "breathCountAfter": " مرة.",
+  "breathIn": "شهيق",
+  "breathOut": "زفير",
+  "breathHint": "اضغط مطوّلًا للشهيق، وارفع إصبعك للزفير."
 }

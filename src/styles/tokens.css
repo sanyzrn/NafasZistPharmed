@@ -6,19 +6,19 @@
     /* ── colour ──
        Oxygen   #E8EEEE  cool mineral page, like a clean-room wall
        Petrol   #0C2A35  ink, and the always-dark "inside the lung" sections
-       Nafas    #C3161C  the logo red: action, and the active dose particle
-       Alveoli  #F1C6BF  lung-tissue pink, used only in the breath story
+       Nafas    #B61615  the logo red, the one and only red: action, active dose
        Slate    #45606A  secondary text (AA on Oxygen and Surface) */
     --c-bg: light-dark(#e8eeee, #081c24);
     --c-surface: light-dark(#f4f7f7, #0e2831);
     --c-surface-2: light-dark(#dae4e5, #13323c);
     --c-ink: light-dark(#0c2a35, #e3ecee);
     --c-ink-soft: light-dark(#45606a, #9ab3bb);
-    --c-red: light-dark(#c3161c, #ff5a52);
-    --c-red-ink: light-dark(#a51218, #ff7f77);
-    --c-btn: #c3161c;
-    --c-btn-hover: #9c0f14;
-    --c-alveoli: light-dark(#f1c6bf, #6b3036);
+    --c-red: #b61615;
+    /* red as text: on dark surfaces #b61615 is too dim to read, so text
+       turns to ink there and red stays on marks, icons and lines */
+    --c-red-ink: light-dark(#b61615, #e3ecee);
+    --c-btn: #b61615;
+    --c-btn-hover: #8e1110; /* pressed shade of #b61615 */
 
     /* the "inside" sections stay petrol in both themes */
     --c-night: #0a2530;
@@ -29,7 +29,7 @@
     --c-line: light-dark(rgba(12, 42, 53, 0.14), rgba(227, 236, 238, 0.14));
     --c-line-strong: light-dark(rgba(12, 42, 53, 0.3), rgba(227, 236, 238, 0.3));
     --c-glass: light-dark(rgba(244, 247, 247, 0.72), rgba(8, 28, 36, 0.72));
-    --c-focus: light-dark(#c3161c, #ff7f77);
+    --c-focus: light-dark(#b61615, #e3ecee);
 
     color-scheme: light dark;
   }

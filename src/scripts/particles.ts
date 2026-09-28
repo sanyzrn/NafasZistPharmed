@@ -64,7 +64,7 @@ function createField(canvas: HTMLCanvasElement): void {
   let H = 0;
   let dpr = 1;
   let particles: Particle[] = [];
-  let colors: [string, string, string] = ['#0c2a35', '#c3161c', '#45606a'];
+  let colors: [string, string, string] = ['#0c2a35', '#b61615', '#45606a'];
   let box = { x: 0, y: 0, w: 0, h: 0, cx: 0, cy: 0 };
   let running = false;
   let visible = true;
