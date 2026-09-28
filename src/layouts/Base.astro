@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+import TopBar from '../components/TopBar.astro';
+import Header from '../components/Header.astro';
+import BottomNav from '../components/BottomNav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = `${site.name} — ${site.tagline}` } = Astro.props;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#b61615" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap"
+    />
+    <title>{title} | {site.name}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">پرش به محتوا</a>
+    <TopBar />
+    <Header />
+    <main id="content">
+      <slot />
+    </main>
+    <Footer />
+    <BottomNav />
+  </body>
+</html>
+
+<style is:global>
+  .skip-link {
+    position: fixed;
+    inset-inline-start: unset;
+    left: 50%;
+    transform: translateX(-50%) translateY(-200%);
+    top: 0.75rem;
+    background: var(--brand);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius, 6px);
+    z-index: 100;
+    transition: transform 0.15s ease;
+  }
+
+  .skip-link:focus {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  html,
+  body,
+  button,
+  input,
+  select,
+  textarea,
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font);
+  }
+</style>

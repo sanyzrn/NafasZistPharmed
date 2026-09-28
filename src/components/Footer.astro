@@ -1,0 +1,250 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="/" aria-label="نفس زیست فارمد — صفحه نخست">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
+            <circle cx="24" cy="24" r="22" stroke="rgba(255,255,255,0.4)" stroke-width="2" />
+            <path d="M12 28c4-10 8-14 12-14s8 4 12 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
+            <path d="M16 28c2.5-6 5-9 8-9s5.5 3 8 9" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.7" />
+            <circle cx="24" cy="18" r="2.2" fill="#fff" />
+          </svg>
+        </span>
+        <span class="logo-text">
+          <strong>نفس زیست فارمد</strong>
+          <small>Nafas Zist Pharmed</small>
+        </span>
+      </a>
+      <p class="claim">{site.tagline}</p>
+      <p>{site.claim}</p>
+      <ul class="socials">
+        <li><a href={site.instagram} target="_blank" rel="noopener noreferrer">اینستاگرام</a></li>
+        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">لینکدین</a></li>
+        <li><a href={site.bale} target="_blank" rel="noopener noreferrer">بله</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>دسترسی سریع</h3>
+      <ul class="links">
+        <li><a href="/">صفحه نخست</a></li>
+        <li><a href="/about">درباره نفس</a></li>
+        <li><a href="/contact">تماس با نفس</a></li>
+        <li><a href="/products/tio-toriva">تیوتوریوا</a></li>
+        <li><a href="/products/coldanese-plus">کلدانیز پلاس</a></li>
+        <li><a href="/products/folinozit">فولینوزیت</a></li>
+        <li><a href="/products/meglozek">مگلوزک</a></li>
+        <li><a href="/products/capsulizer">کپسولایزر</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>در تماس با نفس</h3>
+      <ul class="links contact-links">
+        <li><a href={site.phoneHref} dir="ltr">{site.phone}</a></li>
+        <li><a href={site.emailHref} dir="ltr">{site.email}</a></li>
+      </ul>
+      <div class="addr">
+        <p class="addr-label">دفتر مرکزی</p>
+        <p>{site.hq}</p>
+        <a class="map-link" href={site.mapHq} target="_blank" rel="noopener noreferrer">موقعیت دفتر مرکزی</a>
+      </div>
+      <div class="addr">
+        <p class="addr-label">کارخانه</p>
+        <p>{site.factory}</p>
+        <a class="map-link" href={site.mapFactory} target="_blank" rel="noopener noreferrer">موقعیت کارخانه</a>
+      </div>
+      <a class="portal-link" href={site.patientPortal} target="_blank" rel="noopener noreferrer">ورود به پورتال بیماران</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>© کلیه حقوق این سایت متعلق به شرکت دانش‌بنیان نفس زیست فارمد است.</p>
+      <ul class="mini-nav">
+        <li><a href="/">صفحه نخست</a></li>
+        <li><a href="/about">درباره نفس</a></li>
+        <li><a href="/contact">تماس با نفس</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.75fr 1.15fr;
+    gap: 2.5rem;
+    padding-block: 3.5rem 2.75rem;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+
+  .logo-text strong {
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 800;
+  }
+
+  .logo-text small {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+
+  .claim {
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer p {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.93rem;
+  }
+
+  .footer h3 {
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .links {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .links a {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.93rem;
+    transition: color 0.15s ease;
+  }
+
+  .links a:hover {
+    color: #fff;
+  }
+
+  .socials {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .socials a {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    padding-bottom: 0.1rem;
+  }
+
+  .contact-links {
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-links a {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .addr {
+    margin-bottom: 1.15rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .addr-label {
+    color: #fff !important;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  .addr p {
+    line-height: 1.8;
+  }
+
+  .map-link {
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  .portal-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 0.45rem 1.1rem;
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--brand);
+    font-weight: 700;
+    font-size: 0.88rem;
+    transition: box-shadow 0.16s ease;
+  }
+
+  .portal-link:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .footer-bottom-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-block: 1.1rem;
+    font-size: 0.85rem;
+  }
+
+  .footer-bottom p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .mini-nav {
+    display: flex;
+    gap: 1.15rem;
+  }
+
+  .mini-nav a {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .mini-nav a:hover {
+    color: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

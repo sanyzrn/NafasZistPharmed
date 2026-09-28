@@ -1,0 +1,316 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+
+const values = [
+  {
+    title: 'شجاعت',
+    body: 'جسارت در نوآوری، پذیرش مسئولیت، ریسک‌پذیری هوشمندانه، و یادگیری از تجربیات.',
+  },
+  {
+    title: 'کار تیمی',
+    body: 'تلاش بی‌وقفه برای ارتقای زندگی انسان‌ها از طریق هم‌افزایی و همدلی.',
+  },
+  {
+    title: 'احترام',
+    body: 'پذیرش تنوع و نیازهای متنوع جامعه با رویکردی همدلانه.',
+  },
+  {
+    title: 'یکپارچگی',
+    body: 'فعالیت با صداقت و شفافیت کامل، پایبندی به بالاترین استانداردهای اخلاقی و کیفی.',
+  },
+];
+
+const missions = [
+  'تولید داروهای پیشرفته: توسعه و تولید داروهای استنشاقی و نانوداروها با فناوری‌های پیشرفته و دانش فنی بومی.',
+  'نوآوری و همکاری علمی: ارائه محصولات خلاقانه با نظام‌های مدیریتی نوین و ارتباط با مراکز دانشگاهی داخلی و بین‌المللی.',
+  'افزایش دسترسی و کیفیت: ارتقای سطح کیفیت محصولات و تسهیل دسترسی تمامی اقشار جامعه.',
+  'خلق ارزش پایدار: ایجاد ارزش مداوم برای تمامی ذی‌نفعان از طریق نیروی انسانی متعهد و کارآمد.',
+];
+
+const gallery = [
+  'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas5.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas6.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas7.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas9.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2025/01/20250113_104838.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2025/10/IMG_0749.jpg',
+];
+
+const faNum = ['۰۱', '۰۲', '۰۳', '۰۴'];
+---
+
+<Base title="درباره نفس" description="درباره شرکت دانش‌بنیان نفس زیست فارمد — از پژوهش تا تولید.">
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="tag">شرکت دانش‌بنیان نفس زیست فارمد</p>
+      <h1 class="display">درباره نفس</h1>
+      <p class="lead">از پژوهش تا تولید؛ همراه با دانش، مسئولیت و تعهد به سلامت.</p>
+    </div>
+  </section>
+
+  <section class="section" id="nafas-story">
+    <div class="container grid-2">
+      <div>
+        <p class="tag">مسیر ما</p>
+        <h2 class="display">نفس، از آغاز تا امروز</h2>
+        <p class="year-line"><strong>۱۳۹۸</strong> — آغاز یک مسیر</p>
+        <div class="prose">
+          <p>
+            شرکت دانش‌بنیان نفس زیست فارمد در سال ۱۳۹۸ با هدف پاسخ به نیاز بیماران و دستیابی به جایگاهی پیشرو در صنعت
+            تولید دارو آغاز به کار نمود. از نخستین روزها، تمرکز بر محصولات استنشاقی پودری (DPI) قرار گرفت.
+          </p>
+          <p>
+            پس از سال‌ها تحقیق و توسعه، دانش فنی فرمولاسیون دارویی و مهندسی آیرودینامیک ذرات به دست آمد و مجوز تولید نخستین
+            محصول از سوی سازمان غذا و دارو صادر شد. محصول <strong>تیوتوریوا</strong> (تیوتروپیوم ۱۸ میکروگرم) به عنوان اولین
+            محصول استنشاقی پودری تولید انبوه در ایران معرفی شد.
+          </p>
+          <p>
+            این شرکت به پشتوانه این موفقیت، تأییدیه «دانش‌بنیان نوع یک» از معاونت علمی و فناوری ریاست جمهوری را دریافت کرده
+            است. تولید تیوتوریوا نه‌تنها از خروج سالانه بیش از ۱۰ میلیون دلار ارز جلوگیری می‌کند، بلکه افق صادرات به کشورهای
+            همسایه را نیز گشوده است.
+          </p>
+        </div>
+      </div>
+      <div class="story-visual">
+        <img
+          src="https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas6.jpg"
+          alt="شرکت نفس زیست فارمد"
+          loading="lazy"
+        />
+        <div class="stat-row">
+          <div class="stat">
+            <strong>۱۳۹۸</strong>
+            <span>سال تأسیس</span>
+          </div>
+          <div class="stat">
+            <strong>نوع ۱</strong>
+            <span>دانش‌بنیان</span>
+          </div>
+          <div class="stat">
+            <strong>DPI</strong>
+            <span>تخصص اصلی</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section mission">
+    <div class="container">
+      <p class="tag">نگاه ما به آینده</p>
+      <h2 class="display">رسالت ما</h2>
+      <p class="lead">
+        شرکت دانش‌بنیان نفس زیست فارمد با چشم‌اندازی روشن در مسیر ارتقای سلامت جامعه و تعهد به حفظ محیط زیست، مأموریت‌های
+        زیر را در اولویت قرار داده است:
+      </p>
+      <ol class="mission-list">
+        {missions.map((m, i) => (
+          <li>
+            <span class="m-num">{faNum[i]}</span>
+            <p>{m}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container">
+      <p class="tag">اصول مشترک ما</p>
+      <h2 class="display">ارزش‌های نفس</h2>
+      <div class="grid-4 values">
+        {values.map((v) => (
+          <article class="value-card">
+            <h3>{v.title}</h3>
+            <p>{v.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container">
+      <p class="tag">در کنار هم</p>
+      <h2 class="display">روایت تصویری نفس</h2>
+      <div class="gallery">
+        {gallery.map((src) => (
+          <img src={src} alt="گالری نفس زیست فارمد" loading="lazy" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section jobs-cta">
+    <div class="container grid-2">
+      <div>
+        <p class="tag">فرصت‌های شغلی</p>
+        <h2 class="display">با هم برای آینده‌ای سالم و روشن</h2>
+        <p class="lead">
+          در نفس زیست فارمد، کیفیت، صداقت، مسئولیت‌پذیری و پویایی، سنگ‌بنای حرکت رو به جلوست. پیوستن به تیم نفس، فرصتی
+          منحصربه‌فرد برای رشد حرفه‌ای و توسعه مهارت‌های شماست.
+        </p>
+        <a class="btn btn-primary" href={site.jobs} target="_blank" rel="noopener noreferrer">ارسال رزومه</a>
+      </div>
+      <div class="jobs-panel">
+        <p class="quote">«ما در نفس، نه فقط به دنبال همکار، بلکه به دنبال همراهی برای رشد و تحول هستیم.»</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+    background: var(--fog);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-inner {
+    max-width: 42rem;
+  }
+
+  .year-line {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+  }
+
+  .year-line strong {
+    color: var(--brand);
+    font-size: 1.55rem;
+    font-weight: 800;
+  }
+
+  .prose p {
+    margin-bottom: 1rem;
+    line-height: 1.95;
+  }
+
+  .story-visual img {
+    width: 100%;
+    height: 330px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+    margin-top: 0.85rem;
+  }
+
+  .stat {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.8rem;
+    text-align: center;
+  }
+
+  .stat strong {
+    display: block;
+    color: var(--brand);
+    font-size: 1.18rem;
+  }
+
+  .stat span {
+    color: var(--stone);
+    font-size: 0.8rem;
+  }
+
+  .mission {
+    background: var(--white);
+    border-block: 1px solid var(--line);
+  }
+
+  .mission-list {
+    display: grid;
+    margin-top: 1.4rem;
+    max-width: 46rem;
+  }
+
+  .mission-list li {
+    display: grid;
+    grid-template-columns: 3.4rem 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding: 1.15rem 0.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mission-list li:first-child {
+    border-top: 1px solid var(--line);
+  }
+
+  .m-num {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--brand);
+    line-height: 1.45;
+  }
+
+  .mission-list p {
+    margin: 0;
+    line-height: 1.95;
+  }
+
+  .value-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem;
+  }
+
+  .value-card h3 {
+    color: var(--brand);
+    font-size: 1.12rem;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin-top: 1.4rem;
+  }
+
+  .gallery img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  .jobs-cta {
+    background: var(--fog);
+  }
+
+  .jobs-panel {
+    background: var(--brand);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 2.2rem;
+    display: grid;
+    align-content: center;
+    min-height: 240px;
+  }
+
+  .quote {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.9;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .gallery {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .stat-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

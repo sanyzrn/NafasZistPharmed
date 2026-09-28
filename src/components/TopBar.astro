@@ -1,0 +1,157 @@
+---
+import { site } from '../data/site';
+---
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div class="topbar-contact">
+      <a href={site.phoneHref} class="top-link">
+        <span class="icon" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.8 2z"/></svg>
+        </span>
+        <span dir="ltr">{site.phone}</span>
+      </a>
+      <span class="top-sep" aria-hidden="true"></span>
+      <a href={site.emailHref} class="top-link">
+        <span class="icon" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+        </span>
+        <span dir="ltr">{site.email}</span>
+      </a>
+    </div>
+
+    <div class="topbar-meta">
+      <nav class="socials" aria-label="شبکه‌های اجتماعی">
+        <a href={site.instagram} target="_blank" rel="noopener noreferrer">اینستاگرام</a>
+        <span class="dot" aria-hidden="true"></span>
+        <a href={site.linkedin} target="_blank" rel="noopener noreferrer">لینکدین</a>
+        <span class="dot" aria-hidden="true"></span>
+        <a href={site.bale} target="_blank" rel="noopener noreferrer">بله</a>
+      </nav>
+
+      <div class="langs" role="navigation" aria-label="زبان">
+        {site.languages.map((lang) => (
+          <a
+            href={lang.href}
+            class:list={['lang', { active: lang.active }]}
+            hreflang={lang.code}
+            aria-current={lang.active ? 'true' : undefined}
+          >
+            {lang.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .topbar {
+    background: var(--ink);
+    color: #e8e8e6;
+    font-size: 0.8rem;
+  }
+
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 40px;
+    flex-wrap: wrap;
+    padding-block: 0.3rem;
+  }
+
+  .topbar-contact,
+  .topbar-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .top-sep {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(255, 255, 255, 0.85);
+    transition: color 0.15s ease;
+  }
+
+  .top-link:hover {
+    color: #fff;
+  }
+
+  .icon {
+    display: inline-flex;
+    opacity: 0.8;
+  }
+
+  .socials {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .socials a {
+    color: rgba(255, 255, 255, 0.82);
+    transition: color 0.15s ease;
+  }
+
+  .socials a:hover {
+    color: #fff;
+  }
+
+  .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .langs {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    padding: 0.16rem;
+  }
+
+  .lang {
+    min-width: 2.1rem;
+    text-align: center;
+    padding: 0.14rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.72);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .lang:hover {
+    color: #fff;
+  }
+
+  .lang.active {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  @media (max-width: 720px) {
+    .topbar-inner {
+      justify-content: center;
+    }
+
+    .topbar-contact {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
