@@ -1,29 +1,26 @@
 /**
  * Progressive enhancement for the site's forms.
  * - Without JS the browser's native validation still works.
- * - With JS: Persian inline error messages, and submission to the endpoint in
- *   the form's `data-endpoint` attribute. While no endpoint is configured the
- *   form tells the visitor how to reach the company directly instead of
- *   silently reloading the page.
+ * - With JS: localized inline error messages (read from data attributes the
+ *   layout renders), and submission to the endpoint in data-endpoint. While
+ *   no endpoint is configured the form tells the visitor how to reach the
+ *   company directly instead of silently reloading the page.
  */
-const MESSAGES = {
-  required: 'این بخش را کامل کنید.',
-  email: 'ایمیل را به شکل name@example.com وارد کنید.',
-  tel: 'شماره تماس را فقط با رقم وارد کنید؛ مثل ۰۹۱۲۱۲۳۴۵۶۷.',
-};
 
 const toLatinDigits = (value: string) =>
-  value.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
+  value
+    .replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+    .replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
 
-function validate(control: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): string {
+function validate(control: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): 'required' | 'email' | 'tel' | '' {
   const value = control.value.trim();
-  if (control.required && !value) return MESSAGES.required;
+  if (control.required && !value) return 'required';
   if (!value) return '';
   if (control instanceof HTMLInputElement && control.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-    return MESSAGES.email;
+    return 'email';
   }
   if (control instanceof HTMLInputElement && control.type === 'tel' && !/^\+?[\d\s-]{7,15}$/.test(toLatinDigits(value))) {
-    return MESSAGES.tel;
+    return 'tel';
   }
   return '';
 }
@@ -40,13 +37,21 @@ export function initForms(): void {
   document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach((form) => {
     form.noValidate = true;
     const status = form.querySelector<HTMLElement>('[data-form-status]');
+    const messages: Record<'required' | 'email' | 'tel' | '', string> = {
+      required: form.dataset.msgRequired ?? '',
+      email: form.dataset.msgEmail ?? '',
+      tel: form.dataset.msgTel ?? '',
+      '': '',
+    };
     const controls = Array.from(
       form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('.field__input'),
     );
 
     controls.forEach((control) =>
       control.addEventListener('blur', () => {
-        if (control.getAttribute('aria-invalid') === 'true' || control.value) showError(control, validate(control));
+        const kind = validate(control);
+        const message = messages[kind];
+        if (control.getAttribute('aria-invalid') === 'true' || control.value) showError(control, message);
       }),
     );
 
@@ -54,7 +59,8 @@ export function initForms(): void {
       event.preventDefault();
       let firstInvalid: HTMLElement | undefined;
       for (const control of controls) {
-        const message = validate(control);
+        const kind = validate(control);
+        const message = messages[kind];
         showError(control, message);
         if (message && !firstInvalid) firstInvalid = control;
       }
@@ -74,7 +80,7 @@ export function initForms(): void {
       const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
       button?.setAttribute('disabled', '');
       status.dataset.tone = '';
-      status.textContent = 'در حال ارسال…';
+      status.textContent = form.dataset.msgSending ?? '';
       try {
         const response = await fetch(endpoint, { method: 'POST', body: new FormData(form) });
         if (!response.ok) throw new Error(String(response.status));

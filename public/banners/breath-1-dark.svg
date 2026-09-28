@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1080" preserveAspectRatio="xMidYMid slice">
+  <!-- PLACEHOLDER banner 1 (dark): same arcs on the night-air surface -->
+  <defs>
+    <radialGradient id="glow1d" cx="30%" cy="80%" r="60%">
+      <stop offset="0" stop-color="#E4574F" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#E4574F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="2400" height="1080" fill="#10171B"/>
+  <rect width="2400" height="1080" fill="url(#glow1d)"/>
+  <g transform="translate(300 820)" fill="none" stroke="#E4574F" stroke-linecap="round">
+    <path d="M0 0 C60 -240 160 -360 300 -360 S540 -240 600 0" stroke-width="10" opacity="0.85"/>
+    <path d="M120 0 C165 -170 235 -255 340 -255 S515 -170 560 0" stroke-width="7" opacity="0.55"/>
+    <path d="M240 0 C275 -110 320 -165 385 -165 S495 -110 530 0" stroke-width="5" opacity="0.32"/>
+    <circle cx="300" cy="-430" r="16" fill="#E4574F" stroke="none"/>
+  </g>
+  <g font-family="Tahoma, sans-serif" fill="#9FAEB7" font-size="34">
+    <text x="300" y="960">PLACEHOLDER — real product banner goes here</text>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+---
+import AboutContent from '../../templates/About.astro';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return (['ar', 'en', 'ru'] as const).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+---
+
+<AboutContent locale={lang as Locale} />

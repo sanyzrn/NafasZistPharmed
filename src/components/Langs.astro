@@ -1,25 +1,55 @@
 ---
-import { site } from '../data/site';
+/**
+ * Language switcher. Native names only, no flags. Each link points at the
+ * equivalent page of the target locale, carries lang/hreflang, and marks the
+ * current locale with aria-current.
+ */
+import { locales, localeMeta, withLocale, type Locale } from '../i18n/index';
 
 interface Props {
+  current: Locale;
   class?: string;
 }
 
-const { class: className = '' } = Astro.props;
-const names: Record<string, string> = { fa: 'فارسی', en: 'English', ru: 'Русский', ar: 'العربية' };
+const { current, class: className = '' } = Astro.props;
+const path = Astro.url.pathname;
+const altPath = (target: Locale) => {
+  if (current === target) return path;
+  // strip the current locale prefix (or none for fa), then prefix the target
+  const stripped = current === 'fa' ? path : path.replace(`/${current}`, '') || '/';
+  return withLocale(stripped, target);
+};
+const short: Record<Locale, string> = { fa: 'FA', ar: 'AR', en: 'EN', ru: 'RU' };
 ---
 
-<nav class={`langs ${className}`} aria-label="زبان سایت">
-  {site.languages.map((lang) =>
-    lang.active ? (
-      <span class="langs__item" aria-current="true" lang={lang.code}>
-        {lang.label}
-      </span>
-    ) : (
-      <a class="langs__item" href={lang.href} hreflang={lang.code} lang={lang.code} title={names[lang.code]}>
-        <span aria-hidden="true">{lang.label}</span>
-        <span class="sr-only">{names[lang.code]}</span>
-      </a>
-    )
-  )}
+<nav class={`langs ${className}`.trim()} aria-label={localeMeta[current].name}>
+  <ul class="langs__list">
+    {locales.map((code) =>
+      code === current ? (
+        <li>
+          <span
+            class="langs__item"
+            aria-current="true"
+            lang={code}
+            data-short={short[code]}
+          >
+            {localeMeta[code].name}
+          </span>
+        </li>
+      ) : (
+        <li>
+          <a
+            class="langs__item"
+            href={altPath(code)}
+            hreflang={code}
+            lang={code}
+            aria-label={localeMeta[code].name}
+            data-short={short[code]}
+          >
+            {localeMeta[code].name}
+          </a>
+        </li>
+      )
+    )}
+  </ul>
 </nav>

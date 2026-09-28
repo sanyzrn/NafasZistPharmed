@@ -1,421 +1,58 @@
-// Site-wide content. All Persian copy below is original content from the
-// previous version of the site. Fields marked "added in redesign" are new and
-// are listed in REDESIGN_NOTES.md so they can be verified.
+import { content, type Locale, type Product } from '../content/index';
 
-export const site = {
-  name: 'نفس زیست فارمد',
-  nameEn: 'Nafas Zist Pharmed',
-  tagline: 'مراقب شما، در هر نفس',
-  claim: 'نوآوری، کیفیت و مسئولیت‌پذیری؛ در مسیر سلامت جامعه.',
-  phone: '۰۲۱ ۹۲۰۰ ۱۵۲۰',
-  phoneHref: 'tel:+982192001520',
-  email: 'info@nafaspharmed.com',
-  emailHref: 'mailto:info@nafaspharmed.com',
-  instagram: 'https://www.instagram.com/nafaspharmed/',
-  linkedin: 'https://www.linkedin.com/company/nafas-zist-pharmed/',
-  bale: 'https://ble.ir/nafaspharmedproductbot',
-  patientPortal: 'https://patient.nafaspharmed.com/',
-  jobs: 'https://jobvision.ir/companies/48055/%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%AF%D8%A7%D8%B1%D9%88%D8%B3%D8%A7%D8%B2%DB%8C-%D9%86%D9%81%D8%B3-%D8%B2%DB%8C%D8%B3%D8%AA-%D9%81%D8%A7%D8%B1%D9%85%D8%AF',
-  mapHq: 'https://maps.app.goo.gl/chHHFg4ARzEyPCB9A',
-  mapFactory: 'https://maps.app.goo.gl/5WxBr6aSd2mj8UZM8',
-  hq: 'تهران، بلوار پژوهش، پژوهشگاه ملی و مهندسی ژنتیک، ساختمان بیوتک سنتر، واحد ۱۰۱',
-  factory: 'صفادشت، بلوار مطهری شمالی (پدم)، کوچه دوم شرقی، پلاک ۴، مجموعه پیشتاز',
-  /** Where forms POST to (added in redesign). Empty = forms show the direct contact details instead. */
-  formEndpoint: '',
-  languages: [
-    { code: 'fa', label: 'فارسی', href: '#', active: true },
-    { code: 'en', label: 'EN', href: 'https://en.nafaspharmed.com/' },
-    { code: 'ru', label: 'RU', href: 'https://ru.nafaspharmed.com/' },
-    { code: 'ar', label: 'AR', href: 'https://ar.nafaspharmed.com/' },
-  ],
-};
-
-export type ProductCategory = 'تنفسی' | 'بانوان' | 'گوارشی' | 'تجهیزات پزشکی';
-
-export type Product = {
-  slug: string;
+export interface SiteContent {
   name: string;
-  nameSpaced: string;
-  /** Latin brand name (added in redesign, derived from slug / catalog file names; verify). */
-  latinName?: string;
-  /** Latin generic / active ingredient (added in redesign, translated from the Persian meta; verify). */
-  genericLatin?: string;
-  subtitle: string;
-  category: ProductCategory;
-  image: string;
-  summary: string;
-  meta: { label: string; value: string }[];
-  sections: { title: string; body?: string; items?: string[] }[];
-  catalogs?: { label: string; href: string }[];
+  nameEn: string;
+  tagline: string;
+  claim: string;
+  phone: string;
+  phoneHref: string;
+  email: string;
+  emailHref: string;
+  instagram: string;
+  linkedin: string;
+  bale: string;
+  patientPortal: string;
+  jobs: string;
+  mapHq: string;
+  mapFactory: string;
+  hq: string;
+  factory: string;
+  instagramLabel: string;
+  linkedinLabel: string;
+  baleLabel: string;
+  formEndpoint: string;
+}
+
+/** Locale site metadata; identical structure for every locale. */
+export const site = (locale: Locale): SiteContent => content<SiteContent>(locale, 'site');
+
+export type { Locale, Product };
+export const products = (locale: Locale) => content<Product[]>(locale, 'products');
+
+export type CategoryKey = Product['categoryKey'];
+
+/** Category groups in fixed display order; empty groups are dropped. */
+export const productCategories = (locale: Locale) => {
+  const list = products(locale);
+  const keys: CategoryKey[] = ['respiratory', 'women', 'gi', 'devices'];
+  return keys
+    .map((key) => ({ key, items: list.filter((p) => p.categoryKey === key) }))
+    .filter((group) => group.items.length > 0);
 };
 
-export const products: Product[] = [
-  {
-    slug: 'tio-toriva',
-    name: 'تیوتوریوا',
-    nameSpaced: 'تیــوتــوریوا',
-    latinName: 'Tiotoriva',
-    genericLatin: 'Tiotropium bromide',
-    subtitle: 'کپسول استنشاقی DPI تیوتروپیوم ۱۸ میکروگرم',
-    category: 'تنفسی',
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/TiotorivaSq.webp',
-    summary:
-      'داروی طلایی و هدف اول درمان COPD؛ نخستین محصول استنشاقی پودری تولید انبوه در ایران با دانش فنی بومی.',
-    meta: [
-      { label: 'نام ژنریک', value: 'تیوتروپیوم بروماید' },
-      { label: 'گروه دارویی', value: 'آنتی‌کولینرژیک، آنتی‌موسکارینیک، ضداسپاسم' },
-      { label: 'طبقه درمانی', value: 'ضدآسم و گشادکننده برونش' },
-      { label: 'شکل فرآورده', value: 'کپسول استنشاقی DPI حاوی ۱۸ میکروگرم تیوتروپیوم' },
-    ],
-    sections: [
-      {
-        title: 'COPD بیماری مزمن انسدادی ریه',
-        body:
-          'COPD گروهی از بیماری‌های پیش‌رونده دستگاه تنفسی است که شایع‌ترین علت مرگ و معلولیت ناشی از بیماری‌های ریوی و چهارمین بیماری تهدیدکننده حیات در جهان محسوب می‌شود. دشواری تنفس، سرفه‌های منقطع، تنگی نفس، خس‌خس سینه و افزایش ترشح خلط از علائم شایع‌اند. قرار گرفتن طولانی در معرض دود سیگار و آلودگی هوا می‌تواند این بیماری را ایجاد یا تشدید کند.',
-      },
-      {
-        title: 'مکانیسم اثر',
-        body:
-          'تیوتروپیوم یک عامل ضد موسکارینیک با اثر بلندمدت (LAMA) است که با مهار رسپتورهای M3 عضلات صاف، موجب گشادی برونش‌ها می‌شود.',
-      },
-      {
-        title: 'ویژگی‌های خاص تیوتوریوا',
-        items: [
-          'داروی طلایی و هدف اول درمان COPD در مقایسه با دیگر داروهای این دسته',
-          'سیلیکاژل در در قوطی، از نفوذ رطوبت به کپسول‌ها جلوگیری می‌کند',
-          'پوکه کپسول مقاوم به رطوبت؛ قابل استفاده در مناطق شرجی و مرطوب',
-          'کمترین حجم مواد جانبی در فرمولاسیون در مقایسه با نمونه برند',
-        ],
-      },
-      {
-        title: 'دوز و نحوه مصرف',
-        body:
-          'تنها برای استنشاق دهانی. محتوای یک کپسول (۱۸ میکروگرم) یک‌بار در روز، در یک زمان مشخص، به کمک دستگاه کپسولایزر مصرف شود.',
-      },
-      {
-        title: 'موارد منع مصرف',
-        items: [
-          'حساسیت به آتروپین و مشتقات آن، ایپراتروپیوم یا هر یک از اجزای فرمولاسیون',
-          'قبل از رانندگی و کار با ماشین‌آلات از هوشیاری خود مطمئن شوید (احتمال تاری دید)',
-          'مصرف در کودکان زیر شش سال توصیه نمی‌شود',
-        ],
-      },
-      { title: 'تداخلات دارویی', body: 'با آنتی‌کولینرژیک‌های دیگر مانند آتروپین و ایپراتروپیوم.' },
-      {
-        title: 'عوارض جانبی',
-        body: 'خشکی دهان، یبوست یا سرگیجه ممکن است رخ دهد. در صورت تداوم یا تشدید، به پزشک اطلاع دهید.',
-      },
-      {
-        title: 'بارداری و شیردهی',
-        body: 'در بارداری گروه C. اطلاعات محدودی درباره ترشح در شیر وجود دارد؛ در شیردهی با احتیاط مصرف شود.',
-      },
-      { title: 'شرایط نگهداری', body: 'دمای اتاق، دور از نور و رطوبت.' },
-      { title: 'محتویات بسته‌بندی', body: 'هر بطری حاوی ۳۰ عدد کپسول استنشاقی تیوتروپیوم بروماید.' },
-    ],
-    catalogs: [
-      { label: 'کاتالوگ انگلیسی', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Tiotoriva_EN_.pdf' },
-      { label: 'کاتالوگ فارسی', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/tiotoriva_fa.pdf' },
-      { label: 'آموزش نحوه استفاده', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Capsulizer_Use-1.mp4' },
-    ],
-  },
-  {
-    slug: 'coldanese-plus',
-    name: 'کلدانیز پلاس',
-    nameSpaced: 'کلدانیزپلاس',
-    latinName: 'Coldanese Plus',
-    genericLatin: 'Carrageenan + Xylitol',
-    subtitle: 'اسپری بینی کاراگینان و زایلیتول',
-    category: 'تنفسی',
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/Coldanesep.webp',
-    summary:
-      'اسپری بینی با بیش از ۹۰٪ اثربخشی در برابر ویروس‌های سرماخوردگی و آنفولانزا؛ مرطوب‌کننده مجاری تنفسی و مناسب تمامی سنین.',
-    meta: [
-      { label: 'گروه دارویی', value: 'داروهای گیاهی' },
-      {
-        label: 'شکل فرآورده',
-        value: 'اسپری بینی حاوی ۱٫۲ میلی‌گرم کاراگینان و ۵۰ میلی‌گرم زایلیتول در هر میلی‌لیتر',
-      },
-    ],
-    sections: [
-      {
-        title: 'چرا کلدانیز پلاس؟',
-        body:
-          'کلدانیز پلاس برای مرطوب کردن مجاری تنفسی و پیشگیری و درمان عفونت‌های ویروسی استفاده می‌شود. این اسپری بیش از ۹۰ درصد ویروس‌های عامل سرماخوردگی و آنفولانزا را از بین می‌برد و طول دوره سرماخوردگی را کاهش می‌دهد. فرمولاسیون آن غشای محافظ فیزیکی روی مخاط بینی ایجاد می‌کند.',
-      },
-      {
-        title: 'ترکیبات',
-        body:
-          'حاوی کاراگینان (ترکیب طبیعی مشتق از جلبک دریایی قرمز) و زایلیتول. یوتا-کاراگینان فعالیت ضد ویروسی در برابر سرماخوردگی، آنفلوآنزا، راینوویروس، هرپس سیمپلکس و کروناویروس دارد.',
-      },
-      {
-        title: 'ویژگی‌ها و کاربردها',
-        items: [
-          'ایجاد و حفظ رطوبت مخاط بینی',
-          'از بین بردن ویروس‌های بیماری‌زای تنفسی مانند آنفلوآنزا، سرماخوردگی و کرونا',
-          'تسکین علائم سرماخوردگی (آبریزش و گرفتگی بینی)',
-          'کاهش طول دوره سرماخوردگی',
-          'بهبود کیفیت تنفس و افزایش جریان هوای تنفسی',
-          'از بین بردن مواد آلرژی‌زا و آلاینده‌های مخاط بینی',
-          'رقیق و نرم کردن ترشحات بینی',
-          'برطرف کردن خشکی مخاط بینی',
-          'کاهش تورم بینی',
-          'قابل استفاده در تمامی سنین',
-        ],
-      },
-      {
-        title: 'مصرف در کودکان',
-        body:
-          'کلدانیز پلاس پاکسازی و مراقبت از بینی در رینیت، خشکی یا سوزش مخاطی را بر عهده دارد. با چند اسپری روزانه، بینی مسدود شده تمیز و شست‌وشو می‌شود. برای هر گروه سنی به‌خصوص کودکان بالای یک سال مناسب است.',
-      },
-      {
-        title: 'دستور و نحوه مصرف',
-        body:
-          'برای مرطوب‌کردن و پیشگیری: روزانه سه بار، هربار یک پاف در هر حفره بینی. در شروع علائم می‌توان دفعات را افزایش داد. بطری را عمودی نگه دارید. برای نوزادان، سر را ثابت و نازل را با احتیاط وارد کنید.',
-      },
-      {
-        title: 'هشدارها',
-        body:
-          'مصرف طولانی‌مدت بی‌خطر است. برای افراد بالای یک سال. هر بطری فقط توسط یک نفر استفاده شود.',
-      },
-      { title: 'تداخلات دارویی', body: 'تداخل دارویی خاصی گزارش نشده است.' },
-      { title: 'بارداری و شیردهی', body: 'در دوران بارداری و شیردهی ایمن بوده و قابل استفاده است.' },
-      {
-        title: 'بسته‌بندی',
-        body: 'هر بطری ۲۰ میلی‌لیتر محلول شفاف و بی‌رنگ (معادل ۲۰۰ پاف).',
-      },
-      {
-        title: 'شرایط نگهداری',
-        body: 'دمای کمتر از ۳۰ درجه، دور از نور و یخ‌زدگی. پس از هر بار استفاده نازل را تمیز کنید.',
-      },
-    ],
-    catalogs: [
-      { label: 'کاتالوگ انگلیسی', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Coldanese_EN_G.pdf' },
-      { label: 'کاتالوگ فارسی', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Coldanese_FA_.pdf' },
-    ],
-  },
-  {
-    slug: 'folinozit',
-    name: 'فولینوزیت',
-    nameSpaced: 'فــولینــوزیت',
-    latinName: 'Folinozit',
-    genericLatin: 'Myo-inositol + Folic acid',
-    subtitle: 'پودر خوراکی میواینوزیتول و اسید فولیک',
-    category: 'بانوان',
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/foli.webp',
-    summary:
-      'مکمل مؤثر در بهبود سندرم تخمدان پلی‌کیستیک، مقاومت به انسولین و دیابت نوع ۲؛ تأمین‌کننده میواینوزیتول و فولیک اسید.',
-    meta: [
-      { label: 'گروه دارویی', value: 'عوامل مغذی و ویتامین‌ها' },
-      {
-        label: 'شکل فرآورده',
-        value: 'ساشه ۲ گرم (۲۰۰۰ میلی‌گرم میواینوزیتول و ۰٫۲ میلی‌گرم فولیک اسید)',
-      },
-    ],
-    sections: [
-      {
-        title: 'سندرم تخمدان پلی‌کیستیک (PCOS)',
-        body:
-          'PCOS بیماری شایعی است که بر عملکرد تخمدان زنان تأثیر می‌گذارد و در ۵ تا ۱۰ درصد زنان دیده می‌شود. نامنظمی قاعدگی، مشکل باروری، هیرسوتیسم، آکنه و افزایش وزن از علائم شایع‌اند.',
-      },
-      {
-        title: 'ترکیبات ساشه فولینوزیت',
-        body:
-          'میواینوزیتول ماده‌ای طبیعی در هر سلول زنده است که برای عملکرد صحیح انسولین ضروری است. بسیاری از زنان مبتلا به PCOS کمبود ژنتیکی میواینوزیتول دارند. اسید فولیک نیز بروز نقص لوله عصبی نوزاد را کاهش می‌دهد.',
-      },
-      {
-        title: 'موارد مصرف',
-        body:
-          'تأمین میواینوزیتول و فولیک اسید. مکمل غذایی در درمان PCOS، مقاومت به انسولین (پیش‌دیابت) و دیابت نوع ۲. داروی کمکی در کنترل سندرم هایپراستیمولیشن.',
-      },
-      {
-        title: 'دوز و نحوه مصرف',
-        body: 'روزی دو بار، هربار یک ساشه در یک لیوان آب (حدود ۱۰۰ میلی‌لیتر) حل شود؛ با معده خالی، ۳۰ دقیقه قبل از وعده غذایی.',
-      },
-      {
-        title: 'در صورت فراموشی دوز',
-        body:
-          'مصرف دو ساشه هم‌زمان ضرری ندارد، اما بهتر است با فاصله حدود ۱۲ ساعت مصرف شود. دوزهای بزرگ‌تر جبران‌کننده دوزهای قبلی نیستند.',
-      },
-      {
-        title: 'موارد منع مصرف',
-        body:
-          'در صورت حساسیت به محتویات. این محصول مکمل غذایی است و برای تشخیص، پیشگیری یا درمان نیست.',
-      },
-      {
-        title: 'تداخلات دارویی',
-        body: 'مدرکی دال بر تداخل منفی وجود ندارد؛ با این حال با پزشک یا داروساز مشورت کنید.',
-      },
-      {
-        title: 'عوارض جانبی',
-        body: 'با دوزهای ۱۲ گرم در روز یا بیشتر: تهوع، نفخ، مشکل خواب، سردرد، سرگیجه و خستگی.',
-      },
-      { title: 'بارداری و شیردهی', body: 'در صورت صلاحدید پزشک مصرف شود.' },
-      { title: 'شرایط نگهداری', body: 'جای خشک و خنک، دور از تابش مستقیم خورشید.' },
-      { title: 'محتویات بسته‌بندی', body: 'هر جعبه شامل ۳۰ عدد ساشه.' },
-    ],
-    catalogs: [
-      { label: 'بروشور انگلیسی', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Folinozit_En.pdf' },
-      { label: 'بروشور فارسی', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Folinozit_Fa.pdf' },
-    ],
-  },
-  {
-    slug: 'meglozek',
-    name: 'مگلوزک',
-    nameSpaced: 'مگلــــوزک',
-    latinName: 'Meglozek',
-    genericLatin: 'Esomeprazole',
-    subtitle: 'گرانول انتریک کوتد اس امپرازول ۱۰',
-    category: 'گوارشی',
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/meglozeksq.webp',
-    summary:
-      'مهارکننده پمپ پروتون برای تهیه سوسپانسیون خوراکی؛ مناسب رفلاکس معده و به‌ویژه نوزادان و کودکان.',
-    meta: [
-      { label: 'نام ژنریک', value: 'اس امپرازول' },
-      { label: 'گروه دارویی', value: 'مهار کننده پمپ پروتون' },
-      { label: 'طبقه درمانی', value: 'داروهای گوارشی مهار کننده ترشح اسید معده و ضد زخم معده' },
-      {
-        label: 'شکل فرآورده',
-        value: 'ساشه ۱ گرم حاوی گرانول‌های انتریک کوتد اس امپرازول ۱۰ میلی‌گرمی',
-      },
-    ],
-    sections: [
-      {
-        title: 'رفلاکس معده',
-        body:
-          'برگشت اسید معده از معده به مری (GERD) را رفلاکس معده می‌گویند. این فرآیند می‌تواند به بافت سطحی مری آسیب بزند.',
-      },
-      {
-        title: 'رفلاکس در نوزادان',
-        body:
-          'در نوزادان زیر ۶ ماه، حلقه ماهیچه‌ای میان مری و معده هنوز کامل نشده است. حدود نیمی از کودکان تا یک‌سالگی رفلاکس را تجربه می‌کنند.',
-      },
-      {
-        title: 'دوز و نحوه مصرف',
-        body:
-          'محتویات ساشه را در ۵ میلی‌لیتر آب بریزید و هم بزنید. بعد از ۲ تا ۳ دقیقه غلیظ می‌شود؛ مجدداً هم بزنید و حداکثر طی ۳۰ دقیقه میل کنید. دارو را خشک مصرف نکنید، گرانول‌ها را نجوید و ترجیحاً یک ساعت قبل از غذا مصرف شود.',
-      },
-      {
-        title: 'مکانیسم اثر',
-        body: 'مهارکننده پمپ پروتون است و با مهار ترشح اسید معده، از بازگشت آن به مری جلوگیری می‌کند.',
-      },
-      {
-        title: 'ویژگی خاص مگلوزک',
-        body:
-          'با کمترین مواد جانبی فرموله شده و وزن نهایی یک گرم است؛ بنابراین گرانول‌ها به‌خوبی در آب پراکنده شده و دوز کامل به بیمار می‌رسد.',
-      },
-      {
-        title: 'موارد منع مصرف',
-        body:
-          'در صورت حساسیت به اس امپرازول یا مشابه‌ها (لانسوپرازول، امپرازول، پنتوپرازول، رابپرازول). در پوکی استخوان شدید یا بیماری‌های مزمن کبد و کلیه، با پزشک مشورت کنید.',
-      },
-      {
-        title: 'تداخلات دارویی',
-        body: 'مانند تداخلات اس امپرازول.',
-      },
-      {
-        title: 'عوارض جانبی',
-        body:
-          'سردرد، اسهال، تهوع، نفخ، درد شکم، خشکی دهان و یبوست (بزرگسالان)، خواب‌آلودگی (کودکان) و تنفس سریع (نوزادان).',
-      },
-      {
-        title: 'موارد احتیاط',
-        body:
-          'سوزش سر دل گاه با نشانه‌های حمله قلبی اشتباه گرفته می‌شود. در درد قفسه سینه، تهوع یا درد منتشر به بازو، به پزشک مراجعه کنید.',
-      },
-      { title: 'بارداری و شیردهی', body: 'گروه B؛ احتمالاً در شیر ترشح می‌شود.' },
-      { title: 'شرایط نگهداری', body: 'دور از نور و رطوبت، دمای کمتر از ۳۰ درجه، دور از دسترس کودکان.' },
-    ],
-    catalogs: [
-      { label: 'بروشور انگلیسی', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Megzolek_En.pdf' },
-      { label: 'بروشور فارسی', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Meglozek_Fa.pdf' },
-    ],
-  },
-  {
-    slug: 'capsulizer',
-    name: 'کپسولایزر',
-    nameSpaced: 'کپـسـولایزر',
-    latinName: 'Capsulizer',
-    genericLatin: 'Dry powder inhaler device',
-    subtitle: 'دستگاه استنشاق پودر خشک (DPI)',
-    category: 'تجهیزات پزشکی',
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/capsulizer1.webp',
-    summary:
-      'طراحی ارگونومیک و حمل آسان؛ دارورسانی یکنواخت به عمق ریه‌ها. مناسب به‌ویژه سالمندان و بیماران COPD.',
-    meta: [
-      { label: 'نوع', value: 'دستگاه استنشاق پودر (DPI)' },
-      { label: 'سازگار با', value: 'کپسول‌های استنشاقی تیوتوریوا' },
-    ],
-    sections: [
-      {
-        title: 'آسان، مطمئن و دقیق',
-        body:
-          'کپسولایزر با طراحی ارگونومیک و قابلیت حمل آسان، تجربه‌ای نوین در مصرف کپسول‌های استنشاقی فراهم می‌کند. این دستگاه با دارورسانی یکنواخت به عمق ریه‌ها، اثربخشی بیشتر دارو را تضمین می‌کند.',
-      },
-      {
-        title: 'چرا کپسولایزر؟',
-        items: [
-          'قابلیت حمل آسان: ساختار سبک و جمع‌وجور',
-          'اطمینان از مصرف دارو: طراحی شفاف و قابل مشاهده',
-          'بدون دردسر شست‌وشو',
-          'دارورسانی یکنواخت به عمق ریه',
-          'مقاوم و بادوام',
-          'مناسب برای همه، حتی سالمندان',
-          'تأیید شده و مطمئن با تأییدیه‌های بین‌المللی',
-        ],
-      },
-      {
-        title: 'ترکیبی بی‌نظیر برای تنفس بهتر',
-        body:
-          'استفاده هم‌زمان از کپسولایزر و تیوتوریوا، حداکثر اثربخشی و راحتی را در درمان COPD به ارمغان می‌آورد.',
-      },
-    ],
-    catalogs: [
-      { label: 'آموزش نحوه استفاده', href: 'https://nafaspharmed.com/wp-content/uploads/2025/11/Capsulizer_Use-1.mp4' },
-    ],
-  },
+/** Primary navigation. Labels are dictionary keys; hrefs are locale-prefixed by the caller. */
+export const nav = (_locale: Locale) => [
+  { href: '/', key: 'home' as const, short: 'homeShort' as const },
+  { href: '/#products', key: 'products' as const, short: 'products' as const, hasMenu: true },
+  { href: '/about', key: 'about' as const, short: 'about' as const },
+  { href: '/contact', key: 'contact' as const, short: 'contact' as const },
 ];
 
-export const productCategories: {
-  key: ProductCategory;
-  items: { slug: string; name: string }[];
-}[] = [
-  {
-    key: 'تنفسی',
-    items: [
-      { slug: 'tio-toriva', name: 'تیوتوریوا' },
-      { slug: 'coldanese-plus', name: 'کلدانیز پلاس' },
-    ],
-  },
-  { key: 'بانوان', items: [{ slug: 'folinozit', name: 'فولینوزیت' }] },
-  { key: 'گوارشی', items: [{ slug: 'meglozek', name: 'مگلوزک' }] },
-  { key: 'تجهیزات پزشکی', items: [{ slug: 'capsulizer', name: 'کپسولایزر' }] },
-];
-
-export const news = [
-  {
-    title: 'تجلیل از پزشکان برجسته به مناسبت روز پزشک',
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2025/09/MYXJ_20250826173551980_fast.jpg',
-    href: 'https://nafaspharmed.com/up/2025/09/08/',
-    date: '۱۴۰۴',
-  },
-  {
-    title: 'نفس زیست فارمد در روز فناوری و دانش‌بنیان',
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2025/01/20250113_104838.jpg',
-    href: 'https://nafaspharmed.com/up/2025/01/18/',
-    date: '۱۴۰۳',
-  },
-  {
-    title: 'بازدید دبیر انجمن عفونی کودکان از نفس زیست فارمد',
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2024/08/1078927105_112219458.jpg',
-    href: 'https://nafaspharmed.com/up/2024/08/28/',
-    date: '۱۴۰۳',
-  },
-];
-
-/** Primary navigation, shared by the header, the mobile bar and the footer. */
-export const nav = [
-  { href: '/', label: 'صفحه نخست', short: 'خانه' },
-  { href: '/#products', label: 'محصولات', short: 'محصولات', hasMenu: true },
-  { href: '/about', label: 'درباره نفس', short: 'درباره' },
-  { href: '/contact', label: 'تماس با نفس', short: 'تماس' },
-];
+export interface NewsItem {
+  title: string;
+  image: string;
+  href: string;
+  date: string;
+}
+export const news = (locale: Locale) => content<NewsItem[]>(locale, 'news');

@@ -1,141 +1,16 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Bidi from '../../components/Bidi.astro';
-import Icon from '../../components/Icon.astro';
-import ProductIndex from '../../components/ProductIndex.astro';
+import ProductPage from '../../templates/Product.astro';
 import { products, type Product } from '../../data/site';
 
 export function getStaticPaths() {
-  return products.map((product) => ({
+  return products('fa').map((product) => ({
     params: { slug: product.slug },
     props: { product },
   }));
 }
 
-interface Props {
-  product: Product;
-}
-
-const { product } = Astro.props;
-const related = products.filter((p) => p.slug !== product.slug).slice(0, 3).map((p) => p.slug);
-const docKind = (href: string) => (href.toLowerCase().endsWith('.mp4') ? 'video' : 'pdf');
+const locale = 'fa' as const;
+const { product } = Astro.props as { product: Product };
 ---
 
-<Base title={product.name} description={`${product.name} — ${product.subtitle}`}>
-  <section class="product-hero" aria-labelledby="product-title">
-    <div class="container stack" style="--stack-gap: var(--sp-6)">
-      <nav aria-label="مسیر صفحه">
-        <ol class="crumbs">
-          <li class="crumbs__item"><a href="/">صفحه نخست</a></li>
-          <li class="crumbs__item"><a href="/#products">محصولات</a></li>
-          <li class="crumbs__item"><span aria-current="page">{product.name}</span></li>
-        </ol>
-      </nav>
-
-      <div class="product-hero__grid">
-        <div class="product-hero__copy">
-          <p class="product-hero__cat">{product.category}</p>
-          <h1 class="product-hero__title" id="product-title">
-            {product.name}
-            {product.latinName && (
-              <bdi class="product-hero__latin" lang="en" dir="ltr">
-                {product.latinName}
-              </bdi>
-            )}
-          </h1>
-          <p class="product-hero__subtitle"><Bidi text={product.subtitle} /></p>
-          <p class="product-hero__summary"><Bidi text={product.summary} /></p>
-
-          <dl class="spec">
-            {product.meta.map((m) => (
-              <div class="spec__row">
-                <dt class="spec__term">{m.label}</dt>
-                <dd class="spec__value"><Bidi text={m.value} /></dd>
-              </div>
-            ))}
-          </dl>
-
-          {product.catalogs && (
-            <ul class="docs" aria-label="کاتالوگ و آموزش">
-              {product.catalogs.map((c) => (
-                <li>
-                  <a class="link" href={c.href} target="_blank" rel="noopener noreferrer">
-                    <Icon name={docKind(c.href) === 'video' ? 'play' : 'doc'} />
-                    {c.label}
-                    <span class="sr-only">
-                      {docKind(c.href) === 'video' ? '(ویدئو، در پنجره تازه)' : '(فایل PDF، در پنجره تازه)'}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <figure class="product-visual">
-          <img src={product.image} alt={`بسته‌بندی ${product.name}`} width="800" height="800" decoding="async" />
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-label="اطلاعات محصول">
-    <div class="container reading">
-      <nav class="toc" aria-labelledby="toc-title">
-        <p class="toc__title" id="toc-title">فهرست مطالب</p>
-        <ul class="toc__list">
-          {product.sections.map((s, i) => (
-            <li>
-              <a class="toc__link" href={`#s${i}`} data-toc-link>
-                <Bidi text={s.title} />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div class="stack" style="--stack-gap: var(--sp-6)">
-        <div class="blocks">
-          {product.sections.map((s, i) => (
-            <section class="block" id={`s${i}`} aria-labelledby={`s${i}-title`} data-toc-section>
-              <h2 class="block__title" id={`s${i}-title`}>
-                <Bidi text={s.title} />
-              </h2>
-              {s.body && (
-                <p>
-                  <Bidi text={s.body} />
-                </p>
-              )}
-              {s.items && (
-                <ul class="bullets">
-                  {s.items.map((item) => (
-                    <li class="bullets__item">
-                      <Bidi text={item} />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-          ))}
-        </div>
-        <p class="notice">
-          اطلاعات این صفحه برای آشنایی است و جایگزین تجویز و راهنمایی پزشک یا داروساز نیست.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--air" aria-labelledby="related-title">
-    <div class="container section-body">
-      <div class="heading">
-        <h2 class="heading__title" id="related-title">سایر محصولات</h2>
-      </div>
-      <ProductIndex only={related} />
-    </div>
-  </section>
-</Base>
-
-<script>
-  import { initToc } from '../../scripts/toc';
-  initToc();
-</script>
+<ProductPage {locale} {product} />

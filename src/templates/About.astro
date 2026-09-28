@@ -1,0 +1,171 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Bidi from '../components/Bidi.astro';
+import { content, type Locale } from '../content/index';
+import { digits, makeT } from '../i18n/index';
+import { site } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+const about = content<{
+  metaTitle: string;
+  metaDescription: string;
+  story: string[];
+  missions: { title: string; body: string }[];
+  values: { title: string; body: string }[];
+  timeline: { year: string; title: string; body: string }[];
+}>(locale, 'about');
+const siteData = site(locale);
+const gallery = [
+  'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas5.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas6.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas7.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas9.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2025/01/20250113_104838.jpg',
+  'https://nafaspharmed.com/up/wp-content/uploads/2025/10/IMG_0749.jpg',
+];
+---
+
+<Base locale={locale} title={about.metaTitle} description={about.metaDescription} path="/about">
+  <PageIntro title={t('aboutPageTitle')} lead={t('aboutPageLead')} />
+
+  <section class="section" id="nafas-story" aria-labelledby={`story-${locale}`}>
+    <div class="container split">
+      <div class="stack" style="--stack-gap: var(--sp-5)">
+        <h2 class="heading__title" id={`story-${locale}`}>{t('aboutStoryTitle')}</h2>
+        <div class="prose">
+          {about.story.map((p) => <p><Bidi text={p} /></p>)}
+        </div>
+      </div>
+      <div class="stack" style="--stack-gap: var(--sp-5)">
+        <figure class="media media--wide">
+          <img
+            src="https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas6.jpg"
+            alt={t('aboutCompanyImgAlt')}
+            width="1200"
+            height="800"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <dl class="facts">
+          <div class="facts__item">
+            <dt class="facts__term">{t('factFounded')}</dt>
+            <dd class="facts__value">{digits('1398', locale)}</dd>
+          </div>
+          <div class="facts__item">
+            <dt class="facts__term">{t('factKnowledgeType')}</dt>
+            <dd class="facts__value">{t('factTypeOne')}</dd>
+          </div>
+          <div class="facts__item">
+            <dt class="facts__term">{t('factSpecialty')}</dt>
+            <dd class="facts__value"><bdi lang="en">DPI</bdi></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--air" aria-labelledby={`timeline-${locale}`}>
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id={`timeline-${locale}`}>{t('aboutTimelineTitle')}</h2>
+        <p class="heading__lead">{t('aboutTimelineLead')}</p>
+      </div>
+      <ol class="timeline">
+        {about.timeline.map((step) => (
+          <li class="timeline__item">
+            <span class="timeline__marker" aria-hidden="true"></span>
+            <span class="timeline__year">{step.year}</span>
+            <div class="stack" style="--stack-gap: var(--sp-1)">
+              <h3 class="timeline__title">{step.title}</h3>
+              <p class="timeline__body"><Bidi text={step.body} /></p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby={`mission-${locale}`}>
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id={`mission-${locale}`}>{t('aboutMissionTitle')}</h2>
+        <p class="heading__lead">{t('aboutMissionLead')}</p>
+      </div>
+      <dl class="defs defs--two">
+        {about.missions.map((m) => (
+          <div class="defs__row">
+            <dt class="defs__term">{m.title}</dt>
+            <dd class="defs__desc"><Bidi text={m.body} /></dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby={`values-${locale}`}>
+    <div class="container split">
+      <div class="heading">
+        <h2 class="heading__title" id={`values-${locale}`}>{t('aboutValuesTitle')}</h2>
+        <p class="heading__lead">{t('aboutValuesLead')}</p>
+      </div>
+      <dl class="defs">
+        {about.values.map((v) => (
+          <div class="defs__row">
+            <dt class="defs__term">{v.title}</dt>
+            <dd class="defs__desc"><Bidi text={v.body} /></dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--flush-top" aria-labelledby={`gallery-${locale}`}>
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id={`gallery-${locale}`}>{t('aboutGalleryTitle')}</h2>
+      </div>
+      <ul class="gallery">
+        {gallery.map((src, i) => (
+          <li class="gallery__item">
+            <img
+              src={src}
+              alt={t('galleryImgAlt')
+                .replace('{n}', digits(String(i + 1), locale))
+                .replace('{total}', digits(String(gallery.length), locale))}
+              width="800"
+              height="600"
+              loading="lazy"
+              decoding="async"
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--air" aria-labelledby={`jobs-${locale}`}>
+    <div class="container split split--center">
+      <div class="stack" style="--stack-gap: var(--sp-5)">
+        <h2 class="heading__title" id={`jobs-${locale}`}>{t('aboutJobsTitle')}</h2>
+        <p class="prose prose--muted"><Bidi text={t('aboutJobsLead')} /></p>
+        <div>
+          <a class="btn btn--primary" href={siteData.jobs} target="_blank" rel="noopener noreferrer">
+            {t('aboutJobsCta')}
+            <Icon name="external" />
+          </a>
+        </div>
+      </div>
+      <blockquote class="quote">
+        <p><Bidi text={t('aboutQuote')} /></p>
+      </blockquote>
+    </div>
+  </section>
+</Base>

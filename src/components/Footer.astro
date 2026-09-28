@@ -1,67 +1,78 @@
 ---
 import { nav, products, site } from '../data/site';
+import type { Locale } from '../i18n/index';
+import { localeMeta, makeT, withLocale } from '../i18n/index';
 import Icon from './Icon.astro';
 import Langs from './Langs.astro';
 import Logo from './Logo.astro';
 
-const pages = nav.filter((item) => !item.hasMenu);
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+const siteData = site(locale);
+const pages = nav(locale).filter((item) => !item.hasMenu);
 ---
 
 <footer class="site-footer">
   <div class="container site-footer__grid">
     <div class="stack" style="--stack-gap: var(--sp-5)">
-      <a class="brand" href="/" aria-label={`${site.name}، صفحه نخست`}>
+      <a class="brand" href={withLocale('/', locale)} aria-label={`${siteData.name}، ${t('home')}`}>
         <Logo class="brand__mark" />
         <span class="brand__text">
-          <span class="brand__name">{site.name}</span>
-          <span class="brand__latin" lang="en" dir="ltr">{site.nameEn}</span>
+          <span class="brand__name">{siteData.name}</span>
+          <span class="brand__latin" lang="en" dir="ltr">{siteData.nameEn}</span>
         </span>
       </a>
       <div class="stack" style="--stack-gap: var(--sp-2)">
-        <p class="site-footer__label">{site.tagline}</p>
-        <p class="site-footer__claim">{site.claim}</p>
+        <p class="site-footer__label">{siteData.tagline}</p>
+        <p class="site-footer__claim">{siteData.claim}</p>
       </div>
-      <ul class="socials" aria-label="شبکه‌های اجتماعی">
-        <li><a class="link" href={site.instagram} target="_blank" rel="noopener noreferrer">اینستاگرام</a></li>
-        <li><a class="link" href={site.linkedin} target="_blank" rel="noopener noreferrer">لینکدین</a></li>
-        <li><a class="link" href={site.bale} target="_blank" rel="noopener noreferrer">بله</a></li>
+      <ul class="socials" aria-label={t('socialNetworks')}>
+        <li><a class="link" href={siteData.instagram} target="_blank" rel="noopener noreferrer">{siteData.instagramLabel}</a></li>
+        <li><a class="link" href={siteData.linkedin} target="_blank" rel="noopener noreferrer">{siteData.linkedinLabel}</a></li>
+        <li><a class="link" href={siteData.bale} target="_blank" rel="noopener noreferrer">{siteData.baleLabel}</a></li>
       </ul>
     </div>
 
-    <nav aria-labelledby="footer-quick">
-      <h2 class="site-footer__title" id="footer-quick">دسترسی سریع</h2>
+    <nav aria-labelledby={`footer-quick-${locale}`}>
+      <h2 class="site-footer__title" id={`footer-quick-${locale}`}>{t('quickAccess')}</h2>
       <ul class="site-footer__links">
-        {pages.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-        {products.map((p) => <li><a href={`/products/${p.slug}`}>{p.name}</a></li>)}
+        {pages.map((item) => <li><a href={withLocale(item.href, locale)}>{t(item.key)}</a></li>)}
+        {products(locale).map((p) => (
+          <li><a href={withLocale(`/products/${p.slug}`, locale)}>{p.name}</a></li>
+        ))}
       </ul>
     </nav>
 
     <div>
-      <h2 class="site-footer__title">در تماس با نفس</h2>
+      <h2 class="site-footer__title">{t('footerContactTitle')}</h2>
       <div class="site-footer__contact">
         <div class="stack" style="--stack-gap: var(--sp-1)">
-          <a class="link" href={site.phoneHref}>
+          <a class="link" href={siteData.phoneHref}>
             <Icon name="phone" />
-            <bdi dir="ltr">{site.phone}</bdi>
+            <bdi dir="ltr">{siteData.phone}</bdi>
           </a>
-          <a class="link" href={site.emailHref}>
+          <a class="link" href={siteData.emailHref}>
             <Icon name="mail" />
-            <bdi dir="ltr">{site.email}</bdi>
+            <bdi dir="ltr">{siteData.email}</bdi>
           </a>
         </div>
         <address class="site-footer__addr">
-          <span class="site-footer__label">دفتر مرکزی: </span>{site.hq}
+          <span class="site-footer__label">{t('hqLabel')}</span>{siteData.hq}
           <br />
-          <a class="link" href={site.mapHq} target="_blank" rel="noopener noreferrer">موقعیت دفتر مرکزی</a>
+          <a class="link" href={siteData.mapHq} target="_blank" rel="noopener noreferrer">{t('hqMapLink')}</a>
         </address>
         <address class="site-footer__addr">
-          <span class="site-footer__label">کارخانه: </span>{site.factory}
+          <span class="site-footer__label">{t('factoryLabel')}</span>{siteData.factory}
           <br />
-          <a class="link" href={site.mapFactory} target="_blank" rel="noopener noreferrer">موقعیت کارخانه</a>
+          <a class="link" href={siteData.mapFactory} target="_blank" rel="noopener noreferrer">{t('factoryMapLink')}</a>
         </address>
         <div>
-          <a class="btn btn--quiet" href={site.patientPortal} target="_blank" rel="noopener noreferrer">
-            ورود به پورتال بیماران
+          <a class="btn btn--quiet" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
+            {t('patientPortalLogin')}
             <Icon name="external" />
           </a>
         </div>
@@ -70,7 +81,7 @@ const pages = nav.filter((item) => !item.hasMenu);
   </div>
 
   <div class="container site-footer__bottom">
-    <p>© کلیه حقوق این سایت متعلق به شرکت دانش‌بنیان نفس زیست فارمد است.</p>
-    <Langs />
+    <p>{t('copyright')}</p>
+    <Langs current={locale} />
   </div>
 </footer>

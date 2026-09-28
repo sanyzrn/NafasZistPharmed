@@ -1,33 +1,73 @@
 /* Design tokens. Every colour, size, radius, shadow and motion value used by
-   the site is defined here; components reference tokens only. */
+   the site is defined here; components reference tokens only.
+   Dark values are declared with CSS light-dark() so one token row serves both
+   themes and a JS-off page still follows prefers-color-scheme. */
 @layer tokens {
   :root {
-    /* ── colour: derived from the logo red (#B61615) ── */
-    --c-red: #b61615;          /* Nafas Red: logo, primary action, focus */
-    --c-red-deep: #86100f;     /* Ember: hover / pressed / red text on tint */
-    --c-ink: #1b2124;          /* Graphite: primary text */
-    --c-slate: #55616a;        /* Slate: secondary text (AA on all surfaces) */
-    --c-air: #edf1f2;          /* Air: quiet surfaces, panels, footer */
-    --c-paper: #fafbfb;        /* Paper: page background */
-    --c-white: #ffffff;
+    /* ── colour: derived from the logo red (#B61615) ──
+       Light values are the Phase 1 palette. Dark values are the same cool
+       slate hue pushed down ("night air"), not a neutral grey-black. */
+    --c-red: light-dark(#b61615, #cc2b28);        /* logo red; lifted for dark surfaces */
+    --c-red-deep: light-dark(#86100f, #e4574f);   /* Ember: hover / red as text */
+    --c-red-strong: light-dark(#86100f, #b61615); /* primary button fill (AA label both themes) */
+    --c-ink: light-dark(#1b2124, #e9eef1);        /* Graphite / Mist: primary text */
+    --c-slate: light-dark(#55616a, #9faeb7);      /* Slate / Haze: secondary text */
+    --c-air: light-dark(#edf1f2, #182025);        /* Air: quiet surfaces */
+    --c-air-deep: light-dark(#e2e9eb, #1f2a30);   /* Air, one step down */
+    --c-paper: light-dark(#fafbfb, #10171b);      /* Paper: page background */
+    --c-white: light-dark(#ffffff, #232f36);      /* raised card surface */
+    --c-glow: light-dark(transparent, rgba(228, 130, 118, 0.09));
 
     /* derived, never used for text */
-    --c-line: color-mix(in srgb, var(--c-ink) 11%, transparent);
-    --c-line-strong: color-mix(in srgb, var(--c-ink) 22%, transparent);
-    --c-red-tint: color-mix(in srgb, var(--c-red) 7%, var(--c-paper));
-    --c-red-haze: color-mix(in srgb, var(--c-red) 16%, transparent);
-    --c-glass: color-mix(in srgb, var(--c-paper) 78%, transparent);
+    --c-line: light-dark(color-mix(in srgb, #1b2124 11%, transparent), rgba(233, 238, 241, 0.13));
+    --c-line-strong: light-dark(color-mix(in srgb, #1b2124 22%, transparent), rgba(233, 238, 241, 0.24));
+    --c-red-tint: light-dark(color-mix(in srgb, #b61615 7%, #fafbfb), rgba(204, 43, 40, 0.16));
+    --c-red-haze: light-dark(color-mix(in srgb, #b61615 16%, transparent), rgba(204, 43, 40, 0.3));
+    --c-glass: light-dark(color-mix(in srgb, #fafbfb 78%, transparent), rgba(16, 23, 27, 0.78));
+    --c-scrim: light-dark(color-mix(in srgb, #1b2124 28%, transparent), rgba(2, 6, 8, 0.55));
+    --c-focus: light-dark(#b61615, #e4574f);
 
-    /* ── type ── */
+    color-scheme: light dark;
+  }
+
+  /* Explicit user choice wins over the system; the head bootstrap sets
+     data-theme before first paint, so no wrong-theme flash. */
+  :root[data-color-mode='light'] { color-scheme: light; }
+  :root[data-color-mode='dark'] { color-scheme: dark; }
+
+  /* Per-locale families: Estedad (fa, unchanged), IBM Plex Sans Arabic (ar),
+     IBM Plex Sans variable latin+cyrillic (en, ru). */
+  :root,
+  :root[lang='fa'] {
     --font-sans: 'Estedad', 'Segoe UI', Tahoma, system-ui, sans-serif;
+    /* Persian body needs a larger size and taller line box than Latin */
+    --fs-base: 1.0625rem;
+    --lh-body: 1.95;
+  }
+
+  :root[lang='ar'] {
+    --font-sans: 'IBM Plex Sans Arabic', 'Estedad', Tahoma, system-ui, sans-serif;
+    /* Arabic script: slightly smaller body, no extra tracking, same air */
+    --fs-base: 1rem;
+    --lh-body: 1.9;
+  }
+
+  :root[lang='en'],
+  :root[lang='ru'] {
+    --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+    /* Latin/Cyrillic: standard body size, tighter line box than Persian */
+    --fs-base: 1rem;
+    --lh-body: 1.75;
+  }
+
+  :root {
+    /* ── type ── */
     --fs-xs: 0.8125rem;   /* 13 */
     --fs-s: 0.9375rem;    /* 15 */
-    --fs-base: 1.0625rem; /* 17 — Persian body needs more size than Latin */
     --fs-m: 1.3125rem;    /* 21 */
     --fs-l: 1.625rem;     /* 26 */
     --fs-xl: clamp(1.75rem, 1.2rem + 2.2vw, 2.5rem);
     --fs-hero: clamp(2.5rem, 1.1rem + 6.4vw, 6rem);
-    --lh-body: 1.95;
     --lh-heading: 1.5;
     --lh-hero: 1.32;
     --fw-hero: 250;
@@ -57,10 +97,10 @@
     --r-l: 32px;      /* imagery, large surfaces */
     --r-pill: 999px;  /* buttons, chips */
 
-    /* ── elevation: only for layers that float over content ── */
-    --shadow-float: 0 1px 2px color-mix(in srgb, var(--c-ink) 6%, transparent),
-      0 18px 48px -12px color-mix(in srgb, var(--c-ink) 18%, transparent);
-    --shadow-glow: 0 10px 30px -10px color-mix(in srgb, var(--c-red) 45%, transparent);
+    /* ── elevation: floating layers only; dark leans on borders + glow ── */
+    --shadow-float: 0 1px 2px light-dark(rgba(27, 33, 36, 0.06), rgba(0, 0, 0, 0.4)),
+      0 18px 48px -12px light-dark(rgba(27, 33, 36, 0.18), rgba(0, 0, 0, 0.55));
+    --shadow-glow: 0 10px 30px -10px light-dark(rgba(182, 22, 21, 0.45), rgba(228, 87, 79, 0.35));
     --blur-glass: blur(16px) saturate(1.15);
 
     /* ── motion: an inhale is short, an exhale is long ── */
@@ -73,5 +113,11 @@
 
     --header-h: 4.5rem;
     --bottom-bar-h: 4.25rem;
+  }
+
+  /* Russian text runs ~20–30% longer than English: keep headings and hero
+     measure readable by letting them take more room, never truncate. */
+  :root[lang='ru'] {
+    --lh-hero: 1.22;
   }
 }

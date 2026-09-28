@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" preserveAspectRatio="xMidYMid slice">
+  <!-- PLACEHOLDER banner 1 (dark, mobile crop) -->
+  <defs>
+    <radialGradient id="glow1md" cx="50%" cy="78%" r="65%">
+      <stop offset="0" stop-color="#E4574F" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#E4574F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="#10171B"/>
+  <rect width="1080" height="1350" fill="url(#glow1md)"/>
+  <g transform="translate(240 1010)" fill="none" stroke="#E4574F" stroke-linecap="round">
+    <path d="M0 0 C55 -220 150 -330 280 -330 S505 -220 560 0" stroke-width="10" opacity="0.85"/>
+    <path d="M110 0 C150 -155 220 -230 320 -230 S490 -155 530 0" stroke-width="7" opacity="0.55"/>
+    <circle cx="280" cy="-395" r="15" fill="#E4574F" stroke="none"/>
+  </g>
+  <g font-family="Tahoma, sans-serif" fill="#9FAEB7" font-size="30">
+    <text x="120" y="1180">PLACEHOLDER — mobile crop</text>
+  </g>
+</svg>

@@ -10,7 +10,6 @@
     text-size-adjust: 100%;
     scroll-behavior: smooth;
     scroll-padding-top: calc(var(--header-h) + var(--sp-4));
-    background: var(--c-paper);
   }
 
   body {
@@ -24,9 +23,18 @@
     background: var(--c-paper);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    /* Persian: never track, never italicise, never uppercase */
+    /* Persian and Arabic: never track, never italicise, never uppercase */
     letter-spacing: 0;
     font-synthesis: none;
+    /* the theme switch is visible but calm; suppressed on first paint and
+       under reduced motion via [data-theme-init] */
+    transition: background-color var(--dur-soft) var(--ease-out), color var(--dur-soft) var(--ease-out);
+  }
+
+  /* First paint: no cross-fade between the stored theme and CSS defaults. */
+  html[data-theme-init] body,
+  html[data-theme-init] body * {
+    transition: none !important;
   }
 
   h1,
@@ -111,13 +119,24 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--c-red);
+    outline: 2px solid var(--c-focus);
     outline-offset: 3px;
     border-radius: 6px;
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--c-red) 20%, transparent);
+    background: light-dark(color-mix(in srgb, var(--c-red) 20%, transparent), rgba(228, 87, 79, 0.35));
+  }
+
+  /* Form controls, scrollbars and native widgets follow the scheme. */
+  input,
+  textarea,
+  select {
+    color-scheme: inherit;
+  }
+
+  html {
+    scrollbar-color: var(--c-line-strong) transparent;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -131,6 +150,29 @@
       animation-duration: 1ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 1ms !important;
+    }
+  }
+
+  @supports not (color: light-dark(#000, #fff)) {
+    /* Fallback for very old browsers: keep the light theme, ignore stored choice. */
+    :root {
+      --c-red: #b61615;
+      --c-red-deep: #86100f;
+      --c-red-strong: #86100f;
+      --c-ink: #1b2124;
+      --c-slate: #55616a;
+      --c-air: #edf1f2;
+      --c-air-deep: #e2e9eb;
+      --c-paper: #fafbfb;
+      --c-white: #ffffff;
+      --c-glow: transparent;
+      --c-line: color-mix(in srgb, #1b2124 11%, transparent);
+      --c-line-strong: color-mix(in srgb, #1b2124 22%, transparent);
+      --c-red-tint: color-mix(in srgb, #b61615 7%, #fafbfb);
+      --c-red-haze: color-mix(in srgb, #b61615 16%, transparent);
+      --c-glass: color-mix(in srgb, #fafbfb 78%, transparent);
+      --c-scrim: color-mix(in srgb, #1b2124 28%, transparent);
+      --c-focus: #b61615;
     }
   }
 }

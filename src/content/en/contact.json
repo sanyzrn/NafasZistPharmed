@@ -1,0 +1,24 @@
+{
+  "metaTitle": "Contact Nafas",
+  "metaDescription": "Contact Nafas Zist Pharmed — phone, addresses and a message form.",
+  "intro": {
+    "title": "Contact Nafas",
+    "lead": "Contact is not just a call; it is the start of a scientific, clinical or professional collaboration."
+  },
+  "direct": {
+    "title": "We hear you",
+    "lead": "At Nafas Zist Pharmed we believe effective communication lays the foundation of lasting partnerships. Our team is ready to answer physicians, pharmacists, treatment centres, distribution companies and all our commercial partners as quickly as possible.",
+    "followUp": "For questions about products, scientific collaboration and distribution, please get in touch."
+  },
+  "places": {
+    "title": "Two addresses, one shared path",
+    "hq": "Head office",
+    "factory": "Factory"
+  },
+  "other": {
+    "socialTitle": "Other ways to connect",
+    "socialLead": "Follow Nafas news on social networks.",
+    "collabTitle": "Working with Nafas",
+    "collabLead": "To join the Nafas team, send us your résumé."
+  }
+}

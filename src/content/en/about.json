@@ -1,0 +1,29 @@
+{
+  "metaTitle": "About Nafas",
+  "metaDescription": "About Nafas Zist Pharmed, a knowledge-based company — from research to production.",
+  "story": [
+    "Nafas Zist Pharmed, a knowledge-based company, began operating in 2019 with the aim of meeting patients' needs and achieving a leading position in the pharmaceutical manufacturing industry. From the earliest days, the focus was placed on dry powder inhalation products (DPI).",
+    "After years of research and development, the company acquired pharmaceutical formulation know-how and particle aerodynamics engineering, and the manufacturing licence for its first product was issued by the Food and Drug Organization. The product Tiotoriva (tiotropium 18 micrograms) was introduced as the first mass-produced dry powder inhalation product in Iran.",
+    "Building on this achievement, the company has received “knowledge-based company, Type 1” certification from the Vice-Presidency for Science and Technology. The production of Tiotoriva not only prevents the annual outflow of more than 10 million US dollars, but has also opened export prospects to neighbouring countries."
+  ],
+  "missions": [
+    { "title": "Producing advanced medicines", "body": "Developing and manufacturing inhaled medicines and nanomedicines with advanced technologies and domestic know-how." },
+    { "title": "Innovation and scientific collaboration", "body": "Offering creative products with modern management systems and ties with domestic and international academic centres." },
+    { "title": "Improving access and quality", "body": "Raising product quality and making access easier for all groups in society." },
+    { "title": "Creating sustainable value", "body": "Generating continuous value for all stakeholders through committed and capable people." }
+  ],
+  "values": [
+    { "title": "Courage", "body": "Daring to innovate, accepting responsibility, taking intelligent risks, and learning from experience." },
+    { "title": "Teamwork", "body": "Relentless effort to improve people's lives through synergy and empathy." },
+    { "title": "Respect", "body": "Embracing the diversity and varied needs of society with a compassionate approach." },
+    { "title": "Integrity", "body": "Acting with complete honesty and transparency, adhering to the highest ethical and quality standards." }
+  ],
+  "jobsTitle": "Together for a healthy, bright future",
+  "quote": "“At Nafas we are not only looking for colleagues, but for companions in growth and transformation.”",
+  "timeline": [
+    { "year": "2019", "title": "The journey begins", "body": "With the aim of meeting patients' needs, the company focused on dry powder inhalation medicines (DPI)." },
+    { "year": "2020–2023", "title": "Research and technical know-how", "body": "Pharmaceutical formulation know-how and particle aerodynamics engineering were acquired; the manufacturing licence for the first product was issued by the Food and Drug Organization." },
+    { "year": "2023", "title": "Tiotoriva — Iran's first mass-produced DPI", "body": "Tiotropium 18 micrograms was introduced as the first mass-produced dry powder inhalation product in Iran." },
+    { "year": "Today", "title": "Knowledge-based Type 1, looking outward", "body": "“Knowledge-based Type 1” certification has been received; Tiotoriva production keeps more than 10 million US dollars in the country each year and export prospects to neighbouring countries have opened." }
+  ]
+}

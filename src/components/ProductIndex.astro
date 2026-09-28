@@ -1,39 +1,60 @@
 ---
 /**
  * The product list rendered as a formulary index: grouped by therapeutic
- * category, one row per product with Persian name, Latin name, dosage form.
+ * category, one row per product. On the home page a filter lets clinicians
+ * jump to a category without scrolling (real content, real sequence).
  */
-import { productCategories, products, type Product } from '../data/site';
+import { productCategories } from '../data/site';
+import type { Locale } from '../i18n/index';
+import { makeT, withLocale } from '../i18n/index';
 import Bidi from './Bidi.astro';
 import Icon from './Icon.astro';
 
 interface Props {
+  locale: Locale;
   /** Limit to these slugs (keeps category grouping). Defaults to all. */
   only?: string[];
   headingLevel?: 'h2' | 'h3' | 'h4';
+  /** Shows the category filter chips (home page). */
+  filter?: boolean;
 }
 
-const { only, headingLevel = 'h3' } = Astro.props;
+const { locale, only, headingLevel = 'h3', filter = false } = Astro.props;
+const t = makeT(locale);
 const Heading = headingLevel;
-const bySlug = new Map(products.map((p) => [p.slug, p] as const));
-const groups = productCategories
+const groups = productCategories(locale)
   .map((cat) => ({
-    key: cat.key,
-    items: cat.items
-      .map((item) => bySlug.get(item.slug))
-      .filter((p): p is Product => Boolean(p) && (!only || only.includes(p!.slug))),
+    ...cat,
+    items: only ? cat.items.filter((p) => only.includes(p.slug)) : cat.items,
   }))
   .filter((group) => group.items.length > 0);
+const uid = `idx-${locale}-${only ? only.join('-') : 'all'}`;
 ---
 
-<div class="index">
+<div class="index" data-index={uid}>
+  {filter && groups.length > 1 && (
+    <div class="index__filter" role="group" aria-label={t('filterAll')}>
+      <button class="index__chip" type="button" data-filter="*" aria-pressed="true">{t('filterAll')}</button>
+      {groups.map((group) => (
+        <button
+          class="index__chip"
+          type="button"
+          data-filter={group.key}
+          aria-pressed="false"
+        >
+          {t(`cat_${group.key}` as never)}
+        </button>
+      ))}
+    </div>
+  )}
+
   {groups.map((group) => (
-    <section class="index__group" aria-label={group.key}>
-      <Heading class="index__cat">{group.key}</Heading>
+    <section class="index__group" data-group={group.key} aria-label={t(`cat_${group.key}` as never)}>
+      <Heading class="index__cat">{t(`cat_${group.key}` as never)}</Heading>
       <ul class="index__rows">
         {group.items.map((p) => (
           <li>
-            <a class="index__row" href={`/products/${p.slug}`}>
+            <a class="index__row" href={withLocale(`/products/${p.slug}`, locale)}>
               <span class="index__thumb">
                 <img src={p.image} alt="" width="160" height="160" loading="lazy" decoding="async" />
               </span>
@@ -67,3 +88,24 @@ const groups = productCategories
     </section>
   ))}
 </div>
+
+<script>
+  /**
+   * Category filter: chips toggle group visibility. No library, no reflow of
+   * anything outside the index. aria-pressed carries the state.
+   */
+  document.querySelectorAll<HTMLElement>('[data-index]').forEach((index) => {
+    if (!index.querySelector('[data-filter]')) return;
+    const chips = Array.from(index.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+    const groups = Array.from(index.querySelectorAll<HTMLElement>('[data-group]'));
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const key = chip.dataset.filter ?? '*';
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        groups.forEach((group) => {
+          group.hidden = key !== '*' && group.dataset.group !== key;
+        });
+      });
+    });
+  });
+</script>

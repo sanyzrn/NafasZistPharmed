@@ -1,0 +1,23 @@
+---
+import ProductPage from '../../../templates/Product.astro';
+import { products, type Locale, type Product } from '../../../data/site';
+
+export function getStaticPaths() {
+  const paths: { params: { lang: Locale; slug: string }; props: { product: Product } }[] = [];
+  for (const lang of ['ar', 'en', 'ru'] as const) {
+    for (const product of products(lang)) {
+      paths.push({ params: { lang, slug: product.slug }, props: { product } });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  product: Product;
+}
+
+const { lang } = Astro.params;
+const { product } = Astro.props as Props;
+---
+
+<ProductPage locale={lang} {product} />

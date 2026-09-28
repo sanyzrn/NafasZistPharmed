@@ -1,0 +1,99 @@
+---
+/**
+ * The home hero slider — the first section of the page. CSS scroll-snap with
+ * a small vanilla controller. Direction-aware (RTL/LTR), pauses on hover,
+ * focus and touch, off under prefers-reduced-motion. Fixed aspect ratios
+ * prevent layout shift; only the first slide's image is eager.
+ *
+ * Dark variants: the markup renders BOTH normal and dark sources; CSS shows
+ * the right set per resolved theme ([data-theme]), so the swap works with the
+ * manual toggle and with the system preference (JS-off included).
+ */
+import { banners } from '../data/banners';
+import type { Locale } from '../i18n/index';
+import { localeMeta, makeT, withLocale } from '../i18n/index';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+const rtl = localeMeta[locale].dir === 'rtl';
+const enabled = banners.filter((b) => b.enabled).sort((a, b) => a.order - b.order);
+const total = enabled.length;
+const uid = `slider-${locale}`;
+---
+
+{total > 0 && (
+  <section class="slider" aria-roledescription="carousel" aria-label={t('sliderRegion')} dir={rtl ? 'rtl' : 'ltr'} id={uid}>
+    <div class="slider__viewport" data-slider-viewport tabindex="0">
+      <ul class="slider__track" data-slider-track>
+        {enabled.map((b, i) => (
+          <li
+            class="slider__slide"
+            data-slider-slide
+            aria-roledescription="slide"
+            aria-label={t('sliderSlideLabel').replace('{n}', String(i + 1)).replace('{total}', String(total))}
+          >
+            <div class="slider__media">
+              <picture data-slider-picture>
+                {b.imageMobile && <source class="src-light" media="(max-width: 640px)" srcset={b.imageMobile} />}
+                {b.imageDarkMobile && <source class="src-dark" media="(max-width: 640px)" srcset={b.imageDarkMobile} />}
+                {b.imageDark && <source class="src-dark" srcset={b.imageDark} />}
+                <img
+                  src={b.image}
+                  alt={b.alt[locale]}
+                  width="2400"
+                  height="1080"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={i === 0 ? 'high' : undefined}
+                  decoding={i === 0 ? 'sync' : 'async'}
+                />
+              </picture>
+              {(b.title?.[locale] || b.subtitle?.[locale] || b.cta) && (
+                <div class="slider__caption">
+                  {b.title?.[locale] && <p class="slider__title">{b.title[locale]}</p>}
+                  {b.subtitle?.[locale] && <p class="slider__subtitle">{b.subtitle[locale]}</p>}
+                  {b.cta && (
+                    <a class="btn btn--primary" href={withLocale(b.cta.href, locale)}>
+                      {b.cta.label[locale]}
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {total > 1 && (
+      <div class="slider__ui container">
+        <button class="slider__btn" type="button" data-slider-prev aria-label={t('sliderPrev')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        </button>
+        <div class="slider__dots">
+          {enabled.map((_, i) => (
+            <button
+              class="slider__dot"
+              type="button"
+              aria-label={t('sliderSlideLabel').replace('{n}', String(i + 1)).replace('{total}', String(total))}
+              aria-current={i === 0 ? 'true' : undefined}
+              data-slider-dot={i}
+            ></button>
+          ))}
+        </div>
+        <button class="slider__btn" type="button" data-slider-next aria-label={t('sliderNext')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+    )}
+    <p class="sr-only" data-slider-status role="status" aria-live="off"></p>
+  </section>
+)}
+
+<script>
+  import { initHeroSlider } from '../scripts/slider';
+  initHeroSlider();
+</script>

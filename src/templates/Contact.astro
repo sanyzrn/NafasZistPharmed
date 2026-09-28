@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteForm from '../components/SiteForm.astro';
+import Bidi from '../components/Bidi.astro';
+import { content, type Locale } from '../content/index';
+import { makeT } from '../i18n/index';
+import { site } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+const c = content<{
+  metaTitle: string;
+  metaDescription: string;
+}>(locale, 'contact');
+const siteData = site(locale);
+---
+
+<Base locale={locale} title={c.metaTitle} description={c.metaDescription} path="/contact">
+  <PageIntro title={t('contactPageTitle')} lead={t('contactPageLead')} />
+
+  <section class="section" aria-labelledby={`direct-${locale}`}>
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id={`direct-${locale}`}>{t('contactDirectTitle')}</h2>
+        <p class="heading__lead"><Bidi text={t('contactDirectLead')} /></p>
+      </div>
+      <div class="direct">
+        <a class="direct__item" href={siteData.phoneHref}>
+          <span class="direct__label">{t('phoneLabel')}</span>
+          <bdi class="direct__value" dir="ltr">{siteData.phone}</bdi>
+        </a>
+        <a class="direct__item" href={siteData.emailHref}>
+          <span class="direct__label">{t('emailLabel')}</span>
+          <bdi class="direct__value" dir="ltr">{siteData.email}</bdi>
+        </a>
+      </div>
+      <p class="heading__lead"><Bidi text={t('contactFollowUp')} /></p>
+    </div>
+  </section>
+
+  <section class="section section--air" aria-labelledby={`places-${locale}`}>
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id={`places-${locale}`}>{t('contactPlacesTitle')}</h2>
+      </div>
+      <div class="places">
+        <div class="place">
+          <h3 class="place__title">{t('placeHq')}</h3>
+          <address class="place__addr"><Bidi text={siteData.hq} /></address>
+          <a class="btn btn--quiet" href={siteData.mapHq} target="_blank" rel="noopener noreferrer">
+            <Icon name="pin" />
+            {t('routeHq')}
+          </a>
+        </div>
+        <div class="place">
+          <h3 class="place__title">{t('placeFactory')}</h3>
+          <address class="place__addr"><Bidi text={siteData.factory} /></address>
+          <a class="btn btn--quiet" href={siteData.mapFactory} target="_blank" rel="noopener noreferrer">
+            <Icon name="pin" />
+            {t('routeFactory')}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label={t('contactOtherWays')}>
+    <div class="container split">
+      <div class="stack" style="--stack-gap: var(--sp-7)">
+        <div class="stack" style="--stack-gap: var(--sp-3)">
+          <h2 class="pathways__title">{t('contactOtherWays')}</h2>
+          <p class="pathways__text"><Bidi text={t('contactSocialLead')} /></p>
+          <ul class="socials">
+            <li><a class="link" href={siteData.instagram} target="_blank" rel="noopener noreferrer">{siteData.instagramLabel}</a></li>
+            <li><a class="link" href={siteData.linkedin} target="_blank" rel="noopener noreferrer">{siteData.linkedinLabel}</a></li>
+            <li><a class="link" href={siteData.bale} target="_blank" rel="noopener noreferrer">{siteData.baleLabel}</a></li>
+          </ul>
+        </div>
+        <div class="stack" style="--stack-gap: var(--sp-3)">
+          <h2 class="pathways__title">{t('contactCollabTitle')}</h2>
+          <p class="pathways__text"><Bidi text={t('contactCollabLead')} /></p>
+          <div>
+            <a class="btn btn--quiet" href={siteData.jobs} target="_blank" rel="noopener noreferrer">
+              {t('aboutJobsCta')}
+              <Icon name="external" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <SiteForm {locale} kind="contact" />
+    </div>
+  </section>
+</Base>
