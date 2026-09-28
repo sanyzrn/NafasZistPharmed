@@ -1,0 +1,102 @@
+---
+/**
+ * The three site forms. Markup is identical in structure; only fields and
+ * copy differ. Submission is handled by src/scripts/forms.ts.
+ */
+import { products, site } from '../data/site';
+import Field from './Field.astro';
+
+interface Props {
+  kind: 'report' | 'consult' | 'contact';
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { kind, headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
+const id = (name: string) => `${kind}-${name}`;
+
+const copy = {
+  report: {
+    title: 'گزارش عارضه',
+    intro: 'ثبت عوارض دارویی محصولات نفس. پس از ثبت درخواست، همکاران ما با شما تماس می‌گیرند.',
+    submit: 'ثبت گزارش عارضه',
+  },
+  consult: {
+    title: 'گفت‌وگو با ما',
+    intro: 'درخواست مشاوره. پس از ثبت درخواست، همکاران ما با شما تماس می‌گیرند.',
+    submit: 'ثبت درخواست مشاوره',
+  },
+  contact: {
+    title: 'برای ما بنویسید',
+    intro: 'موضوع پیام و راه ارتباطی خود را وارد کنید تا همکاران مرتبط بتوانند درخواست شما را پیگیری کنند.',
+    submit: 'ارسال پیام',
+  },
+}[kind];
+
+const productOptions = [
+  ...products.map((p) => ({ value: p.slug, label: p.name })),
+  { value: 'free-vital', label: 'فری ویتال' },
+];
+const topicOptions = ['اطلاعات محصولات', 'همکاری علمی', 'امور توزیع و همکاری تجاری', 'سایر موضوعات'].map(
+  (t) => ({ value: t, label: t }),
+);
+
+// Placeholder copy (see REDESIGN_NOTES.md): shown while site.formEndpoint is empty.
+const offline = `ارسال آنلاین این فرم هنوز راه‌اندازی نشده است. برای ثبت، با شماره ${site.phone} تماس بگیرید یا به ${site.email} ایمیل بزنید.`;
+const success = 'پیام شما ثبت شد. همکاران ما با شما تماس می‌گیرند.';
+const failure = `ارسال انجام نشد. اتصال اینترنت را بررسی کنید و دوباره بفرستید، یا با شماره ${site.phone} تماس بگیرید.`;
+---
+
+<form
+  class="form"
+  action="#"
+  method="post"
+  data-form={kind}
+  data-endpoint={site.formEndpoint || undefined}
+  data-offline-message={offline}
+  data-success-message={success}
+  data-error-message={failure}
+  aria-labelledby={id('title')}
+>
+  <div class="form__head">
+    <Heading class="form__title" id={id('title')}>{copy.title}</Heading>
+    <p class="form__intro">{copy.intro}</p>
+  </div>
+
+  <div class="form__row">
+    <Field id={id('name')} name="name" label="نام و نام خانوادگی" required autocomplete="name" />
+    <Field id={id('phone')} name="phone" label="شماره تماس" type="tel" required autocomplete="tel" inputmode="tel" dir="ltr" />
+  </div>
+
+  {kind !== 'consult' && (
+    <Field id={id('email')} name="email" label="ایمیل" type="email" autocomplete="email" inputmode="email" dir="ltr" />
+  )}
+
+  {kind === 'report' && (
+    <>
+      <Field id={id('product')} name="product" label="محصول استفاده‌شده" as="select" required options={productOptions} />
+      <Field id={id('detail')} name="detail" label="شرح مختصر عارضه" as="textarea" rows={3} />
+    </>
+  )}
+
+  {kind === 'consult' && (
+    <Field id={id('detail')} name="detail" label="شرح مختصر مورد مشاوره" as="textarea" rows={4} />
+  )}
+
+  {kind === 'contact' && (
+    <>
+      <Field id={id('topic')} name="topic" label="موضوع پیام" as="select" required options={topicOptions} />
+      <Field id={id('message')} name="message" label="پیام شما" as="textarea" rows={5} required />
+    </>
+  )}
+
+  <div class="form__foot">
+    <button class="btn btn--primary" type="submit">{copy.submit}</button>
+  </div>
+  <p class="form__status" data-form-status role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  import { initForms } from '../scripts/forms';
+  initForms();
+</script>

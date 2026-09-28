@@ -1,0 +1,77 @@
+/* Design tokens. Every colour, size, radius, shadow and motion value used by
+   the site is defined here; components reference tokens only. */
+@layer tokens {
+  :root {
+    /* ── colour: derived from the logo red (#B61615) ── */
+    --c-red: #b61615;          /* Nafas Red: logo, primary action, focus */
+    --c-red-deep: #86100f;     /* Ember: hover / pressed / red text on tint */
+    --c-ink: #1b2124;          /* Graphite: primary text */
+    --c-slate: #55616a;        /* Slate: secondary text (AA on all surfaces) */
+    --c-air: #edf1f2;          /* Air: quiet surfaces, panels, footer */
+    --c-paper: #fafbfb;        /* Paper: page background */
+    --c-white: #ffffff;
+
+    /* derived, never used for text */
+    --c-line: color-mix(in srgb, var(--c-ink) 11%, transparent);
+    --c-line-strong: color-mix(in srgb, var(--c-ink) 22%, transparent);
+    --c-red-tint: color-mix(in srgb, var(--c-red) 7%, var(--c-paper));
+    --c-red-haze: color-mix(in srgb, var(--c-red) 16%, transparent);
+    --c-glass: color-mix(in srgb, var(--c-paper) 78%, transparent);
+
+    /* ── type ── */
+    --font-sans: 'Estedad', 'Segoe UI', Tahoma, system-ui, sans-serif;
+    --fs-xs: 0.8125rem;   /* 13 */
+    --fs-s: 0.9375rem;    /* 15 */
+    --fs-base: 1.0625rem; /* 17 — Persian body needs more size than Latin */
+    --fs-m: 1.3125rem;    /* 21 */
+    --fs-l: 1.625rem;     /* 26 */
+    --fs-xl: clamp(1.75rem, 1.2rem + 2.2vw, 2.5rem);
+    --fs-hero: clamp(2.5rem, 1.1rem + 6.4vw, 6rem);
+    --lh-body: 1.95;
+    --lh-heading: 1.5;
+    --lh-hero: 1.32;
+    --fw-hero: 250;
+    --fw-light: 300;
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-strong: 650;
+    --measure: 38rem;     /* ~70 Persian characters */
+
+    /* ── space (4px base, airy steps) ── */
+    --sp-1: 0.25rem;
+    --sp-2: 0.5rem;
+    --sp-3: 0.75rem;
+    --sp-4: 1rem;
+    --sp-5: 1.5rem;
+    --sp-6: 2rem;
+    --sp-7: 3rem;
+    --sp-8: 4.5rem;
+    --sp-9: 7rem;
+    --section-y: clamp(4rem, 2.5rem + 6vw, 8.5rem);
+    --gutter: clamp(1.15rem, 0.6rem + 3vw, 3rem);
+    --container: 78rem;
+
+    /* ── radius: follows hierarchy, not one value for everything ── */
+    --r-s: 10px;      /* inputs, small controls */
+    --r-m: 18px;      /* menus, panels */
+    --r-l: 32px;      /* imagery, large surfaces */
+    --r-pill: 999px;  /* buttons, chips */
+
+    /* ── elevation: only for layers that float over content ── */
+    --shadow-float: 0 1px 2px color-mix(in srgb, var(--c-ink) 6%, transparent),
+      0 18px 48px -12px color-mix(in srgb, var(--c-ink) 18%, transparent);
+    --shadow-glow: 0 10px 30px -10px color-mix(in srgb, var(--c-red) 45%, transparent);
+    --blur-glass: blur(16px) saturate(1.15);
+
+    /* ── motion: an inhale is short, an exhale is long ── */
+    --ease-breath: cubic-bezier(0.37, 0, 0.18, 1);
+    --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+    --dur-quick: 160ms;
+    --dur-soft: 320ms;
+    --dur-inhale: 2200ms;
+    --dur-exhale: 3200ms;
+
+    --header-h: 4.5rem;
+    --bottom-bar-h: 4.25rem;
+  }
+}

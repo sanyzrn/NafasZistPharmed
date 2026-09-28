@@ -1,3 +1,7 @@
+// Site-wide content. All Persian copy below is original content from the
+// previous version of the site. Fields marked "added in redesign" are new and
+// are listed in REDESIGN_NOTES.md so they can be verified.
+
 export const site = {
   name: 'نفس زیست فارمد',
   nameEn: 'Nafas Zist Pharmed',
@@ -16,6 +20,8 @@ export const site = {
   mapFactory: 'https://maps.app.goo.gl/5WxBr6aSd2mj8UZM8',
   hq: 'تهران، بلوار پژوهش، پژوهشگاه ملی و مهندسی ژنتیک، ساختمان بیوتک سنتر، واحد ۱۰۱',
   factory: 'صفادشت، بلوار مطهری شمالی (پدم)، کوچه دوم شرقی، پلاک ۴، مجموعه پیشتاز',
+  /** Where forms POST to (added in redesign). Empty = forms show the direct contact details instead. */
+  formEndpoint: '',
   languages: [
     { code: 'fa', label: 'فارسی', href: '#', active: true },
     { code: 'en', label: 'EN', href: 'https://en.nafaspharmed.com/' },
@@ -30,6 +36,10 @@ export type Product = {
   slug: string;
   name: string;
   nameSpaced: string;
+  /** Latin brand name (added in redesign, derived from slug / catalog file names; verify). */
+  latinName?: string;
+  /** Latin generic / active ingredient (added in redesign, translated from the Persian meta; verify). */
+  genericLatin?: string;
   subtitle: string;
   category: ProductCategory;
   image: string;
@@ -44,6 +54,8 @@ export const products: Product[] = [
     slug: 'tio-toriva',
     name: 'تیوتوریوا',
     nameSpaced: 'تیــوتــوریوا',
+    latinName: 'Tiotoriva',
+    genericLatin: 'Tiotropium bromide',
     subtitle: 'کپسول استنشاقی DPI تیوتروپیوم ۱۸ میکروگرم',
     category: 'تنفسی',
     image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/TiotorivaSq.webp',
@@ -110,6 +122,8 @@ export const products: Product[] = [
     slug: 'coldanese-plus',
     name: 'کلدانیز پلاس',
     nameSpaced: 'کلدانیزپلاس',
+    latinName: 'Coldanese Plus',
+    genericLatin: 'Carrageenan + Xylitol',
     subtitle: 'اسپری بینی کاراگینان و زایلیتول',
     category: 'تنفسی',
     image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/Coldanesep.webp',
@@ -183,6 +197,8 @@ export const products: Product[] = [
     slug: 'folinozit',
     name: 'فولینوزیت',
     nameSpaced: 'فــولینــوزیت',
+    latinName: 'Folinozit',
+    genericLatin: 'Myo-inositol + Folic acid',
     subtitle: 'پودر خوراکی میواینوزیتول و اسید فولیک',
     category: 'بانوان',
     image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/foli.webp',
@@ -246,6 +262,8 @@ export const products: Product[] = [
     slug: 'meglozek',
     name: 'مگلوزک',
     nameSpaced: 'مگلــــوزک',
+    latinName: 'Meglozek',
+    genericLatin: 'Esomeprazole',
     subtitle: 'گرانول انتریک کوتد اس امپرازول ۱۰',
     category: 'گوارشی',
     image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/meglozeksq.webp',
@@ -316,6 +334,8 @@ export const products: Product[] = [
     slug: 'capsulizer',
     name: 'کپسولایزر',
     nameSpaced: 'کپـسـولایزر',
+    latinName: 'Capsulizer',
+    genericLatin: 'Dry powder inhaler device',
     subtitle: 'دستگاه استنشاق پودر خشک (DPI)',
     category: 'تجهیزات پزشکی',
     image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/capsulizer1.webp',
@@ -390,4 +410,12 @@ export const news = [
     href: 'https://nafaspharmed.com/up/2024/08/28/',
     date: '۱۴۰۳',
   },
+];
+
+/** Primary navigation, shared by the header, the mobile bar and the footer. */
+export const nav = [
+  { href: '/', label: 'صفحه نخست', short: 'خانه' },
+  { href: '/#products', label: 'محصولات', short: 'محصولات', hasMenu: true },
+  { href: '/about', label: 'درباره نفس', short: 'درباره' },
+  { href: '/contact', label: 'تماس با نفس', short: 'تماس' },
 ];

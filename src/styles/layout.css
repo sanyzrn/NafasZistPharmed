@@ -1,0 +1,83 @@
+/* Layout primitives. Rule: only .section sets vertical padding; components
+   never set outer margins — parents space children with gap. This keeps
+   section spacing from being cancelled by component selectors. */
+@layer layout {
+  .container {
+    width: min(100% - var(--gutter) * 2, var(--container));
+    margin-inline: auto;
+  }
+
+  .section {
+    padding-block: var(--section-y);
+  }
+
+  .section--flush-top {
+    padding-block-start: 0;
+  }
+
+  .section--air {
+    background: var(--c-air);
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-gap, var(--sp-4));
+  }
+
+  .measure {
+    max-inline-size: var(--measure);
+  }
+
+  /* Asymmetric two-column split: text column at the inline-start (right in
+     RTL), the wider "air" column at the inline-end. */
+  .split {
+    display: grid;
+    gap: var(--sp-7) var(--sp-8);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .split {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+
+    .split--even {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .split--center {
+      align-items: center;
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .skip-link {
+    position: fixed;
+    inset-block-start: var(--sp-3);
+    inset-inline-start: var(--sp-3);
+    z-index: 100;
+    padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--r-pill);
+    background: var(--c-ink);
+    color: var(--c-white);
+    font-size: var(--fs-s);
+    translate: 0 -200%;
+    transition: translate var(--dur-quick) var(--ease-out);
+  }
+
+  .skip-link:focus-visible {
+    translate: 0 0;
+  }
+}

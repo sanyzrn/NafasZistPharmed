@@ -1,552 +1,151 @@
 ---
 import Base from '../layouts/Base.astro';
-import BannerSlider from '../components/BannerSlider.astro';
-import type { Slide } from '../components/BannerSlider.astro';
-import { products, news, site } from '../data/site';
-
-const featured = products;
-
-const slides: Slide[] = [
-  {
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/TiotorivaSq.webp',
-    alt: 'تیوتوریوا — کپسول استنشاقی DPI',
-    eyebrow: 'نخستین DPI تولید انبوه ایران',
-    title: 'تیوتوریوا؛ هدف اول درمان COPD',
-    text: 'کپسول استنشاقی تیوتروپیوم ۱۸ میکروگرم با دانش فنی بومی.',
-    href: '/products/tio-toriva',
-    cta: 'اطلاعات محصول',
-  },
-  {
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2026/05/Coldanesep.webp',
-    alt: 'کلدانیز پلاس — اسپری بینی',
-    eyebrow: 'پیشگیری و درمان سرماخوردگی',
-    title: 'کلدانیز پلاس؛ سپر ویروس‌ها',
-    text: 'اسپری بینی کاراگینان و زایلیتول، مناسب تمامی سنین.',
-    href: '/products/coldanese-plus',
-    cta: 'اطلاعات محصول',
-  },
-  {
-    image: 'https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas6-1024x683.jpg',
-    alt: 'شرکت نفس زیست فارمد',
-    eyebrow: 'از سال ۱۳۹۸',
-    title: 'از پژوهش تا تولید، در کنار شما',
-    text: 'دانش‌بنیان نوع ۱ در حوزه داروهای استنشاقی و نانوداروها.',
-    href: '/about',
-    cta: 'درباره نفس',
-  },
-];
+import BreathField from '../components/BreathField.astro';
+import Icon from '../components/Icon.astro';
+import ProductIndex from '../components/ProductIndex.astro';
+import SiteForm from '../components/SiteForm.astro';
+import { news, site } from '../data/site';
 ---
 
-<Base title="صفحه نخست" description="نفس زیست فارمد — مراقب شما، در هر نفس. شرکت دانش‌بنیان توسعه داروهای استنشاقی.">
-  <!-- BANNER SLIDER -->
-  <BannerSlider slides={slides} />
-
-  <!-- STATEMENT -->
-  <section class="section statement">
-    <div class="container">
-      <h1 class="statement-line">
-        مراقب شما، <span class="stmt-brand">در هر نفس</span>
-      </h1>
-      <div class="statement-foot">
-        <p class="lead">
-          نفس زیست فارمد از سال ۱۳۹۸ با تمرکز بر داروهای استنشاقی، برای پاسخ به نیاز بیماران و ارتقای کیفیت زندگی تلاش
-          می‌کند.
-        </p>
-        <div class="stmt-actions">
-          <a class="btn btn-primary" href="#products">محصولات نفس</a>
-          <a class="btn btn-ghost" href="/about">درباره نفس</a>
+<Base
+  title="صفحه نخست"
+  description="نفس زیست فارمد — مراقب شما، در هر نفس. شرکت دانش‌بنیان توسعه داروهای استنشاقی."
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <BreathField />
+    <div class="container hero__inner">
+      <h1 class="hero__title" id="hero-title">{site.tagline}</h1>
+      <p class="hero__lead">
+        نفس زیست فارمد از سال ۱۳۹۸ با تمرکز بر داروهای استنشاقی، برای پاسخ به نیاز بیماران و ارتقای کیفیت زندگی تلاش
+        می‌کند.
+      </p>
+      <div class="actions hero__actions">
+        <a class="btn btn--primary" href="#products">
+          محصولات نفس
+          <Icon name="arrow" />
+        </a>
+        <a class="btn btn--quiet" href="/about">درباره نفس</a>
+      </div>
+      <dl class="facts">
+        <div class="facts__item">
+          <dt class="facts__term">سال تأسیس</dt>
+          <dd class="facts__value">۱۳۹۸</dd>
         </div>
-      </div>
+        <div class="facts__item">
+          <dt class="facts__term">دانش‌بنیان</dt>
+          <dd class="facts__value">نوع ۱</dd>
+        </div>
+        <div class="facts__item">
+          <dt class="facts__term">تخصص اصلی</dt>
+          <dd class="facts__value"><bdi lang="en">DPI</bdi></dd>
+        </div>
+      </dl>
     </div>
   </section>
 
-  <!-- CATALOG ROWS -->
-  <section class="section catalog" id="products">
-    <div class="container">
-      <div class="section-head">
-        <p class="tag">محصولات نفس</p>
+  <section class="section section--flush-top" id="products" aria-labelledby="products-title">
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id="products-title">محصولات نفس</h2>
+        <p class="heading__lead">
+          فهرست فرآورده‌ها بر اساس گروه درمانی. برای دیدن شکل فرآورده، نحوه مصرف و کاتالوگ، روی هر محصول بزنید.
+        </p>
       </div>
-
-      <div class="rows">
-        {featured.map((p, i) => (
-          <a class="prow" href={`/products/${p.slug}`}>
-            <span class="prow-num">{String(i + 1).padStart(2, '0')}</span>
-            <span class="prow-media"><img src={p.image} alt={p.name} loading="lazy" /></span>
-            <span class="prow-main">
-              <span class="prow-name">{p.name}</span>
-              <span class="prow-sub">{p.subtitle}</span>
-            </span>
-            <span class="prow-cat">{p.category}</span>
-            <span class="prow-arrow" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
-            </span>
-          </a>
-        ))}
-      </div>
+      <ProductIndex />
     </div>
   </section>
 
-  <!-- RED NUMBERS BAND -->
-  <section class="band">
-    <div class="container band-grid">
-      <div class="band-item">
-        <strong>۱۳۹۸</strong>
-        <span>سال تأسیس</span>
-      </div>
-      <div class="band-item">
-        <strong>نوع ۱</strong>
-        <span>دانش‌بنیان</span>
-      </div>
-      <div class="band-item">
-        <strong>DPI</strong>
-        <span>تخصص اصلی</span>
-      </div>
-      <div class="band-item">
-        <strong>۴</strong>
-        <span>فرآورده دارویی و تجهیزات</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT SNIPPET -->
-  <section class="section about-snip">
-    <div class="container grid-2">
-      <div>
-        <p class="tag">نفس؛ پیوند دانش و زندگی</p>
-        <h2 class="display">از پژوهش تا تولید، در کنار شما</h2>
-        <p class="lead">
+  <section class="section section--air" aria-labelledby="about-title">
+    <div class="container split split--center">
+      <div class="stack" style="--stack-gap: var(--sp-5)">
+        <h2 class="heading__title" id="about-title">از پژوهش تا تولید، در کنار شما</h2>
+        <p class="prose prose--muted">
           نخستین محصول استنشاقی پودری تولید انبوه در ایران با دانش فنی بومی؛ از آزمایشگاه تا بیمار، با یک تعهد: رساندن
           دوز کامل درمان به کسی که به آن نیاز دارد.
         </p>
-        <a class="btn btn-line" href="/about">بیشتر درباره نفس</a>
+        <div>
+          <a class="link" href="/about">
+            بیشتر درباره نفس
+            <Icon name="arrow" />
+          </a>
+        </div>
       </div>
-      <div class="about-media">
+      <figure class="media media--wide">
         <img
           src="https://nafaspharmed.com/up/wp-content/uploads/2024/03/nafas6-1024x683.jpg"
           alt="تیم و فضای شرکت نفس زیست فارمد"
+          width="1024"
+          height="683"
           loading="lazy"
+          decoding="async"
         />
-      </div>
+      </figure>
     </div>
   </section>
 
-  <!-- NEWS ROWS -->
-  <section class="section-tight news">
-    <div class="container">
-      <div class="section-head">
-        <p class="tag">دانش و رویدادها</p>
+  <section class="section" aria-labelledby="news-title">
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id="news-title">دانش و رویدادها</h2>
       </div>
-      <div class="nrows">
+      <ul class="news">
         {news.map((n) => (
-          <a class="nrow" href={n.href} target="_blank" rel="noopener noreferrer">
-            <span class="nrow-media"><img src={n.image} alt={n.title} loading="lazy" /></span>
-            <span class="nrow-main">
-              <span class="nrow-date">{n.date}</span>
-              <span class="nrow-title">{n.title}</span>
-            </span>
-            <span class="nrow-arrow" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
-            </span>
-          </a>
+          <li>
+            <a class="news__row" href={n.href} target="_blank" rel="noopener noreferrer">
+              <span class="news__thumb">
+                <img src={n.image} alt="" width="240" height="180" loading="lazy" decoding="async" />
+              </span>
+              <span class="news__main">
+                <span class="news__date">{n.date}</span>
+                <span class="news__title">{n.title}</span>
+              </span>
+              <span class="news__ext">
+                <Icon name="external" label="در پنجره تازه باز می‌شود" />
+              </span>
+            </a>
+          </li>
         ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--flush-top" aria-label="بیماران و فرصت‌های شغلی">
+    <div class="container pathways">
+      <div class="pathways__item">
+        <h2 class="pathways__title">آگاهی بیشتر، همراهی نزدیک‌تر</h2>
+        <p class="pathways__text">
+          کاتالوگ‌ها، بروشورها و ویدئوهای آموزشی محصولات نفس را در پورتال حمایت بیمار ببینید.
+        </p>
+        <a class="btn btn--quiet" href={site.patientPortal} target="_blank" rel="noopener noreferrer">
+          ورود به پورتال بیماران
+          <Icon name="external" />
+        </a>
+      </div>
+      <div class="pathways__item">
+        <h2 class="pathways__title">با هم برای آینده‌ای سالم و روشن</h2>
+        <p class="pathways__text">
+          به تیم نفس بپیوندید؛ جایی برای رشد حرفه‌ای و همراهی در مسیر سلامت جامعه.
+        </p>
+        <a class="btn btn--quiet" href={site.jobs} target="_blank" rel="noopener noreferrer">
+          مشاهده فرصت‌های شغلی
+          <Icon name="external" />
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- JOBS + PATIENT -->
-  <section class="section-tight duo">
-    <div class="container grid-2">
-      <div class="duo-card duo-red">
-        <p class="tag">فرصت‌های شغلی</p>
-        <h2>با هم برای آینده‌ای سالم و روشن</h2>
-        <p>به تیم نفس بپیوندید؛ جایی برای رشد حرفه‌ای و همراهی در مسیر سلامت جامعه.</p>
-        <a class="btn btn-light" href={site.jobs} target="_blank" rel="noopener noreferrer">مشاهده فرصت‌های شغلی</a>
+  <section class="section section--air" aria-labelledby="forms-title">
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id="forms-title">گزارش و مشاوره</h2>
+        <p class="heading__lead">
+          عارضه‌ای را پس از مصرف محصولات نفس دیده‌اید یا پرسشی دارید؟ فرم مربوط را پر کنید.
+        </p>
       </div>
-      <div class="duo-card duo-line">
-        <p class="tag">آموزش و حمایت بیماران</p>
-        <h2>آگاهی بیشتر، همراهی نزدیک‌تر</h2>
-        <p>کاتالوگ‌ها، بروشورها و ویدئوهای آموزشی محصولات نفس را در پورتال حمایت بیمار ببینید.</p>
-        <a class="btn btn-line" href={site.patientPortal} target="_blank" rel="noopener noreferrer">ورود به پورتال بیماران</a>
+      <div class="forms">
+        <SiteForm kind="report" headingLevel="h3" />
+        <SiteForm kind="consult" headingLevel="h3" />
       </div>
-    </div>
-  </section>
-
-  <!-- FORMS -->
-  <section class="section forms">
-    <div class="container grid-2 forms-grid">
-      <form class="form" action="#" method="post">
-        <p class="tag">ثبت عوارض دارویی</p>
-        <h2>گزارش عارضه</h2>
-        <p>پس از ثبت درخواست، همکاران ما با شما تماس می‌گیرند.</p>
-        <label>نام و نام خانوادگی<input type="text" name="name" required /></label>
-        <label>شماره تماس<input type="tel" name="phone" required /></label>
-        <label>ایمیل<input type="email" name="email" /></label>
-        <label>
-          انتخاب محصول استفاده شده
-          <select name="product">
-            {products.map((p) => <option value={p.slug}>{p.name}</option>)}
-            <option value="free-vital">فری ویتال</option>
-          </select>
-        </label>
-        <label>شرح مختصر عارضه<textarea name="detail" rows="3"></textarea></label>
-        <button class="btn btn-primary" type="submit">ثبت</button>
-      </form>
-
-      <form class="form" action="#" method="post">
-        <p class="tag">درخواست مشاوره</p>
-        <h2>گفت‌وگو با ما</h2>
-        <p>پس از ثبت درخواست، همکاران ما با شما تماس می‌گیرند.</p>
-        <label>نام و نام خانوادگی<input type="text" name="name" required /></label>
-        <label>شماره تماس<input type="tel" name="phone" required /></label>
-        <label>شرح مختصر مورد مشاوره<textarea name="detail" rows="4"></textarea></label>
-        <button class="btn btn-primary" type="submit">ثبت درخواست</button>
-      </form>
     </div>
   </section>
 </Base>
-
-<style>
-  /* ——— STATEMENT ——— */
-  .statement {
-    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .statement-line {
-    font-size: clamp(2rem, 5.2vw, 3.9rem);
-    font-weight: 800;
-    line-height: 1.5;
-    color: var(--ink);
-    margin-bottom: 1.6rem;
-  }
-
-  .stmt-brand {
-    color: var(--brand);
-  }
-
-  .statement-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-
-  .stmt-actions {
-    display: flex;
-    gap: 0.7rem;
-    flex-wrap: wrap;
-  }
-
-  /* ——— CATALOG ROWS ——— */
-  .catalog {
-    padding-top: 0;
-  }
-
-  .rows {
-    border-top: 1px solid var(--line);
-  }
-
-  .prow {
-    display: grid;
-    grid-template-columns: 3.2rem 84px 1fr auto 2.4rem;
-    align-items: center;
-    gap: 1.25rem;
-    padding: 1.15rem 0.25rem;
-    border-bottom: 1px solid var(--line);
-    transition: background 0.15s ease;
-  }
-
-  .prow:hover {
-    background: var(--fog);
-  }
-
-  .prow-num {
-    color: var(--mist);
-    font-size: 1.9rem;
-    font-weight: 800;
-    line-height: 1;
-    transition: color 0.15s ease;
-  }
-
-  .prow:hover .prow-num {
-    color: var(--brand);
-  }
-
-  .prow-media {
-    width: 84px;
-    height: 72px;
-    display: grid;
-    place-items: center;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-  }
-
-  .prow-media img {
-    max-height: 58px;
-    max-width: 70px;
-    object-fit: contain;
-  }
-
-  .prow-main {
-    display: grid;
-    gap: 0.1rem;
-    min-width: 0;
-  }
-
-  .prow-name {
-    color: var(--ink);
-    font-weight: 800;
-    font-size: 1.12rem;
-  }
-
-  .prow-sub {
-    color: var(--ink-soft);
-    font-size: 0.9rem;
-  }
-
-  .prow-cat {
-    color: var(--stone);
-    font-size: 0.82rem;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-
-  .prow-arrow {
-    width: 2.4rem;
-    height: 2.4rem;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    color: var(--stone);
-    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-  }
-
-  .prow:hover .prow-arrow {
-    background: var(--brand);
-    border-color: var(--brand);
-    color: #fff;
-  }
-
-  /* ——— RED NUMBERS BAND ——— */
-  .band {
-    background: var(--brand);
-    color: #fff;
-  }
-
-  .band-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
-  }
-
-  .band-item {
-    display: grid;
-    gap: 0.1rem;
-  }
-
-  .band-item strong {
-    font-size: clamp(1.6rem, 3vw, 2.3rem);
-    font-weight: 800;
-    line-height: 1.35;
-  }
-
-  .band-item span {
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.9rem;
-  }
-
-  /* ——— ABOUT SNIPPET ——— */
-  .about-media img {
-    width: 100%;
-    height: 380px;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
-  }
-
-  /* ——— NEWS ROWS ——— */
-  .nrows {
-    border-top: 1px solid var(--line);
-  }
-
-  .nrow {
-    display: grid;
-    grid-template-columns: 96px 1fr 2.2rem;
-    align-items: center;
-    gap: 1.1rem;
-    padding: 0.95rem 0.25rem;
-    border-bottom: 1px solid var(--line);
-    transition: background 0.15s ease;
-  }
-
-  .nrow:hover {
-    background: var(--fog);
-  }
-
-  .nrow-media {
-    width: 96px;
-    height: 68px;
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-
-  .nrow-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .nrow-main {
-    display: grid;
-    gap: 0.05rem;
-    min-width: 0;
-  }
-
-  .nrow-date {
-    color: var(--brand);
-    font-size: 0.8rem;
-    font-weight: 800;
-  }
-
-  .nrow-title {
-    color: var(--ink);
-    font-weight: 700;
-    font-size: 1rem;
-  }
-
-  .nrow-arrow {
-    color: var(--stone);
-    transition: color 0.15s ease, translate 0.15s ease;
-  }
-
-  .nrow:hover .nrow-arrow {
-    color: var(--brand);
-    translate: -4px 0;
-  }
-
-  /* ——— DUO ——— */
-  .duo {
-    background: var(--fog);
-  }
-
-  .duo-card {
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-  }
-
-  .duo-card h2 {
-    font-size: 1.35rem;
-  }
-
-  .duo-red {
-    background: var(--brand);
-    color: #fff;
-  }
-
-  .duo-red p,
-  .duo-red .tag {
-    color: #fff;
-  }
-
-  .duo-red .tag::before {
-    background: #fff;
-  }
-
-  .duo-line {
-    background: var(--white);
-    border: 1px solid var(--line);
-  }
-
-  /* ——— FORMS ——— */
-  .forms-grid {
-    align-items: start;
-  }
-
-  .form {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 1.6rem;
-  }
-
-  .form h2 {
-    font-size: 1.25rem;
-  }
-
-  .form label {
-    display: grid;
-    gap: 0.3rem;
-    margin-bottom: 0.85rem;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  .form input,
-  .form select,
-  .form textarea {
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 0.68rem 0.85rem;
-    background: var(--fog);
-    font-weight: 500;
-  }
-
-  .form input:focus,
-  .form select:focus,
-  .form textarea:focus {
-    border-color: var(--brand);
-    background: #fff;
-    outline: none;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 12%, white);
-  }
-
-  /* ——— responsive ——— */
-  @media (max-width: 960px) {
-    .prow {
-      grid-template-columns: 2.4rem 64px 1fr 2.2rem;
-    }
-
-    .prow-cat {
-      display: none;
-    }
-
-    .prow-media {
-      width: 64px;
-      height: 56px;
-    }
-
-    .prow-media img {
-      max-height: 46px;
-      max-width: 54px;
-    }
-
-    .prow-num {
-      font-size: 1.4rem;
-    }
-
-    .band-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 560px) {
-    .prow {
-      grid-template-columns: 1.6rem 1fr 2rem;
-      gap: 0.75rem;
-    }
-
-    .prow-media {
-      display: none;
-    }
-
-    .nrow {
-      grid-template-columns: 76px 1fr;
-    }
-
-    .nrow-arrow {
-      display: none;
-    }
-  }
-</style>

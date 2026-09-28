@@ -1,519 +1,98 @@
 ---
-import { productCategories, site } from '../data/site';
+import { nav, productCategories, products, site } from '../data/site';
+import Icon from './Icon.astro';
+import Langs from './Langs.astro';
+import Logo from './Logo.astro';
 
-const path = Astro.url.pathname;
-
-const isActive = (href: string) => {
-  if (href === '/') return path === '/' || path === '';
-  if (href.startsWith('/#')) return false;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => {
+  if (href.includes('#')) return false;
+  if (href === '/') return path === '/';
   return path.startsWith(href);
 };
-
-const nav = [
-  { href: '/', label: 'صفحه نخست' },
-  { href: '/#products', label: 'محصولات', hasMenu: true },
-  { href: '/about', label: 'درباره نفس' },
-  { href: '/contact', label: 'تماس با نفس' },
-];
+const inProducts = path.startsWith('/products');
+const latinOf = (slug: string) => products.find((p) => p.slug === slug)?.latinName;
 ---
 
-<header class="site-header" id="site-header">
-  <div class="header-shell container">
-    <a class="brand" href="/" aria-label={`${site.name} — صفحه نخست`}>
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 48 48" width="42" height="42" fill="none">
-          <rect x="1" y="1" width="46" height="46" rx="10" stroke="currentColor" stroke-width="2" />
-          <path d="M12 30c4-11 8-15 12-15s8 4 12 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-          <path d="M16 30c2.5-6 5-9 8-9s5.5 3 8 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.65" />
-          <circle cx="24" cy="19" r="2.2" fill="currentColor" />
-        </svg>
-      </span>
-      <span class="brand-text">
-        <strong>{site.name}</strong>
-        <small>{site.nameEn}</small>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a class="brand" href="/" aria-label={`${site.name}، صفحه نخست`}>
+      <Logo class="brand__mark" />
+      <span class="brand__text">
+        <span class="brand__name">{site.name}</span>
+        <span class="brand__latin" lang="en" dir="ltr">{site.nameEn}</span>
       </span>
     </a>
 
-    <button
-      type="button"
-      class="nav-toggle"
-      id="nav-toggle"
-      aria-expanded="false"
-      aria-controls="primary-nav"
-      aria-label="باز کردن منو"
-    >
-      <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
-    </button>
-
-    <div class="nav-stage" id="primary-nav" data-open="false">
-      <nav class="nav-bar" aria-label="منوی اصلی">
-        <ul class="nav-list">
-          {nav.map((item) =>
-            item.hasMenu ? (
-              <li class="nav-item has-menu" data-dropdown>
-                <button
-                  type="button"
-                  class:list={['nav-link', 'dd-trigger', { active: path.startsWith('/products') }]}
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                >
-                  {item.label}
-                  <svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                    <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  </svg>
-                </button>
-
-                <div class="mega" role="menu">
-                  <div class="mega-grid">
-                    {productCategories.map((cat) => (
-                      <div class="mega-col" key={cat.key}>
-                        <p class="mega-title">{cat.key}</p>
-                        <ul>
-                          {cat.items.map((p) => (
-                            <li key={p.slug}>
-                              <a href={`/products/${p.slug}`} role="menuitem">{p.name}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                  <a class="mega-all" href="/#products" role="menuitem">مرور همه محصولات</a>
+    <nav class="nav" aria-label="ناوبری اصلی">
+      <ul class="nav__list">
+        {nav.map((item) =>
+          item.hasMenu ? (
+            <li class="nav__item" data-menu>
+              <button
+                class="nav__link"
+                type="button"
+                aria-expanded="false"
+                aria-controls="products-menu"
+                data-current={inProducts ? 'true' : undefined}
+              >
+                {item.label}
+                <Icon name="chevron" class="nav__chev" />
+              </button>
+              <div class="menu" id="products-menu" data-open="false">
+                <div class="menu__grid">
+                  {productCategories.map((cat) => (
+                    <div>
+                      <p class="menu__cat">{cat.key}</p>
+                      <ul>
+                        {cat.items.map((p) => (
+                          <li>
+                            <a class="menu__link" href={`/products/${p.slug}`}>
+                              <span class="menu__name">{p.name}</span>
+                              {latinOf(p.slug) && (
+                                <span class="menu__latin" lang="en" dir="ltr">
+                                  {latinOf(p.slug)}
+                                </span>
+                              )}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
-              </li>
-            ) : (
-              <li class="nav-item" key={item.href}>
-                <a href={item.href} class:list={['nav-link', { active: isActive(item.href) }]}>{item.label}</a>
-              </li>
-            )
-          )}
-        </ul>
-      </nav>
+                <a class="menu__all link" href="/#products">
+                  فهرست کامل محصولات
+                  <Icon name="arrow" />
+                </a>
+              </div>
+            </li>
+          ) : (
+            <li class="nav__item">
+              <a class="nav__link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          )
+        )}
+      </ul>
+    </nav>
 
-      <a class="patient-pill" href={site.patientPortal} target="_blank" rel="noopener noreferrer">آموزش و حمایت بیمار</a>
+    <div class="site-header__tools">
+      <a class="header-phone" href={site.phoneHref}>
+        <span class="sr-only">تلفن: </span>
+        <bdi dir="ltr">{site.phone}</bdi>
+      </a>
+      <a class="btn btn--quiet portal-link" href={site.patientPortal} target="_blank" rel="noopener noreferrer">
+        آموزش و حمایت بیمار
+        <span class="sr-only">(در پنجره تازه باز می‌شود)</span>
+      </a>
+      <Langs />
     </div>
   </div>
 </header>
 
 <script>
-  const header = document.getElementById('site-header');
-  const toggle = document.getElementById('nav-toggle');
-  const stage = document.getElementById('primary-nav');
-
-  // ——— scroll state
-  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
-
-  // ——— mobile drawer
-  const setOpen = (open: boolean) => {
-    if (!stage || !toggle) return;
-    stage.dataset.open = open ? 'true' : 'false';
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    toggle.setAttribute('aria-label', open ? 'بستن منو' : 'باز کردن منو');
-    document.body.style.overflow = open ? 'hidden' : '';
-  };
-
-  toggle?.addEventListener('click', () => {
-    setOpen(stage?.dataset.open !== 'true');
-  });
-
-  // close drawer when resizing up to desktop
-  window.matchMedia('(min-width: 981px)').addEventListener('change', (e) => {
-    if (e.matches) setOpen(false);
-  });
-
-  // ——— dropdowns (click + hover on desktop)
-  const isDesktop = () => window.matchMedia('(min-width: 981px)').matches;
-
-  document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((item) => {
-    const trigger = item.querySelector<HTMLButtonElement>('.dd-trigger');
-    const panel = item.querySelector<HTMLElement>('.mega');
-    if (!trigger || !panel) return;
-
-    const setDrop = (open: boolean) => {
-      panel.classList.toggle('open', open);
-      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    };
-
-    trigger.addEventListener('click', () => {
-      // close other open dropdowns
-      document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((other) => {
-        if (other !== item) {
-          other.querySelector('.mega')?.classList.remove('open');
-          other.querySelector<HTMLElement>('.dd-trigger')?.setAttribute('aria-expanded', 'false');
-        }
-      });
-      setDrop(!panel.classList.contains('open'));
-    });
-
-    if (isDesktop()) {
-      item.addEventListener('mouseenter', () => setDrop(true));
-      item.addEventListener('mouseleave', () => setDrop(false));
-    }
-  });
-
-  // close dropdowns on outside click / Escape
-  document.addEventListener('click', (e) => {
-    const t = e.target as Node;
-    document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((item) => {
-      if (!item.contains(t)) {
-        item.querySelector('.mega')?.classList.remove('open');
-        item.querySelector<HTMLElement>('.dd-trigger')?.setAttribute('aria-expanded', 'false');
-      }
-    });
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      setOpen(false);
-      document.querySelectorAll('[data-dropdown]').forEach((item) => {
-        item.querySelector('.mega')?.classList.remove('open');
-        item.querySelector<HTMLElement>('.dd-trigger')?.setAttribute('aria-expanded', 'false');
-      });
-    }
-  });
-
-  // close drawer after navigating from menu links
-  stage?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  import { initProductMenu } from '../scripts/menu';
+  initProductMenu();
 </script>
-
-<style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: var(--white);
-    border-bottom: 1px solid var(--line);
-    transition: box-shadow 0.2s ease;
-  }
-
-  .site-header.is-scrolled {
-    box-shadow: var(--shadow-md);
-  }
-
-  .header-shell {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.25rem;
-    min-height: 78px;
-    position: relative;
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    flex-shrink: 0;
-    z-index: 2;
-  }
-
-  .brand-mark {
-    display: inline-flex;
-    color: var(--brand);
-  }
-
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.3;
-  }
-
-  .brand-text strong {
-    font-size: 1.08rem;
-    font-weight: 800;
-    color: var(--ink);
-  }
-
-  .brand-text small {
-    font-size: 0.68rem;
-    letter-spacing: 0.07em;
-    color: var(--stone);
-    font-weight: 600;
-  }
-
-  .nav-stage {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-  }
-
-  .nav-list {
-    display: flex;
-    align-items: stretch;
-    gap: 0.1rem;
-  }
-
-  .nav-item {
-    position: relative;
-  }
-
-  .nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    min-height: 44px;
-    padding: 0.5rem 1rem;
-    color: var(--ink-soft);
-    font-weight: 700;
-    font-size: 0.93rem;
-    border: 0;
-    background: transparent;
-    border-radius: var(--radius);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-
-  .nav-link:hover,
-  .nav-link.active {
-    background: var(--brand-soft, #f7e9e8);
-    background: color-mix(in srgb, var(--brand) 7%, white);
-    color: var(--brand);
-  }
-
-  .nav-link:focus-visible {
-    outline: 2px solid var(--brand);
-    outline-offset: 2px;
-  }
-
-  .chev {
-    opacity: 0.85;
-    transition: transform 0.18s ease;
-  }
-
-  .dd-trigger[aria-expanded='true'] .chev {
-    transform: rotate(180deg);
-  }
-
-  /* mega dropdown */
-  .mega {
-    position: absolute;
-    top: calc(100% + 10px);
-    inset-inline-start: 50%;
-    translate: 50% -6px;
-    min-width: 460px;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    padding: 1.15rem 1.25rem 1rem;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.16s ease, translate 0.16s ease, visibility 0.16s ease;
-    z-index: 80;
-  }
-
-  .mega.open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    translate: 50% 0;
-  }
-
-  .mega-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.05rem;
-  }
-
-  .mega-title {
-    margin: 0 0 0.5rem;
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: var(--brand);
-  }
-
-  .mega-col ul {
-    display: grid;
-    gap: 0.25rem;
-  }
-
-  .mega-col a {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.5rem 0.65rem;
-    border-radius: var(--radius);
-    font-weight: 600;
-    font-size: 0.92rem;
-    color: var(--ink-soft);
-    transition: background 0.14s ease, color 0.14s ease;
-  }
-
-  .mega-col a::after {
-    content: "";
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid var(--mist);
-    flex-shrink: 0;
-    transition: border-color 0.14s ease, background 0.14s ease;
-  }
-
-  .mega-col a:hover {
-    background: color-mix(in srgb, var(--brand) 6%, white);
-    color: var(--brand);
-  }
-
-  .mega-col a:hover::after {
-    border-color: var(--brand);
-    background: var(--brand);
-  }
-
-  .mega-all {
-    display: block;
-    margin-top: 0.9rem;
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--line);
-    color: var(--brand);
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  .patient-pill {
-    display: inline-flex;
-    align-items: center;
-    min-height: 42px;
-    padding: 0.4rem 1.05rem;
-    border-radius: var(--radius);
-    background: var(--brand);
-    color: var(--white);
-    font-weight: 700;
-    font-size: 0.87rem;
-    white-space: nowrap;
-    transition: background 0.15s ease;
-  }
-
-  .patient-pill:hover {
-    background: var(--brand-deep);
-  }
-
-  .nav-toggle {
-    display: none;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    background: var(--white);
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    z-index: 60;
-  }
-
-  .nav-toggle[aria-expanded='true'] {
-    background: var(--brand);
-    border-color: var(--brand);
-  }
-
-  .nav-toggle[aria-expanded='true'] .burger i {
-    background: #fff;
-  }
-
-  .burger {
-    display: grid;
-    gap: 5px;
-    width: 18px;
-  }
-
-  .burger i {
-    display: block;
-    height: 2px;
-    background: var(--ink);
-    border-radius: 2px;
-    transition: transform 0.18s ease, opacity 0.18s ease;
-  }
-
-  .nav-toggle[aria-expanded='true'] .burger i:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-
-  .nav-toggle[aria-expanded='true'] .burger i:nth-child(2) {
-    opacity: 0;
-  }
-
-  .nav-toggle[aria-expanded='true'] .burger i:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
-
-  /* ——— mobile drawer ——— */
-  @media (max-width: 980px) {
-    .nav-toggle {
-      display: inline-flex;
-    }
-
-    .header-shell {
-      min-height: 66px;
-    }
-
-    .nav-stage {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 55;
-      background: var(--white);
-      flex-direction: column;
-      align-items: stretch;
-      padding: 86px var(--gutter) 2rem;
-      gap: 1.1rem;
-      transform: translateY(-8px);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: transform 0.22s ease, opacity 0.22s ease, visibility 0.22s ease;
-      overflow: auto;
-      overscroll-behavior: contain;
-    }
-
-    .nav-stage[data-open='true'] {
-      transform: translateY(0);
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    .nav-list {
-      flex-direction: column;
-    }
-
-    .nav-link {
-      width: 100%;
-      justify-content: space-between;
-      min-height: 50px;
-      font-size: 1.02rem;
-      border-radius: var(--radius);
-    }
-
-    .mega {
-      position: static;
-      translate: none;
-      min-width: 0;
-      margin-top: 0.4rem;
-      box-shadow: none;
-      display: none;
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    .mega.open {
-      display: block;
-      translate: none;
-    }
-
-    .mega-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .patient-pill {
-      justify-content: center;
-      min-height: 48px;
-    }
-  }
-</style>

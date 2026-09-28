@@ -1,43 +1,12 @@
-# Astro Starter Kit: Minimal
+# Nafas Zist Pharmed website (Astro)
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Persian (RTL) corporate site for نفس زیست فارمد.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command | Action |
+| :-- | :-- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Dev server at `localhost:4321` |
+| `npm run build` | Build to `./dist/` (deployed by `.github/workflows/deploy.yml`) |
+| `npm run preview` | Preview the build |
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Design rationale: `DESIGN_PLAN.md`. Change log, tokens, fonts, placeholders: `REDESIGN_NOTES.md`.

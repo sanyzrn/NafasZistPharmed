@@ -1,249 +1,90 @@
 ---
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteForm from '../components/SiteForm.astro';
 import { site } from '../data/site';
 ---
 
 <Base title="تماس با نفس" description="ارتباط با نفس زیست فارمد — تماس، نشانی‌ها و فرم پیام.">
-  <section class="hero">
-    <div class="container">
-      <p class="tag">در ارتباط باشیم</p>
-      <h1 class="display">تماس با نفس</h1>
-      <p class="lead">ارتباط فقط یک تماس نیست؛ شروع یک همکاری علمی، درمانی و حرفه‌ای است.</p>
-    </div>
-  </section>
+  <PageIntro
+    title="تماس با نفس"
+    lead="ارتباط فقط یک تماس نیست؛ شروع یک همکاری علمی، درمانی و حرفه‌ای است."
+  />
 
-  <section class="section-tight">
-    <div class="container">
-      <div class="intro">
-        <h2>صدای شما را می‌شنویم</h2>
-        <p>
+  <section class="section" aria-labelledby="direct-title">
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id="direct-title">صدای شما را می‌شنویم</h2>
+        <p class="heading__lead">
           در نفس زیست فارمد باور داریم ارتباط مؤثر، پایه‌گذار همکاری‌های ماندگار است. تیم ما آماده پاسخگویی به پزشکان،
           داروسازان، مراکز درمانی، شرکت‌های پخش و تمامی همکاران تجاری در سریع‌ترین زمان ممکن است.
         </p>
-        <div class="quick">
-          <a class="quick-item" href={site.phoneHref}>
-            <span class="q-label">تلفن</span>
-            <strong dir="ltr">{site.phone}</strong>
-          </a>
-          <a class="quick-item" href={site.emailHref}>
-            <span class="q-label">ایمیل</span>
-            <strong dir="ltr">{site.email}</strong>
+      </div>
+      <div class="direct">
+        <a class="direct__item" href={site.phoneHref}>
+          <span class="direct__label">تلفن</span>
+          <bdi class="direct__value" dir="ltr">{site.phone}</bdi>
+        </a>
+        <a class="direct__item" href={site.emailHref}>
+          <span class="direct__label">ایمیل</span>
+          <bdi class="direct__value" dir="ltr">{site.email}</bdi>
+        </a>
+      </div>
+      <p class="heading__lead">برای پرسش درباره محصولات، همکاری‌های علمی و امور توزیع با ما در تماس باشید.</p>
+    </div>
+  </section>
+
+  <section class="section section--air" aria-labelledby="places-title">
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id="places-title">دو نشانی، یک مسیر مشترک</h2>
+      </div>
+      <div class="places">
+        <div class="place">
+          <h3 class="place__title">دفتر مرکزی</h3>
+          <address class="place__addr">{site.hq}</address>
+          <a class="btn btn--quiet" href={site.mapHq} target="_blank" rel="noopener noreferrer">
+            <Icon name="pin" />
+            مسیریابی دفتر مرکزی
           </a>
         </div>
-        <p class="note">برای پرسش درباره محصولات، همکاری‌های علمی و امور توزیع با ما در تماس باشید.</p>
+        <div class="place">
+          <h3 class="place__title">کارخانه</h3>
+          <address class="place__addr">{site.factory}</address>
+          <a class="btn btn--quiet" href={site.mapFactory} target="_blank" rel="noopener noreferrer">
+            <Icon name="pin" />
+            مسیریابی کارخانه
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section-tight addrs-sec">
-    <div class="container">
-      <p class="tag">نشانی‌های نفس</p>
-      <h2 class="display">دو نشانی، یک مسیر مشترک</h2>
-      <div class="grid-2 addrs">
-        <article class="addr-card">
-          <h3>دفتر مرکزی</h3>
-          <p>{site.hq}</p>
-          <a class="btn btn-ghost" href={site.mapHq} target="_blank" rel="noopener noreferrer">مسیریابی دفتر مرکزی</a>
-        </article>
-        <article class="addr-card">
-          <h3>کارخانه</h3>
-          <p>{site.factory}</p>
-          <a class="btn btn-ghost" href={site.mapFactory} target="_blank" rel="noopener noreferrer">مسیریابی کارخانه</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section form-section">
-    <div class="container">
-      <div class="grid-2 form-grid">
-        <div>
-          <p class="tag">گفت‌وگو با نفس</p>
-          <h2 class="display">برای ما بنویسید</h2>
-          <p class="lead">
-            موضوع پیام و راه ارتباطی خود را وارد کنید تا همکاران مرتبط بتوانند درخواست شما را پیگیری کنند.
-          </p>
-          <div class="side-cards">
-            <div class="side-card">
-              <h3>راه‌های دیگر ارتباط</h3>
-              <p>تازه‌های نفس را در شبکه‌های اجتماعی دنبال کنید.</p>
-              <div class="social-links">
-                <a href={site.instagram} target="_blank" rel="noopener noreferrer">اینستاگرام</a>
-                <a href={site.linkedin} target="_blank" rel="noopener noreferrer">لینکدین</a>
-                <a href={site.bale} target="_blank" rel="noopener noreferrer">بله</a>
-              </div>
-            </div>
-            <div class="side-card">
-              <h3>همکاری با نفس</h3>
-              <p>برای پیوستن به تیم نفس، رزومه خود را ارسال کنید.</p>
-              <a class="btn btn-primary" href={site.jobs} target="_blank" rel="noopener noreferrer">ارسال رزومه</a>
-            </div>
+  <section class="section" aria-label="گفت‌وگو با نفس">
+    <div class="container split">
+      <div class="stack" style="--stack-gap: var(--sp-7)">
+        <div class="stack" style="--stack-gap: var(--sp-3)">
+          <h2 class="pathways__title">راه‌های دیگر ارتباط</h2>
+          <p class="pathways__text">تازه‌های نفس را در شبکه‌های اجتماعی دنبال کنید.</p>
+          <ul class="socials">
+            <li><a class="link" href={site.instagram} target="_blank" rel="noopener noreferrer">اینستاگرام</a></li>
+            <li><a class="link" href={site.linkedin} target="_blank" rel="noopener noreferrer">لینکدین</a></li>
+            <li><a class="link" href={site.bale} target="_blank" rel="noopener noreferrer">بله</a></li>
+          </ul>
+        </div>
+        <div class="stack" style="--stack-gap: var(--sp-3)">
+          <h2 class="pathways__title">همکاری با نفس</h2>
+          <p class="pathways__text">برای پیوستن به تیم نفس، رزومه خود را ارسال کنید.</p>
+          <div>
+            <a class="btn btn--quiet" href={site.jobs} target="_blank" rel="noopener noreferrer">
+              ارسال رزومه
+              <Icon name="external" />
+            </a>
           </div>
         </div>
-
-        <form class="form" action="#" method="post">
-          <label>نام و نام خانوادگی<input type="text" name="name" required /></label>
-          <label>شماره تماس<input type="tel" name="phone" required /></label>
-          <label>ایمیل<input type="email" name="email" /></label>
-          <label>
-            موضوع پیام
-            <select name="topic">
-              <option>اطلاعات محصولات</option>
-              <option>همکاری علمی</option>
-              <option>امور توزیع و همکاری تجاری</option>
-              <option>سایر موضوعات</option>
-            </select>
-          </label>
-          <label>پیام شما<textarea name="message" rows="5" required></textarea></label>
-          <button class="btn btn-primary" type="submit">ارسال پیام</button>
-        </form>
       </div>
+      <SiteForm kind="contact" />
     </div>
   </section>
 </Base>
-
-<style>
-  .hero {
-    padding-block: clamp(2.75rem, 6vw, 4.5rem);
-    background: var(--fog);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .intro {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 1.8rem;
-  }
-
-  .quick {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.85rem;
-    margin: 1.2rem 0;
-  }
-
-  .quick-item {
-    display: grid;
-    gap: 0.2rem;
-    padding: 1.05rem 1.2rem;
-    border-radius: var(--radius);
-    background: color-mix(in srgb, var(--brand) 6%, white);
-    border: 1px solid color-mix(in srgb, var(--brand) 18%, white);
-  }
-
-  .q-label {
-    color: var(--brand);
-    font-size: 0.8rem;
-    font-weight: 800;
-  }
-
-  .quick-item strong {
-    color: var(--ink);
-    font-size: 1.1rem;
-  }
-
-  .note {
-    color: var(--stone);
-    margin: 0;
-  }
-
-  .addrs-sec {
-    padding-top: 0;
-  }
-
-  .addrs {
-    align-items: stretch;
-  }
-
-  .addr-card {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 1.6rem;
-  }
-
-  .addr-card h3 {
-    color: var(--brand);
-    font-size: 1.25rem;
-  }
-
-  .addr-card .btn {
-    margin-top: 0.5rem;
-  }
-
-  .form-section {
-    background: var(--fog);
-  }
-
-  .form-grid {
-    align-items: start;
-  }
-
-  .side-cards {
-    display: grid;
-    gap: 0.85rem;
-    margin-top: 1.4rem;
-  }
-
-  .side-card {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 1.2rem;
-  }
-
-  .side-card h3 {
-    font-size: 1rem;
-  }
-
-  .social-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .social-links a {
-    color: var(--brand);
-    font-weight: 800;
-  }
-
-  .form {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 1.6rem;
-  }
-
-  .form label {
-    display: grid;
-    gap: 0.3rem;
-    margin-bottom: 0.9rem;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  .form input,
-  .form select,
-  .form textarea {
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 0.72rem 0.9rem;
-    background: var(--fog);
-  }
-
-  .form input:focus,
-  .form select:focus,
-  .form textarea:focus {
-    border-color: var(--brand);
-    background: #fff;
-    outline: none;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 12%, white);
-  }
-
-  @media (max-width: 720px) {
-    .quick {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

@@ -1,0 +1,25 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+const names: Record<string, string> = { fa: 'فارسی', en: 'English', ru: 'Русский', ar: 'العربية' };
+---
+
+<nav class={`langs ${className}`} aria-label="زبان سایت">
+  {site.languages.map((lang) =>
+    lang.active ? (
+      <span class="langs__item" aria-current="true" lang={lang.code}>
+        {lang.label}
+      </span>
+    ) : (
+      <a class="langs__item" href={lang.href} hreflang={lang.code} lang={lang.code} title={names[lang.code]}>
+        <span aria-hidden="true">{lang.label}</span>
+        <span class="sr-only">{names[lang.code]}</span>
+      </a>
+    )
+  )}
+</nav>

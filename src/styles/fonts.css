@@ -1,0 +1,11 @@
+/* Estedad (SIL Open Font License 1.1) — self-hosted, subset to Persian/Arabic,
+   Basic Latin, Latin-1 and general punctuation. Variable weight 100–900.
+   See /public/fonts/estedad/OFL.txt */
+@font-face {
+  font-family: 'Estedad';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/estedad/Estedad-wght.subset.woff2') format('woff2-variations'),
+    url('/fonts/estedad/Estedad-wght.subset.woff2') format('woff2');
+}

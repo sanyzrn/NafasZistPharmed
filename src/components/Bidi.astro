@@ -1,0 +1,17 @@
+---
+/**
+ * Renders Persian text with every Latin run (drug names, abbreviations such
+ * as COPD, DPI, M3) wrapped in an isolated <bdi lang="en">, so surrounding
+ * Persian punctuation keeps its correct side.
+ */
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+const LATIN_RUN = /([A-Za-z][A-Za-z0-9+\-.'’ ]*[A-Za-z0-9]|[A-Za-z])/g;
+const parts = text.split(LATIN_RUN).filter((part) => part !== '');
+const isLatin = (part: string) => /^[A-Za-z]/.test(part);
+---
+
+{parts.map((part) => (isLatin(part) ? <bdi lang="en" class="latin">{part}</bdi> : part))}

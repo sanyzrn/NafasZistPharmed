@@ -1,0 +1,68 @@
+---
+/** Labelled form control with an error slot wired through aria-describedby. */
+interface Props {
+  id: string;
+  label: string;
+  name: string;
+  as?: 'input' | 'textarea' | 'select';
+  type?: 'text' | 'tel' | 'email';
+  required?: boolean;
+  autocomplete?: string;
+  inputmode?: 'text' | 'tel' | 'email' | 'numeric';
+  dir?: 'ltr' | 'rtl' | 'auto';
+  rows?: number;
+  options?: { value: string; label: string }[];
+}
+
+const {
+  id,
+  label,
+  name,
+  as = 'input',
+  type = 'text',
+  required = false,
+  autocomplete,
+  inputmode,
+  dir,
+  rows = 4,
+  options = [],
+} = Astro.props;
+const errorId = `${id}-error`;
+---
+
+<div class="field">
+  <label class="field__label" for={id}>
+    {label}
+    {!required && <span class="field__optional"> (اختیاری)</span>}
+  </label>
+  {as === 'textarea' && (
+    <textarea
+      class="field__input"
+      id={id}
+      name={name}
+      rows={rows}
+      required={required}
+      aria-describedby={errorId}
+      dir={dir}
+    ></textarea>
+  )}
+  {as === 'select' && (
+    <select class="field__input" id={id} name={name} required={required} aria-describedby={errorId}>
+      {options.map((o) => <option value={o.value}>{o.label}</option>)}
+    </select>
+  )}
+  {as === 'input' && (
+    <input
+      class="field__input"
+      id={id}
+      name={name}
+      type={type}
+      required={required}
+      autocomplete={autocomplete}
+      inputmode={inputmode}
+      dir={dir}
+      aria-describedby={errorId}
+    />
+  )}
+  <p class="field__error" id={errorId} aria-live="polite"></p>
+</div>

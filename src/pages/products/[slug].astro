@@ -1,6 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { products, productCategories } from '../../data/site';
+import Bidi from '../../components/Bidi.astro';
+import Icon from '../../components/Icon.astro';
+import ProductIndex from '../../components/ProductIndex.astro';
+import { products, type Product } from '../../data/site';
 
 export function getStaticPaths() {
   return products.map((product) => ({
@@ -9,347 +12,130 @@ export function getStaticPaths() {
   }));
 }
 
+interface Props {
+  product: Product;
+}
+
 const { product } = Astro.props;
-const related = products.filter((p) => p.slug !== product.slug).slice(0, 3);
+const related = products.filter((p) => p.slug !== product.slug).slice(0, 3).map((p) => p.slug);
+const docKind = (href: string) => (href.toLowerCase().endsWith('.mp4') ? 'video' : 'pdf');
 ---
 
 <Base title={product.name} description={`${product.name} — ${product.subtitle}`}>
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <p class="tag">{product.category}</p>
-        <h1 class="display">{product.name}</h1>
-        <p class="subtitle">{product.subtitle}</p>
-        <p class="lead">{product.summary}</p>
+  <section class="product-hero" aria-labelledby="product-title">
+    <div class="container stack" style="--stack-gap: var(--sp-6)">
+      <nav aria-label="مسیر صفحه">
+        <ol class="crumbs">
+          <li class="crumbs__item"><a href="/">صفحه نخست</a></li>
+          <li class="crumbs__item"><a href="/#products">محصولات</a></li>
+          <li class="crumbs__item"><span aria-current="page">{product.name}</span></li>
+        </ol>
+      </nav>
 
-        <dl class="meta">
-          {product.meta.map((m) => (
-            <div>
-              <dt>{m.label}</dt>
-              <dd>{m.value}</dd>
-            </div>
-          ))}
-        </dl>
+      <div class="product-hero__grid">
+        <div class="product-hero__copy">
+          <p class="product-hero__cat">{product.category}</p>
+          <h1 class="product-hero__title" id="product-title">
+            {product.name}
+            {product.latinName && (
+              <bdi class="product-hero__latin" lang="en" dir="ltr">
+                {product.latinName}
+              </bdi>
+            )}
+          </h1>
+          <p class="product-hero__subtitle"><Bidi text={product.subtitle} /></p>
+          <p class="product-hero__summary"><Bidi text={product.summary} /></p>
 
-        {product.catalogs && (
-          <div class="catalogs">
-            {product.catalogs.map((c) => (
-              <a class="btn btn-line" href={c.href} target="_blank" rel="noopener noreferrer">{c.label}</a>
+          <dl class="spec">
+            {product.meta.map((m) => (
+              <div class="spec__row">
+                <dt class="spec__term">{m.label}</dt>
+                <dd class="spec__value"><Bidi text={m.value} /></dd>
+              </div>
             ))}
-          </div>
-        )}
-      </div>
+          </dl>
 
-      <div class="product-visual">
-        <div class="visual-plate" aria-hidden="true"></div>
-        <img src={product.image} alt={product.name} />
+          {product.catalogs && (
+            <ul class="docs" aria-label="کاتالوگ و آموزش">
+              {product.catalogs.map((c) => (
+                <li>
+                  <a class="link" href={c.href} target="_blank" rel="noopener noreferrer">
+                    <Icon name={docKind(c.href) === 'video' ? 'play' : 'doc'} />
+                    {c.label}
+                    <span class="sr-only">
+                      {docKind(c.href) === 'video' ? '(ویدئو، در پنجره تازه)' : '(فایل PDF، در پنجره تازه)'}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <figure class="product-visual">
+          <img src={product.image} alt={`بسته‌بندی ${product.name}`} width="800" height="800" decoding="async" />
+        </figure>
       </div>
     </div>
   </section>
 
-  <section class="section-tight">
-    <div class="container content-grid">
-      <aside class="toc">
-        <p class="toc-title">فهرست مطالب</p>
-        <ul>
+  <section class="section" aria-label="اطلاعات محصول">
+    <div class="container reading">
+      <nav class="toc" aria-labelledby="toc-title">
+        <p class="toc__title" id="toc-title">فهرست مطالب</p>
+        <ul class="toc__list">
           {product.sections.map((s, i) => (
-            <li><a href={`#s${i}`}>{s.title}</a></li>
+            <li>
+              <a class="toc__link" href={`#s${i}`} data-toc-link>
+                <Bidi text={s.title} />
+              </a>
+            </li>
           ))}
         </ul>
-      </aside>
+      </nav>
 
-      <article class="prose">
-        {product.sections.map((s, i) => (
-          <section id={`s${i}`} class="block">
-            <h2>{s.title}</h2>
-            {s.body && <p>{s.body}</p>}
-            {s.items && (
-              <ul class="items">
-                {s.items.map((item) => <li>{item}</li>)}
-              </ul>
-            )}
-          </section>
-        ))}
-      </article>
+      <div class="stack" style="--stack-gap: var(--sp-6)">
+        <div class="blocks">
+          {product.sections.map((s, i) => (
+            <section class="block" id={`s${i}`} aria-labelledby={`s${i}-title`} data-toc-section>
+              <h2 class="block__title" id={`s${i}-title`}>
+                <Bidi text={s.title} />
+              </h2>
+              {s.body && (
+                <p>
+                  <Bidi text={s.body} />
+                </p>
+              )}
+              {s.items && (
+                <ul class="bullets">
+                  {s.items.map((item) => (
+                    <li class="bullets__item">
+                      <Bidi text={item} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
+        <p class="notice">
+          اطلاعات این صفحه برای آشنایی است و جایگزین تجویز و راهنمایی پزشک یا داروساز نیست.
+        </p>
+      </div>
     </div>
   </section>
 
-  <section class="section-tight related">
-    <div class="container">
-      <div class="section-head">
-        <p class="tag">سایر محصولات</p>
-        <div class="cat-chips">
-          {productCategories.map((c) => (
-            <span class="chip">{c.key}</span>
-          ))}
-        </div>
+  <section class="section section--air" aria-labelledby="related-title">
+    <div class="container section-body">
+      <div class="heading">
+        <h2 class="heading__title" id="related-title">سایر محصولات</h2>
       </div>
-      <div class="grid-3">
-        {related.map((p) => (
-          <a class="rel-card" href={`/products/${p.slug}`}>
-            <div class="rel-media">
-              <img src={p.image} alt={p.name} loading="lazy" />
-            </div>
-            <div class="rel-body">
-              <p class="chip">{p.category}</p>
-              <h3>{p.name}</h3>
-              <p>{p.subtitle}</p>
-              <span class="text-link">اطلاعات محصول</span>
-            </div>
-          </a>
-        ))}
-      </div>
+      <ProductIndex only={related} />
     </div>
   </section>
 </Base>
 
-<style>
-  .hero {
-    padding-block: clamp(2.5rem, 6vw, 4.25rem);
-    background: var(--white);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: clamp(1.5rem, 4vw, 3rem);
-    align-items: center;
-  }
-
-  .subtitle {
-    color: var(--brand);
-    font-size: 1.08rem;
-    font-weight: 800;
-    margin-bottom: 0.7rem;
-  }
-
-  .meta {
-    display: grid;
-    gap: 0.55rem;
-    margin: 1.4rem 0;
-  }
-
-  .meta > div {
-    display: grid;
-    grid-template-columns: 118px 1fr;
-    gap: 0.7rem;
-    padding: 0.75rem 0.95rem;
-    background: var(--fog);
-    border-radius: var(--radius);
-  }
-
-  .meta dt {
-    color: var(--brand);
-    font-weight: 800;
-    font-size: 0.86rem;
-  }
-
-  .meta dd {
-    margin: 0;
-    color: var(--ink-soft);
-    font-size: 0.93rem;
-  }
-
-  .catalogs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .product-visual {
-    position: relative;
-    display: grid;
-    place-items: center;
-    min-height: 330px;
-  }
-
-  .visual-plate {
-    position: absolute;
-    inset-inline: 0;
-    top: 12%;
-    bottom: 12%;
-    background: var(--fog);
-    border-radius: var(--radius-lg);
-  }
-
-  .product-visual img {
-    position: relative;
-    max-height: 340px;
-    width: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 18px 28px rgba(31, 31, 29, 0.14));
-  }
-
-  .content-grid {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 1.75rem;
-    align-items: start;
-  }
-
-  .toc {
-    position: sticky;
-    top: 100px;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 1.2rem;
-  }
-
-  .toc-title {
-    font-weight: 800;
-    color: var(--ink);
-    margin-bottom: 0.8rem;
-  }
-
-  .toc ul {
-    display: grid;
-    gap: 0.25rem;
-  }
-
-  .toc a {
-    display: block;
-    padding: 0.4rem 0.6rem;
-    border-radius: var(--radius);
-    color: var(--ink-soft);
-    font-size: 0.88rem;
-    font-weight: 600;
-    transition: background 0.14s ease, color 0.14s ease;
-  }
-
-  .toc a:hover {
-    background: color-mix(in srgb, var(--brand) 7%, white);
-    color: var(--brand);
-  }
-
-  .block {
-    padding-block: 1.3rem;
-    border-bottom: 1px solid var(--line);
-    scroll-margin-top: 100px;
-  }
-
-  .block:first-child {
-    padding-top: 0;
-  }
-
-  .block:last-child {
-    border-bottom: 0;
-  }
-
-  .block h2 {
-    font-size: 1.28rem;
-    color: var(--ink);
-  }
-
-  .block p {
-    line-height: 2;
-  }
-
-  .items {
-    display: grid;
-    gap: 0.5rem;
-  }
-
-  .items li {
-    position: relative;
-    padding-inline-start: 1.3rem;
-    color: var(--ink-soft);
-    line-height: 1.9;
-  }
-
-  .items li::before {
-    content: "";
-    position: absolute;
-    inset-inline-start: 0;
-    top: 0.72rem;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--brand);
-  }
-
-  .related {
-    background: var(--fog);
-  }
-
-  .cat-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .chip {
-    display: inline-flex;
-    padding: 0.2rem 0.65rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--brand) 7%, white);
-    color: var(--brand);
-    font-size: 0.76rem;
-    font-weight: 700;
-  }
-
-  .rel-card {
-    display: block;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: box-shadow 0.16s ease, border-color 0.16s ease;
-  }
-
-  .rel-card:hover {
-    border-color: color-mix(in srgb, var(--brand) 40%, white);
-    box-shadow: var(--shadow-md);
-  }
-
-  .rel-media {
-    background: var(--white);
-    border-bottom: 1px solid var(--line);
-    padding: 1.15rem;
-    min-height: 160px;
-    display: grid;
-    place-items: center;
-  }
-
-  .rel-media img {
-    max-height: 120px;
-    width: auto;
-    object-fit: contain;
-  }
-
-  .rel-body {
-    padding: 1.05rem 1.15rem 1.25rem;
-  }
-
-  .rel-body h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .rel-body p {
-    font-size: 0.87rem;
-  }
-
-  .text-link {
-    display: inline-block;
-    margin-top: 0.5rem;
-    font-size: 0.88rem;
-  }
-
-  @media (max-width: 900px) {
-    .hero-grid,
-    .content-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .toc {
-      position: static;
-    }
-
-    .meta > div {
-      grid-template-columns: 1fr;
-      gap: 0.25rem;
-    }
-  }
-</style>
+<script>
+  import { initToc } from '../../scripts/toc';
+  initToc();
+</script>

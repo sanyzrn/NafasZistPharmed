@@ -1,9 +1,8 @@
 ---
 import '../styles/global.css';
-import TopBar from '../components/TopBar.astro';
-import Header from '../components/Header.astro';
 import BottomNav from '../components/BottomNav.astro';
 import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
 }
 
 const { title, description = `${site.name} — ${site.tagline}` } = Astro.props;
-const path = Astro.url.pathname;
+const fullTitle = `${title} | ${site.name}`;
 ---
 
 <!doctype html>
@@ -20,59 +19,36 @@ const path = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#b61615" />
+    <meta name="color-scheme" content="light" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fa_IR" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="alternate" hreflang="en" href="https://en.nafaspharmed.com/" />
+    <link rel="alternate" hreflang="ru" href="https://ru.nafaspharmed.com/" />
+    <link rel="alternate" hreflang="ar" href="https://ar.nafaspharmed.com/" />
     <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
+      rel="preload"
+      href="/fonts/estedad/Estedad-wght.subset.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap"
-    />
-    <title>{title} | {site.name}</title>
   </head>
   <body>
     <a class="skip-link" href="#content">پرش به محتوا</a>
-    <TopBar />
     <Header />
-    <main id="content">
+    <main id="content" tabindex="-1">
       <slot />
     </main>
     <Footer />
     <BottomNav />
   </body>
 </html>
-
-<style is:global>
-  .skip-link {
-    position: fixed;
-    inset-inline-start: unset;
-    left: 50%;
-    transform: translateX(-50%) translateY(-200%);
-    top: 0.75rem;
-    background: var(--brand);
-    color: #fff;
-    padding: 0.6rem 1rem;
-    border-radius: var(--radius, 6px);
-    z-index: 100;
-    transition: transform 0.15s ease;
-  }
-
-  .skip-link:focus {
-    transform: translateX(-50%) translateY(0);
-  }
-
-  html,
-  body,
-  button,
-  input,
-  select,
-  textarea,
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font);
-  }
-</style>
