@@ -123,7 +123,7 @@ export function initDock(): void {
     sheet.toggleAttribute('inert', !open);
     track?.place(open ? toggle : current());
     if (open) {
-      window.setTimeout(() => sheet.querySelector<HTMLElement>('a')?.focus({ preventScroll: true }), 380);
+      window.setTimeout(() => sheet.querySelector<HTMLElement>('a')?.focus({ preventScroll: true }), 190);
     } else if (focusBack) {
       toggle.focus({ preventScroll: true });
     }

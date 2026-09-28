@@ -2965,7 +2965,7 @@
       backdrop-filter: blur(3px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 400ms var(--ease-out);
+      transition: opacity 200ms var(--ease-out);
     }
 
     .dock-scrim[data-open='true'] {
@@ -3018,14 +3018,14 @@
   .dock__drop {
     background: var(--dock-bg);
     transform: translateY(0) scale(0.55, 0.4);
-    transition: transform 640ms cubic-bezier(0.5, 0, 0.75, 0);
-    transition-delay: calc((var(--n) - 1 - var(--k)) * 40ms);
+    transition: transform 320ms cubic-bezier(0.5, 0, 0.75, 0);
+    transition-delay: calc((var(--n) - 1 - var(--k)) * 20ms);
   }
 
   .dock[data-open='true'] .dock__drop {
     transform: translateY(calc(-1 * (var(--bar-h) / 2 + var(--drop-h) / 2 + var(--drop-gap) + var(--k) * (var(--drop-h) + var(--drop-gap))))) scale(1);
-    transition: transform 900ms cubic-bezier(0.34, 1.45, 0.5, 1);
-    transition-delay: calc(var(--k) * 70ms);
+    transition: transform 450ms cubic-bezier(0.34, 1.45, 0.5, 1);
+    transition-delay: calc(var(--k) * 35ms);
   }
 
   .dock__products {
@@ -3037,15 +3037,15 @@
   .dock__pitem {
     opacity: 0;
     transform: translateY(0);
-    transition: opacity 200ms var(--ease-out), transform 640ms cubic-bezier(0.5, 0, 0.75, 0);
+    transition: opacity 100ms var(--ease-out), transform 320ms cubic-bezier(0.5, 0, 0.75, 0);
   }
 
   .dock[data-open='true'] .dock__pitem {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(calc(-1 * (var(--bar-h) / 2 + var(--drop-h) / 2 + var(--drop-gap) + var(--k) * (var(--drop-h) + var(--drop-gap)))));
-    transition: opacity 360ms var(--ease-out) calc(var(--k) * 70ms + 260ms),
-      transform 900ms cubic-bezier(0.34, 1.45, 0.5, 1) calc(var(--k) * 70ms);
+    transition: opacity 180ms var(--ease-out) calc(var(--k) * 35ms + 130ms),
+      transform 450ms cubic-bezier(0.34, 1.45, 0.5, 1) calc(var(--k) * 35ms);
   }
 
   .dock__plink {
