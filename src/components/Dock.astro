@@ -47,9 +47,6 @@ const sheetId = `dock-products-${locale}`;
     {list.map((p, i) => (
       <li class="dock__pitem" style={`--i:${i}`}>
         <a class="dock__plink" href={withLocale(`/products/${p.slug}`, locale)}>
-          <span class="dock__pthumb" aria-hidden="true">
-            <img src={p.image} alt="" width="64" height="64" loading="lazy" decoding="async" />
-          </span>
           <span class="dock__pname">{p.name}</span>
           <span class="dock__pcat">{t(`cat_${p.categoryKey}` as never)}</span>
         </a>
