@@ -1,0 +1,92 @@
+---
+/**
+ * Mobile bottom navigation ("the dock"). Below 1024px only.
+ *
+ * Built in two stacked layers that share one layout:
+ *  - a liquid layer (SVG goo filter) holding the bar and one drop per
+ *    product, plus a separate liquid layer for the red active indicator;
+ *  - a crisp content layer with the real links on top.
+ * Tapping "Products" lets the products drip up out of the bar as droplets
+ * that pull free and settle into a list (src/scripts/goo.ts → initDock).
+ */
+import { nav, products } from '../data/site';
+import type { Locale } from '../i18n/index';
+import { makeT, withLocale } from '../i18n/index';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const icons = { '/': 'home', '/#products': 'box', '/about': 'person', '/contact': 'phone' } as const;
+const home = withLocale('/', locale);
+const isCurrent = (href: string) =>
+  href === home ? path === home || path === '/' : path === href || path.startsWith(`${href}/`);
+const inProducts = path.startsWith('/products') || path.startsWith(`/${locale}/products`);
+const items = nav(locale).map((item) => ({ ...item, raw: item.href, href: withLocale(item.href, locale) }));
+const list = products(locale);
+const sheetId = `dock-products-${locale}`;
+---
+
+<div class="dock-scrim" data-dock-scrim aria-hidden="true"></div>
+<nav class="dock" data-dock aria-label={t('mobileNavLabel')} style={`--n:${list.length}`}>
+  <div class="dock__liquid" aria-hidden="true">
+    <span class="dock__bar"></span>
+    {list.map((_, i) => <span class="dock__drop" style={`--i:${i}`}></span>)}
+  </div>
+  <div class="dock__liquid dock__liquid--ink" aria-hidden="true">
+    <span class="goo-head" data-goo-head></span>
+    <span class="goo-mid" data-goo-mid></span>
+    <span class="goo-tail" data-goo-tail></span>
+  </div>
+
+  <ul class="dock__products" id={sheetId} data-dock-products inert>
+    {list.map((p, i) => (
+      <li class="dock__pitem" style={`--i:${i}`}>
+        <a class="dock__plink" href={withLocale(`/products/${p.slug}`, locale)}>
+          <span class="dock__pthumb" aria-hidden="true">
+            <img src={p.image} alt="" width="64" height="64" loading="lazy" decoding="async" />
+          </span>
+          <span class="dock__pname">{p.name}</span>
+          <span class="dock__pcat">{t(`cat_${p.categoryKey}` as never)}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <ul class="dock__items" data-goo-track>
+    {items.map((item) =>
+      item.hasMenu ? (
+        <li>
+          <button
+            class="dock__item"
+            type="button"
+            aria-expanded="false"
+            aria-controls={sheetId}
+            data-dock-toggle
+            data-goo-item
+            data-current={inProducts ? 'true' : undefined}
+          >
+            <Icon name={icons[item.raw as keyof typeof icons]} />
+            <span>{t(item.short)}</span>
+          </button>
+        </li>
+      ) : (
+        <li>
+          <a
+            class="dock__item"
+            href={item.href}
+            data-goo-item
+            aria-current={isCurrent(item.href) ? 'page' : undefined}
+          >
+            <Icon name={icons[item.raw as keyof typeof icons]} />
+            <span>{t(item.short)}</span>
+          </a>
+        </li>
+      )
+    )}
+  </ul>
+</nav>

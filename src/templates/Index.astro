@@ -152,8 +152,12 @@ const count = t('productsCount').replace('{n}', digits(String(products(locale).l
         <p class="lead">{t('formsLead')}</p>
       </div>
       <div class="forms" data-tabs>
-        <div class="tabs" role="tablist" aria-label={t('formsTabs')}>
-          <span class="tabs__ink" aria-hidden="true"></span>
+        <div class="tabs" role="tablist" aria-label={t('formsTabs')} data-chip-goo>
+          <span class="liquid liquid--s tabs__liquid" aria-hidden="true">
+            <span class="goo-head" data-goo-head></span>
+            <span class="goo-mid" data-goo-mid></span>
+            <span class="goo-tail" data-goo-tail></span>
+          </span>
           <button class="tabs__tab" type="button" role="tab" id="tab-report" aria-controls="panel-report" aria-selected="true">
             {t('formReportTitle')}
           </button>

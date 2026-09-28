@@ -206,6 +206,21 @@
     border-color: var(--c-ink);
   }
 
+  .chip-liquid {
+    --goo-color: var(--c-ink);
+  }
+
+  .index__filter .chip {
+    position: relative;
+    transition: color 400ms var(--ease-out), border-color var(--dur-quick);
+  }
+
+  .index__filter[data-goo-ready] .chip[aria-pressed='true'] {
+    background: transparent;
+    border-color: transparent;
+    color: var(--c-bg);
+  }
+
   .chip[aria-pressed='true'] {
     background: var(--c-ink);
     border-color: var(--c-ink);
@@ -215,6 +230,66 @@
   .chip__count {
     font-size: var(--fs-xs);
     opacity: 0.6;
+  }
+
+  /* ───────────── liquid (goo) primitives ─────────────
+     shapes in a .liquid layer fuse like drops (filters in Base.astro) */
+  .goo-defs {
+    position: absolute;
+    inline-size: 0;
+    block-size: 0;
+    overflow: hidden;
+  }
+
+  .liquid {
+    position: absolute;
+    inset: 0;
+    filter: url(#goo);
+    pointer-events: none;
+  }
+
+  .liquid--s {
+    filter: url(#goo-s);
+  }
+
+  .goo-head,
+  .goo-mid,
+  .goo-tail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--w, 0);
+    height: var(--h, 0);
+    border-radius: var(--r-pill);
+    background: var(--goo-color, var(--c-ink));
+    transform: translate(var(--x, 0), var(--y, 0));
+    opacity: 0;
+    transition: transform 340ms var(--ease-out), width 340ms var(--ease-out), height 340ms var(--ease-out),
+      opacity 260ms var(--ease-out);
+  }
+
+  /* mid and tail lag behind the head, so a moving drop stretches into a
+     liquid bridge, thins, and snaps back together at the target */
+  .goo-mid {
+    transition-duration: 480ms, 480ms, 480ms, 260ms;
+    transition-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+
+  .goo-tail {
+    transition-duration: 640ms, 640ms, 640ms, 260ms;
+    transition-timing-function: cubic-bezier(0.55, 0, 0.2, 1);
+  }
+
+  .goo-head[data-on='true'],
+  .goo-mid[data-on='true'],
+  .goo-tail[data-on='true'] {
+    opacity: 1;
+  }
+
+  .goo-head[data-instant],
+  .goo-mid[data-instant],
+  .goo-tail[data-instant] {
+    transition: none !important;
   }
 
   /* ───────────── brand ───────────── */
@@ -350,8 +425,17 @@
   }
 
   .nav__list {
+    position: relative;
     display: flex;
     gap: var(--sp-1);
+  }
+
+  .nav__liquid {
+    --goo-color: var(--c-surface-2);
+  }
+
+  .nav__item {
+    z-index: 1;
   }
 
   .nav__item {
@@ -373,7 +457,7 @@
     transition: background-color var(--dur-quick) var(--ease-out);
   }
 
-  .nav__link:hover {
+  html:not(.js) .nav__link:hover {
     background: var(--c-line);
   }
 
@@ -509,41 +593,84 @@
     margin-block-start: var(--sp-5);
   }
 
-  /* theme toggle */
-  .theme-toggle {
-    display: inline-grid;
-    place-items: center;
-    inline-size: 2.75rem;
-    block-size: 2.75rem;
+  /* theme switch: the knob is liquid and stretches as it crosses */
+  .switch {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    inline-size: 3.5rem;
+    block-size: 2rem;
+    margin-inline: var(--sp-1);
     padding: 0;
     border: 0;
     border-radius: var(--r-pill);
-    background: transparent;
+    background: var(--c-ink);
+    direction: ltr;
+  }
+
+  .switch__knob,
+  .switch__tail {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--c-bg);
+    transition: translate 420ms var(--ease-out), scale 300ms var(--ease-out);
+  }
+
+  .switch__knob {
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .switch__tail {
+    top: 6px;
+    left: 6px;
+    width: 20px;
+    height: 20px;
+    transition-duration: 820ms, 300ms;
+    transition-timing-function: cubic-bezier(0.7, 0, 0.2, 1), var(--ease-out);
+  }
+
+  .switch:hover .switch__knob {
+    scale: 1.08;
+  }
+
+  .switch:active .switch__knob {
+    scale: 1.2 0.9;
+  }
+
+  :root[data-theme='dark'] .switch__knob,
+  :root[data-theme='dark'] .switch__tail {
+    translate: 24px 0;
+  }
+
+  .switch__icon {
+    position: absolute;
+    top: 9px;
+    width: 14px;
+    height: 14px;
     color: var(--c-ink);
-    transition: background-color var(--dur-quick) var(--ease-out);
+    transition: opacity 300ms var(--ease-out) 150ms, translate 420ms var(--ease-out);
   }
 
-  .theme-toggle:hover {
-    background: var(--c-line);
+  .switch__icon--sun {
+    left: 9px;
   }
 
-  .theme-toggle__icon {
-    grid-area: 1 / 1;
-    inline-size: 1.2rem;
-    block-size: 1.2rem;
+  .switch__icon--moon {
+    left: 9px;
     opacity: 0;
-    scale: 0.4;
-    rotate: -90deg;
-    transition: opacity var(--dur-soft) var(--ease-out), scale var(--dur-soft) var(--ease-out),
-      rotate var(--dur-slow) var(--ease-out);
   }
 
-  :root[data-color-mode='light'] .theme-toggle__icon--sun,
-  :root[data-color-mode='dark'] .theme-toggle__icon--moon,
-  :root[data-color-mode='system'] .theme-toggle__icon--system {
+  :root[data-theme='dark'] .switch__icon--sun {
+    opacity: 0;
+    translate: 24px 0;
+  }
+
+  :root[data-theme='dark'] .switch__icon--moon {
     opacity: 1;
-    scale: 1;
-    rotate: 0deg;
+    translate: 24px 0;
   }
 
   /* languages */
@@ -1295,6 +1422,7 @@
   }
 
   .index__filter {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: var(--sp-2);
@@ -1404,25 +1532,55 @@
     color: var(--c-ink-soft);
   }
 
-  .index__go {
+  /* arrow: a liquid circle that leans a drop toward the pointer */
+  .index__gowrap {
+    position: relative;
     display: grid;
     place-items: center;
     inline-size: 3rem;
     block-size: 3rem;
-    border: 1px solid var(--c-line-strong);
-    border-radius: 50%;
-    transition: background-color var(--dur-soft), color var(--dur-soft), border-color var(--dur-soft),
-      rotate var(--dur-soft) var(--ease-out);
+    --goo-color: var(--c-surface-2);
   }
 
-  .index__row:hover .index__go {
-    background: var(--c-btn);
-    border-color: var(--c-btn);
+  .index__goliquid {
+    inset: 0;
+  }
+
+  .index__go,
+  .index__godrop {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--goo-color);
+    transition: background-color var(--dur-soft);
+  }
+
+  .index__go {
+    inset: 0;
+  }
+
+  .index__godrop {
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    margin: -9px;
+  }
+
+  .index__gowrap .icon {
+    position: relative;
+    transition: rotate var(--dur-soft) var(--ease-out), color var(--dur-soft);
+  }
+
+  .index__row:hover .index__gowrap {
+    --goo-color: var(--c-btn);
     color: #fff;
+  }
+
+  .index__row:hover .index__gowrap .icon {
     rotate: -45deg;
   }
 
-  [dir='rtl'] .index__row:hover .index__go {
+  [dir='rtl'] .index__row:hover .index__gowrap .icon {
     rotate: 45deg;
   }
 
@@ -1728,19 +1886,8 @@
     border: 1px solid var(--c-line);
   }
 
-  .tabs__ink {
-    position: absolute;
-    inset-block: 4px;
-    inset-inline-start: 4px;
-    inline-size: calc(50% - 4px);
-    border-radius: var(--r-pill);
-    background: var(--c-ink);
-    translate: calc(var(--tab, 0) * -100%) 0;
-    transition: translate var(--dur-soft) var(--ease-out);
-  }
-
-  [dir='ltr'] .tabs__ink {
-    translate: calc(var(--tab, 0) * 100%) 0;
+  .tabs__liquid {
+    --goo-color: var(--c-ink);
   }
 
   .tabs__tab {
@@ -2780,5 +2927,218 @@
     display: grid;
     gap: var(--sp-5);
     max-inline-size: 40rem;
+  }
+
+  /* ───────────── mobile dock (bottom nav) ─────────────
+     one liquid layer holds the bar + a drop per product; a second holds
+     the red active drop; links sit crisp on top */
+  .dock,
+  .dock-scrim {
+    display: none;
+  }
+
+  @media (max-width: 1023px) {
+    .dock {
+      --dock-bg: light-dark(#0c2a35, #173a46);
+      --bar-h: 4rem;
+      --drop-h: 3.25rem;
+      --drop-gap: 0.875rem;
+      position: fixed;
+      z-index: 45;
+      inset-inline: 0;
+      inset-block-end: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+      display: block;
+      inline-size: min(100% - 1.5rem, 26rem);
+      block-size: var(--bar-h);
+      margin-inline: auto;
+      color: #e3ecee;
+      view-transition-name: dock;
+    }
+
+    .dock-scrim {
+      position: fixed;
+      inset: 0;
+      z-index: 44;
+      display: block;
+      background: rgba(8, 28, 36, 0.35);
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 400ms var(--ease-out);
+    }
+
+    .dock-scrim[data-open='true'] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* keep the end of every page clear of the dock */
+    .site-footer {
+      padding-block-end: calc(var(--sp-5) + 5.5rem);
+    }
+  }
+
+  /* tall box so the filter region covers the risen drops */
+  .dock__liquid {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: calc(var(--bar-h) + var(--n) * (var(--drop-h) + var(--drop-gap)) + 2rem);
+    filter: url(#goo);
+    pointer-events: none;
+  }
+
+  .dock__liquid--ink {
+    block-size: var(--bar-h);
+    filter: url(#goo-s);
+    --goo-color: #b61615;
+  }
+
+  .dock__bar {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: var(--bar-h);
+    border-radius: var(--r-pill);
+    background: var(--dock-bg);
+  }
+
+  /* k = distance from the bar (0 = the drop nearest to it) */
+  .dock__drop,
+  .dock__pitem {
+    --k: calc(var(--n) - 1 - var(--i));
+    position: absolute;
+    inset-inline: 0.5rem;
+    inset-block-end: calc((var(--bar-h) - var(--drop-h)) / 2);
+    block-size: var(--drop-h);
+    border-radius: var(--r-pill);
+  }
+
+  .dock__drop {
+    background: var(--dock-bg);
+    transform: translateY(0) scale(0.55, 0.4);
+    transition: transform 640ms cubic-bezier(0.5, 0, 0.75, 0);
+    transition-delay: calc((var(--n) - 1 - var(--k)) * 40ms);
+  }
+
+  .dock[data-open='true'] .dock__drop {
+    transform: translateY(calc(-1 * (var(--bar-h) / 2 + var(--drop-h) / 2 + var(--drop-gap) + var(--k) * (var(--drop-h) + var(--drop-gap))))) scale(1);
+    transition: transform 900ms cubic-bezier(0.34, 1.45, 0.5, 1);
+    transition-delay: calc(var(--k) * 70ms);
+  }
+
+  .dock__products {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .dock__pitem {
+    opacity: 0;
+    transform: translateY(0);
+    transition: opacity 200ms var(--ease-out), transform 640ms cubic-bezier(0.5, 0, 0.75, 0);
+  }
+
+  .dock[data-open='true'] .dock__pitem {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(calc(-1 * (var(--bar-h) / 2 + var(--drop-h) / 2 + var(--drop-gap) + var(--k) * (var(--drop-h) + var(--drop-gap)))));
+    transition: opacity 360ms var(--ease-out) calc(var(--k) * 70ms + 260ms),
+      transform 900ms cubic-bezier(0.34, 1.45, 0.5, 1) calc(var(--k) * 70ms);
+  }
+
+  .dock__plink {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    block-size: 100%;
+    padding-inline: 0.4rem var(--sp-4);
+    border-radius: inherit;
+    font-weight: var(--fw-bold);
+  }
+
+  .dock__pthumb {
+    inline-size: 2.4rem;
+    block-size: 2.4rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(227, 236, 238, 0.12);
+  }
+
+  .dock__pthumb img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .dock__pcat {
+    margin-inline-start: auto;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-regular);
+    color: #93aeb7;
+  }
+
+  .dock__plink:focus-visible {
+    outline-color: #e3ecee;
+    outline-offset: -3px;
+  }
+
+  .dock__items {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    padding: 0.375rem;
+  }
+
+  .dock__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    inline-size: 100%;
+    block-size: calc(var(--bar-h) - 0.75rem);
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: #93aeb7;
+    font-size: 0.72rem;
+    font-weight: var(--fw-medium);
+    line-height: 1.3;
+    transition: color 300ms var(--ease-out);
+  }
+
+  .dock__item .icon {
+    inline-size: 1.3rem;
+    block-size: 1.3rem;
+    transition: translate 400ms var(--ease-out);
+  }
+
+  .dock__item[aria-current='page'],
+  .dock__item[data-current='true'],
+  .dock__item[aria-expanded='true'] {
+    color: #fff;
+  }
+
+  .dock__item[aria-expanded='true'] .icon {
+    translate: 0 -2px;
+  }
+
+  .dock__item:focus-visible {
+    outline-color: #e3ecee;
+    outline-offset: -2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dock__drop,
+    .dock__pitem {
+      transition-delay: 0s !important;
+    }
   }
 }

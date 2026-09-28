@@ -31,6 +31,19 @@
 - One red only: every red/pink/salmon value is now `#B61615` (pressed shade `#8E1110`).
   On dark surfaces, red *text* becomes ink (contrast), red stays on marks/lines/fills.
 
+### Phase 3.2 — liquid (gooey) effect + mobile dock
+- SVG goo filters (`#goo`, `#goo-s` in Base.astro) + `src/scripts/goo.ts`. Shapes live in a
+  `.liquid` layer (blurred, alpha-thresholded, source redrawn on top); text/icons sit in a
+  crisp layer above, so nothing you read is ever blurred.
+- Mobile bottom dock (`Dock.astro`, <1024px): red liquid indicator flows between items
+  (head/mid/tail chain stretches into a bridge). "Products" makes each product drip up out
+  of the bar and pull free into a list; scrim/Escape/link tap close it.
+- Header: theme toggle is now a liquid switch (light ↔ dark, remembered); desktop nav has a
+  liquid hover indicator.
+- Elsewhere: category filter chips and the home form tabs use the flowing drop; product-row
+  arrows lean a droplet toward the cursor.
+- New dict key `mobileNavLabel` (all locales).
+
 ## Phase 1 notes (historical)
 
 ## Assumptions (one line each)

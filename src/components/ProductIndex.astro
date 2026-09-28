@@ -36,7 +36,12 @@ const uid = `idx-${locale}-${only ? only.join('-') : 'all'}`;
 
 <div class="index" data-index={uid} data-preview-list>
   {filter && groups.length > 1 && (
-    <div class="index__filter" role="group" aria-label={t('filterAll')}>
+    <div class="index__filter" role="group" aria-label={t('filterAll')} data-chip-goo>
+      <span class="liquid liquid--s chip-liquid" aria-hidden="true">
+        <span class="goo-head" data-goo-head></span>
+        <span class="goo-mid" data-goo-mid></span>
+        <span class="goo-tail" data-goo-tail></span>
+      </span>
       <button class="chip" type="button" data-filter="*" aria-pressed="true">{t('filterAll')}</button>
       {groups.map((group) => (
         <button class="chip" type="button" data-filter={group.key} aria-pressed="false">
@@ -77,7 +82,11 @@ const uid = `idx-${locale}-${only ? only.join('-') : 'all'}`;
                   </bdi>
                 )}
               </span>
-              <span class="index__go" aria-hidden="true">
+              <span class="index__gowrap" aria-hidden="true">
+                <span class="liquid liquid--s index__goliquid">
+                  <span class="index__go"></span>
+                  <span class="index__godrop" data-go-drop></span>
+                </span>
                 <Icon name="arrow" />
               </span>
             </a>
