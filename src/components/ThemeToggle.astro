@@ -1,0 +1,44 @@
+---
+/**
+ * Theme toggle: cycles light → dark → system, stores the explicit choice in
+ * localStorage (key: nzp-theme), and announces the new state via a polite
+ * live region. All labels come from the locale dictionary.
+ */
+import type { Locale } from '../i18n/index';
+import { makeT } from '../i18n/index';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+---
+
+<button
+  class="theme-toggle"
+  type="button"
+  data-theme-toggle
+  aria-label={t('themeToggleLabel')}
+  data-label-light={t('themeLight')}
+  data-label-dark={t('themeDark')}
+  data-label-system={t('themeSystem')}
+>
+  <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false">
+    <circle cx="12" cy="12" r="4.2" />
+    <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6" />
+  </svg>
+  <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" />
+  </svg>
+  <svg class="theme-toggle__icon theme-toggle__icon--system" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <rect x="3" y="5" width="18" height="12" rx="2" />
+    <path d="M9 21h6M12 17v4" />
+  </svg>
+  <span class="sr-only" data-theme-status role="status" aria-live="polite"></span>
+</button>
+
+<script>
+  import { initThemeToggle } from '../scripts/theme';
+  initThemeToggle();
+</script>

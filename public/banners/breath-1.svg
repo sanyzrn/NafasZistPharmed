@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1080" preserveAspectRatio="xMidYMid slice">
+  <!-- PLACEHOLDER banner 1 (light): breath arcs rising from a mouthpiece -->
+  <defs>
+    <radialGradient id="glow1" cx="30%" cy="80%" r="60%">
+      <stop offset="0" stop-color="#B61615" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#B61615" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="2400" height="1080" fill="#EDF1F2"/>
+  <rect width="2400" height="1080" fill="url(#glow1)"/>
+  <g transform="translate(300 820)" fill="none" stroke="#B61615" stroke-linecap="round">
+    <path d="M0 0 C60 -240 160 -360 300 -360 S540 -240 600 0" stroke-width="10" opacity="0.8"/>
+    <path d="M120 0 C165 -170 235 -255 340 -255 S515 -170 560 0" stroke-width="7" opacity="0.55"/>
+    <path d="M240 0 C275 -110 320 -165 385 -165 S495 -110 530 0" stroke-width="5" opacity="0.35"/>
+    <circle cx="300" cy="-430" r="16" fill="#B61615" stroke="none"/>
+  </g>
+  <g font-family="Tahoma, sans-serif" fill="#55616A" font-size="34">
+    <text x="300" y="960">PLACEHOLDER — real product banner goes here</text>
+  </g>
+</svg>

@@ -1,32 +1,47 @@
 ---
-import { nav, productCategories, products, site } from '../data/site';
+import { nav, productCategories, site } from '../data/site';
+import type { Locale } from '../i18n/index';
+import { localeMeta, makeT, withLocale } from '../i18n/index';
 import Icon from './Icon.astro';
 import Langs from './Langs.astro';
 import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+const dir = localeMeta[locale].dir;
+const siteData = site(locale);
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => {
   if (href.includes('#')) return false;
-  if (href === '/') return path === '/';
-  return path.startsWith(href);
+  if (href === '/') return path === '/' || path === `/${locale}`;
+  return path === href || path.startsWith(`${href}/`);
 };
-const inProducts = path.startsWith('/products');
-const latinOf = (slug: string) => products.find((p) => p.slug === slug)?.latinName;
+const inProducts = path.startsWith('/products') || path.startsWith(`/${locale}/products`);
+const navItems = nav(locale).map((item) => ({
+  ...item,
+  href: withLocale(item.href, locale),
+}));
 ---
 
 <header class="site-header">
   <div class="container site-header__bar">
-    <a class="brand" href="/" aria-label={`${site.name}، صفحه نخست`}>
+    <a class="brand" href={withLocale('/', locale)} aria-label={`${siteData.name}، ${t('home')}`}>
       <Logo class="brand__mark" />
       <span class="brand__text">
-        <span class="brand__name">{site.name}</span>
-        <span class="brand__latin" lang="en" dir="ltr">{site.nameEn}</span>
+        <span class="brand__name">{siteData.name}</span>
+        <span class="brand__latin" lang="en" dir="ltr">{siteData.nameEn}</span>
       </span>
     </a>
 
-    <nav class="nav" aria-label="ناوبری اصلی">
+    <nav class="nav" aria-label={t('mainNav')}>
       <ul class="nav__list">
-        {nav.map((item) =>
+        {navItems.map((item) =>
           item.hasMenu ? (
             <li class="nav__item" data-menu>
               <button
@@ -36,22 +51,22 @@ const latinOf = (slug: string) => products.find((p) => p.slug === slug)?.latinNa
                 aria-controls="products-menu"
                 data-current={inProducts ? 'true' : undefined}
               >
-                {item.label}
+                {t('products')}
                 <Icon name="chevron" class="nav__chev" />
               </button>
               <div class="menu" id="products-menu" data-open="false">
                 <div class="menu__grid">
-                  {productCategories.map((cat) => (
+                  {productCategories(locale).map((cat) => (
                     <div>
-                      <p class="menu__cat">{cat.key}</p>
+                      <p class="menu__cat">{t(`cat_${cat.key}` as never)}</p>
                       <ul>
                         {cat.items.map((p) => (
                           <li>
-                            <a class="menu__link" href={`/products/${p.slug}`}>
+                            <a class="menu__link" href={withLocale(`/products/${p.slug}`, locale)}>
                               <span class="menu__name">{p.name}</span>
-                              {latinOf(p.slug) && (
+                              {p.latinName && (
                                 <span class="menu__latin" lang="en" dir="ltr">
-                                  {latinOf(p.slug)}
+                                  {p.latinName}
                                 </span>
                               )}
                             </a>
@@ -61,8 +76,8 @@ const latinOf = (slug: string) => products.find((p) => p.slug === slug)?.latinNa
                     </div>
                   ))}
                 </div>
-                <a class="menu__all link" href="/#products">
-                  فهرست کامل محصولات
+                <a class="menu__all link" href={withLocale('/#products', locale)}>
+                  {t('allProducts')}
                   <Icon name="arrow" />
                 </a>
               </div>
@@ -70,7 +85,7 @@ const latinOf = (slug: string) => products.find((p) => p.slug === slug)?.latinNa
           ) : (
             <li class="nav__item">
               <a class="nav__link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-                {item.label}
+                {t(item.key)}
               </a>
             </li>
           )
@@ -79,15 +94,16 @@ const latinOf = (slug: string) => products.find((p) => p.slug === slug)?.latinNa
     </nav>
 
     <div class="site-header__tools">
-      <a class="header-phone" href={site.phoneHref}>
-        <span class="sr-only">تلفن: </span>
-        <bdi dir="ltr">{site.phone}</bdi>
+      <a class="header-phone" href={siteData.phoneHref}>
+        <span class="sr-only">{t('phoneLabel')}: </span>
+        <bdi dir="ltr">{siteData.phone}</bdi>
       </a>
-      <a class="btn btn--quiet portal-link" href={site.patientPortal} target="_blank" rel="noopener noreferrer">
-        آموزش و حمایت بیمار
-        <span class="sr-only">(در پنجره تازه باز می‌شود)</span>
+      <a class="btn btn--quiet portal-link" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
+        {t('patientPortalCta')}
+        <span class="sr-only">{t('inNewWindow')}</span>
       </a>
-      <Langs />
+      <ThemeToggle {locale} />
+      <Langs current={locale} />
     </div>
   </div>
 </header>

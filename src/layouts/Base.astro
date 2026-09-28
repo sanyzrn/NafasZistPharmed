@@ -4,51 +4,101 @@ import BottomNav from '../components/BottomNav.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../data/site';
+import { locales, localeMeta, makeT, withLocale, type Locale } from '../i18n/index';
+import { bootstrapScript } from '../scripts/theme';
 
 interface Props {
+  locale: Locale;
   title: string;
   description?: string;
+  /** Path without locale prefix, used for hreflang alternates. */
+  path?: string;
 }
 
-const { title, description = `${site.name} — ${site.tagline}` } = Astro.props;
-const fullTitle = `${title} | ${site.name}`;
+const { locale, title, description, path: contentPath } = Astro.props;
+const t = makeT(locale);
+const dir = localeMeta[locale].dir;
+const siteData = site(locale);
+const fullTitle = `${title} | ${siteData.nameEn}`;
+const url = Astro.url;
+const canonicalPath = withLocale(contentPath ?? url.pathname, locale);
+const canonical = new URL(canonicalPath, url.origin).href;
+const ogLocale = localeMeta[locale].og;
+
+const alt = (target: Locale) => new URL(withLocale(contentPath ?? url.pathname, target), url.origin).href;
+const themeColorLight = '#fafbfb';
+const themeColorDark = '#10171b';
 ---
 
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang={locale} dir={dir} data-theme="light" data-color-mode="system">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Sets data-theme/data-color-mode before first paint; keeps JS-off sites on the system theme. -->
+    <script is:inline set:html={bootstrapScript} />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#b61615" />
-    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content={themeColorLight} media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content={themeColorDark} media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="fa_IR" />
-    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:site_name" content={siteData.nameEn} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {locales.map((code) => (
+      <link rel="alternate" hreflang={code} href={alt(code)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={alt('fa')} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="alternate" hreflang="en" href="https://en.nafaspharmed.com/" />
-    <link rel="alternate" hreflang="ru" href="https://ru.nafaspharmed.com/" />
-    <link rel="alternate" hreflang="ar" href="https://ar.nafaspharmed.com/" />
-    <link
-      rel="preload"
-      href="/fonts/estedad/Estedad-wght.subset.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+    {locale === 'fa' && (
+      <link
+        rel="preload"
+        href="/fonts/estedad/Estedad-wght.subset.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin="anonymous"
+      />
+    )}
+    {locale === 'en' && (
+      <link
+        rel="preload"
+        href="/fonts/ibm-plex-sans/ibm-plex-sans-latin-wght-normal.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin="anonymous"
+      />
+    )}
+    {locale === 'ru' && (
+      <link
+        rel="preload"
+        href="/fonts/ibm-plex-sans/ibm-plex-sans-cyrillic-wght-normal.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin="anonymous"
+      />
+    )}
+    {locale === 'ar' && (
+      <link
+        rel="preload"
+        href="/fonts/ibm-plex-sans-arabic/ibm-plex-sans-arabic-arabic-400-normal.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin="anonymous"
+      />
+    )}
   </head>
   <body>
-    <a class="skip-link" href="#content">پرش به محتوا</a>
-    <Header />
+    <a class="skip-link" href="#content">{t('skipToContent')}</a>
+    <Header {locale} />
     <main id="content" tabindex="-1">
       <slot />
     </main>
-    <Footer />
-    <BottomNav />
+    <Footer {locale} />
+    <BottomNav {locale} />
   </body>
 </html>

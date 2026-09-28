@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ProductIndex from '../components/ProductIndex.astro';
+import { makeT, withLocale } from '../i18n/index';
+import type { Locale } from '../i18n/index';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+const path = locale === 'fa' ? '/404' : `/${locale}/404`;
+---
+
+<Base locale={locale} title={t('notFoundTitle')} description={t('notFoundLead')} path={path}>
+  <section class="section">
+    <div class="container section-body">
+      <div class="lost">
+        <h1 class="page-intro__title">{t('notFoundHeading')}</h1>
+        <p class="page-intro__lead measure">{t('notFoundLead')}</p>
+        <div class="actions">
+          <a class="btn btn--primary" href={withLocale('/', locale)}>
+            {t('notFoundHome')}
+            <Icon name="arrow" />
+          </a>
+          <a class="btn btn--quiet" href={withLocale('/contact', locale)}>{t('notFoundContact')}</a>
+        </div>
+      </div>
+      <ProductIndex {locale} headingLevel="h2" />
+    </div>
+  </section>
+</Base>

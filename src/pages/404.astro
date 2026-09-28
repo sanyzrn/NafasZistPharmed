@@ -1,27 +1,7 @@
 ---
-import Base from '../layouts/Base.astro';
-import Icon from '../components/Icon.astro';
-import ProductIndex from '../components/ProductIndex.astro';
+import NotFoundContent from '../templates/NotFound.astro';
+
+const locale = 'fa' as const;
 ---
 
-<Base title="صفحه پیدا نشد" description="صفحه‌ای که دنبال آن بودید در سایت نفس زیست فارمد پیدا نشد.">
-  <section class="section">
-    <div class="container section-body">
-      <div class="lost">
-        <h1 class="page-intro__title">این صفحه پیدا نشد</h1>
-        <p class="page-intro__lead measure">
-          نشانی را بررسی کنید یا از فهرست محصولات زیر شروع کنید. اگر از یک پیوند قدیمی به اینجا رسیده‌اید، از صفحه تماس
-          به ما خبر دهید.
-        </p>
-        <div class="actions">
-          <a class="btn btn--primary" href="/">
-            رفتن به صفحه نخست
-            <Icon name="arrow" />
-          </a>
-          <a class="btn btn--quiet" href="/contact">تماس با نفس</a>
-        </div>
-      </div>
-      <ProductIndex headingLevel="h2" />
-    </div>
-  </section>
-</Base>
+<NotFoundContent {locale} />

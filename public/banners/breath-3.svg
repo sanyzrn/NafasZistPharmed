@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1080" preserveAspectRatio="xMidYMid slice">
+  <!-- PLACEHOLDER banner 3 (light): dawn horizon, clean air -->
+  <defs>
+    <radialGradient id="dawn3" cx="50%" cy="72%" r="55%">
+      <stop offset="0" stop-color="#B61615" stop-opacity="0.14"/>
+      <stop offset="0.6" stop-color="#B61615" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#B61615" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="2400" height="1080" fill="#EDF1F2"/>
+  <rect width="2400" height="1080" fill="url(#dawn3)"/>
+  <g stroke="#B61615" fill="none" stroke-linecap="round">
+    <path d="M900 760 C1000 620 1400 620 1500 760" stroke-width="9" opacity="0.8"/>
+    <path d="M980 760 C1050 670 1350 670 1420 760" stroke-width="6" opacity="0.5"/>
+    <path d="M1050 760 C1100 710 1300 710 1350 760" stroke-width="4" opacity="0.3"/>
+    <circle cx="1200" cy="600" r="22" fill="#B61615" stroke="none"/>
+  </g>
+  <g font-family="Tahoma, sans-serif" fill="#55616A" font-size="34">
+    <text x="300" y="960">PLACEHOLDER — real product banner goes here</text>
+  </g>
+</svg>
