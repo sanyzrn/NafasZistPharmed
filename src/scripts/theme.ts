@@ -24,7 +24,7 @@ export function applyMode(mode: ColorMode): void {
 }
 
 /** Inline, blocking bootstrap for the <head>: never flashes the wrong theme. */
-export const bootstrapScript = `(function(){try{var m=localStorage.getItem('nzp-theme');if(m!=='light'&&m!=='dark'&&m!=='system')m='system';var d=m==='dark'||(m==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);var de=document.documentElement;de.dataset.theme=d?'dark':'light';de.dataset.colorMode=m;}catch(e){}})();`;
+export const bootstrapScript = `(function(){document.documentElement.classList.add('js');try{var m=localStorage.getItem('nzp-theme');if(m!=='light'&&m!=='dark'&&m!=='system')m='system';var d=m==='dark'||(m==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);var de=document.documentElement;de.dataset.theme=d?'dark':'light';de.dataset.colorMode=m;}catch(e){}})();`;
 
 export function initThemeToggle(): void {
   const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');

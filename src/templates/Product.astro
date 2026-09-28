@@ -32,117 +32,120 @@ const catalogLabel = (key: string): string => {
 ---
 
 <Base locale={locale} title={product.name} description={`${product.name} — ${product.subtitle}`} path={`/products/${product.slug}`}>
-  <section class="product-hero" aria-labelledby={`product-${product.slug}`}>
-    <div class="container stack" style="--stack-gap: var(--sp-6)">
-      <nav aria-label={t('breadcrumbNav')}>
-        <ol class="crumbs">
-          <li class="crumbs__item"><a href={withLocale('/', locale)}>{t('breadcrumbHome')}</a></li>
-          <li class="crumbs__item"><a href={withLocale('/#products', locale)}>{t('breadcrumbProducts')}</a></li>
-          <li class="crumbs__item"><span aria-current="page">{product.name}</span></li>
-        </ol>
-      </nav>
-
-      <div class="product-hero__grid">
-        <div class="product-hero__copy">
-          <p class="product-hero__cat">{t(`cat_${product.categoryKey}`)}</p>
-          <h1 class="product-hero__title" id={`product-${product.slug}`}>
-            {product.name}
-            {product.latinName && (
-              <bdi class="product-hero__latin" lang="en" dir="ltr">
-                {product.latinName}
-              </bdi>
-            )}
-          </h1>
-          <p class="product-hero__subtitle"><Bidi text={product.subtitle} /></p>
-          <p class="product-hero__summary"><Bidi text={product.summary} /></p>
-
-          <dl class="spec">
-            {product.meta.map((m) => (
-              <div class="spec__row">
-                <dt class="spec__term">{m.label}</dt>
-                <dd class="spec__value"><Bidi text={m.value} /></dd>
-              </div>
-            ))}
-          </dl>
-
-          {product.catalogs && (
-            <ul class="docs" aria-label={t('productDocsLabel')}>
-              {product.catalogs.map((c) => (
-                <li>
-                  <a class="link" href={c.href} target="_blank" rel="noopener noreferrer">
-                    <Icon name={docKind(c.href) === 'video' ? 'play' : 'doc'} />
-                    {catalogLabel(c.key)}
-                    <span class="sr-only">
-                      {docKind(c.href) === 'video' ? t('videoFile') : t('pdfFile')}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+  <section class="p-hero" aria-labelledby={`product-${product.slug}`}>
+    <canvas class="p-hero__canvas" data-particles data-shape="halo" data-exhale="false" aria-hidden="true"></canvas>
+    <div class="container p-hero__grid">
+      <div class="p-hero__copy">
+        <nav aria-label={t('breadcrumbNav')}>
+          <ol class="crumbs">
+            <li class="crumbs__item"><a href={withLocale('/', locale)}>{t('breadcrumbHome')}</a></li>
+            <li class="crumbs__item"><a href={withLocale('/#products', locale)}>{t('breadcrumbProducts')}</a></li>
+            <li class="crumbs__item"><span aria-current="page">{product.name}</span></li>
+          </ol>
+        </nav>
+        <p class="p-hero__cat">{t(`cat_${product.categoryKey}`)}</p>
+        <h1 class="p-hero__title" id={`product-${product.slug}`}>
+          <span class="p-hero__name" style={`view-transition-name: name-${product.slug}`}>{product.name}</span>
+          {product.latinName && (
+            <bdi class="p-hero__latin" lang="en" dir="ltr">
+              {product.latinName}
+            </bdi>
           )}
-        </div>
+        </h1>
+        <p class="p-hero__subtitle"><Bidi text={product.subtitle} /></p>
+        <p class="lead"><Bidi text={product.summary} /></p>
 
-        <figure class="product-visual">
+        {product.catalogs && (
+          <ul class="docs" aria-label={t('productDocsLabel')}>
+            {product.catalogs.map((c) => (
+              <li>
+                <a class="chip" href={c.href} target="_blank" rel="noopener noreferrer">
+                  <Icon name={docKind(c.href) === 'video' ? 'play' : 'doc'} />
+                  {catalogLabel(c.key)}
+                  <span class="sr-only">
+                    {docKind(c.href) === 'video' ? t('videoFile') : t('pdfFile')}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <figure class="p-hero__visual" data-particles-box data-tilt>
+        <div class="p-hero__img" style={`view-transition-name: img-${product.slug}`}>
           <img
             src={product.image}
             alt={t('productPackagingAlt').replace('{name}', product.name)}
             width="800"
             height="800"
             decoding="async"
+            fetchpriority="high"
           />
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-label={t('productInfoAria')}>
-    <div class="container reading">
-      <nav class="toc" aria-labelledby={`toc-${product.slug}`}>
-        <p class="toc__title" id={`toc-${product.slug}`}>{t('productToc')}</p>
-        <ul class="toc__list">
-          {product.sections.map((s, i) => (
-            <li>
-              <a class="toc__link" href={`#s${i}`} data-toc-link>
-                <Bidi text={s.title} />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div class="stack" style="--stack-gap: var(--sp-6)">
-        <div class="blocks">
-          {product.sections.map((s, i) => (
-            <section class="block" id={`s${i}`} aria-labelledby={`s${i}-${product.slug}`} data-toc-section>
-              <h2 class="block__title" id={`s${i}-${product.slug}`}>
-                <Bidi text={s.title} />
-              </h2>
-              {s.body && (
-                <p>
-                  <Bidi text={s.body} />
-                </p>
-              )}
-              {s.items && (
-                <ul class="bullets">
-                  {s.items.map((item) => (
-                    <li class="bullets__item">
-                      <Bidi text={item} />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-          ))}
         </div>
-        <p class="notice">{t('productDisclaimer')}</p>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--flush-top" aria-label={t('productInfoAria')}>
+    <div class="container stack" style="--stack-gap: var(--sp-8)">
+      <dl class="spec">
+        {product.meta.map((m) => (
+          <div class="spec__row">
+            <dt class="spec__term">{m.label}</dt>
+            <dd class="spec__value"><Bidi text={m.value} /></dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="reading">
+        <nav class="toc" aria-labelledby={`toc-${product.slug}`}>
+          <p class="toc__title" id={`toc-${product.slug}`}>{t('productToc')}</p>
+          <ul class="toc__list">
+            {product.sections.map((s, i) => (
+              <li>
+                <a class="toc__link" href={`#s${i}`} data-toc-link>
+                  <Bidi text={s.title} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div class="stack" style="--stack-gap: var(--sp-6)">
+          <div class="blocks">
+            {product.sections.map((s, i) => (
+              <section class="block" id={`s${i}`} aria-labelledby={`s${i}-${product.slug}`} data-toc-section>
+                <h2 class="block__title" id={`s${i}-${product.slug}`}>
+                  <Bidi text={s.title} />
+                </h2>
+                {s.body && (
+                  <p>
+                    <Bidi text={s.body} />
+                  </p>
+                )}
+                {s.items && (
+                  <ul class="bullets">
+                    {s.items.map((item) => (
+                      <li class="bullets__item">
+                        <Bidi text={item} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
+          </div>
+          <p class="notice">{t('productDisclaimer')}</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section section--air" aria-labelledby={`related-${product.slug}`}>
+  <section class="section section--surface" aria-labelledby={`related-${product.slug}`}>
     <div class="container section-body">
       <div class="heading">
-        <h2 class="heading__title" id={`related-${product.slug}`}>{t('productOther')}</h2>
+        <h2 class="display-2" id={`related-${product.slug}`}>{t('productOther')}</h2>
       </div>
       <ProductIndex {locale} only={related} />
     </div>

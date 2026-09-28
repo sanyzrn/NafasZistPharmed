@@ -1,0 +1,109 @@
+---
+/**
+ * "The path of one breath" — a real four-step sequence (so the steps are
+ * numbered). The drawing is pinned while the steps scroll; see
+ * src/scripts/story.ts for the motion. Without JS the finished drawing and
+ * all four steps are simply shown.
+ */
+import type { Locale } from '../i18n/index';
+import { digits, makeT, withLocale } from '../i18n/index';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = makeT(locale);
+const steps = [
+  { title: t('story1Title'), body: t('story1Body') },
+  { title: t('story2Title'), body: t('story2Body') },
+  { title: t('story3Title'), body: t('story3Body') },
+  { title: t('story4Title'), body: t('story4Body') },
+];
+
+// Airway routes: trachea, then down each main bronchus into upper and lower
+// lobes. Every route starts at the capsule so the dose can follow it.
+const trunk = 'M200 58 V214 C200 246';
+const routes = [
+  `${trunk} 162 262 142 298 C122 334 118 382 104 430 C96 458 86 478 72 494`,
+  `${trunk} 238 262 258 298 C278 334 282 382 296 430 C304 458 314 478 328 494`,
+  `${trunk} 162 262 142 298 C126 320 104 332 80 348`,
+  `${trunk} 238 262 258 298 C274 320 296 332 320 348`,
+];
+const twigs = [
+  'M118 392 C100 398 84 410 70 426',
+  'M282 392 C300 398 316 410 330 426',
+  'M128 336 C122 360 110 374 94 384',
+  'M272 336 C278 360 290 374 306 384',
+  'M106 446 C112 470 118 490 126 510',
+  'M294 446 C288 470 282 490 274 510',
+];
+const alveoli = [
+  [72, 494], [328, 494], [80, 348], [320, 348], [70, 426], [330, 426],
+  [94, 384], [306, 384], [126, 510], [274, 510],
+];
+---
+
+<section class="story section--night" data-story data-stage="0" aria-labelledby={`story-${locale}`}>
+  <div class="container story__head">
+    <h2 class="display-2" id={`story-${locale}`}>{t('storyTitle')}</h2>
+    <p class="lead">{t('storyLead')}</p>
+  </div>
+
+  <div class="container story__grid">
+    <div class="story__stage">
+      <svg class="story__svg" viewBox="0 0 400 560" data-story-svg aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="alv-glow">
+            <stop offset="0" stop-color="#ff5a52" stop-opacity=".9" />
+            <stop offset="1" stop-color="#ff5a52" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <g class="story__lungs">
+          <path d="M184 214 C150 206 96 236 64 304 C32 372 26 460 40 520 C52 548 100 548 140 528 C170 512 184 470 186 420 Z" />
+          <path d="M216 214 C250 206 304 236 336 304 C368 372 374 460 360 520 C348 548 300 548 260 528 C230 512 216 470 214 420 Z" />
+        </g>
+        <g class="story__airway">
+          {routes.map((d) => <path d={d} />)}
+          {twigs.map((d) => <path class="story__twig" d={d} />)}
+        </g>
+        <g class="story__trace">
+          {routes.map((d, i) => <path d={d} data-route pathLength="1" style={`--d:${i * 0.04}`} />)}
+        </g>
+        <g class="story__alveoli">
+          {alveoli.map(([x, y], i) => (
+            <g style={`--i:${i}`}>
+              <circle class="story__glow" cx={x} cy={y} r="16" fill="url(#alv-glow)" />
+              <circle cx={x} cy={y} r="5.5" />
+              <circle cx={x + 6} cy={y + 5} r="3.5" />
+              <circle cx={x - 6} cy={y + 4} r="3" />
+            </g>
+          ))}
+        </g>
+        <g class="story__capsule">
+          <rect class="story__cap story__cap--a" x="172" y="18" width="30" height="26" rx="13" />
+          <rect class="story__cap story__cap--b" x="198" y="18" width="30" height="26" rx="13" />
+        </g>
+        <g data-dose></g>
+      </svg>
+      <p class="story__note">{t('storyNote')}</p>
+    </div>
+
+    <ol class="story__steps" data-story-steps>
+      {steps.map((s, i) => (
+        <li class="story__step" data-step={i}>
+          <span class="story__num" aria-hidden="true">{digits(String(i + 1), locale)}</span>
+          <h3 class="story__title">{s.title}</h3>
+          <p class="story__body">{s.body}</p>
+          {i === steps.length - 1 && (
+            <a class="btn btn--primary" href={withLocale('/products/tio-toriva', locale)}>
+              {t('storyCta')}
+              <Icon name="arrow" />
+            </a>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

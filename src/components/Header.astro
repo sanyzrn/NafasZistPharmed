@@ -1,7 +1,7 @@
 ---
-import { nav, productCategories, site } from '../data/site';
+import { nav, productCategories, products, site } from '../data/site';
 import type { Locale } from '../i18n/index';
-import { localeMeta, makeT, withLocale } from '../i18n/index';
+import { makeT, withLocale } from '../i18n/index';
 import Icon from './Icon.astro';
 import Langs from './Langs.astro';
 import Logo from './Logo.astro';
@@ -13,13 +13,13 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = makeT(locale);
-const dir = localeMeta[locale].dir;
 const siteData = site(locale);
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => {
   if (href.includes('#')) return false;
-  if (href === '/') return path === '/' || path === `/${locale}`;
+  const home = withLocale('/', locale);
+  if (href === home) return path === home || path === '/' || path === `/${locale}`;
   return path === href || path.startsWith(`${href}/`);
 };
 const inProducts = path.startsWith('/products') || path.startsWith(`/${locale}/products`);
@@ -27,9 +27,10 @@ const navItems = nav(locale).map((item) => ({
   ...item,
   href: withLocale(item.href, locale),
 }));
+const drawerId = `drawer-${locale}`;
 ---
 
-<header class="site-header">
+<header class="site-header" data-header>
   <div class="container site-header__bar">
     <a class="brand" href={withLocale('/', locale)} aria-label={`${siteData.name}، ${t('home')}`}>
       <Logo class="brand__mark" />
@@ -57,18 +58,23 @@ const navItems = nav(locale).map((item) => ({
               <div class="menu" id="products-menu" data-open="false">
                 <div class="menu__grid">
                   {productCategories(locale).map((cat) => (
-                    <div>
+                    <div class="menu__group">
                       <p class="menu__cat">{t(`cat_${cat.key}` as never)}</p>
-                      <ul>
+                      <ul class="menu__list">
                         {cat.items.map((p) => (
                           <li>
                             <a class="menu__link" href={withLocale(`/products/${p.slug}`, locale)}>
-                              <span class="menu__name">{p.name}</span>
-                              {p.latinName && (
-                                <span class="menu__latin" lang="en" dir="ltr">
-                                  {p.latinName}
-                                </span>
-                              )}
+                              <span class="menu__thumb">
+                                <img src={p.image} alt="" width="96" height="96" loading="lazy" decoding="async" />
+                              </span>
+                              <span class="menu__text">
+                                <span class="menu__name">{p.name}</span>
+                                {p.latinName && (
+                                  <span class="menu__latin" lang="en" dir="ltr">
+                                    {p.latinName}
+                                  </span>
+                                )}
+                              </span>
                             </a>
                           </li>
                         ))}
@@ -94,19 +100,67 @@ const navItems = nav(locale).map((item) => ({
     </nav>
 
     <div class="site-header__tools">
-      <a class="header-phone" href={siteData.phoneHref}>
-        <span class="sr-only">{t('phoneLabel')}: </span>
-        <bdi dir="ltr">{siteData.phone}</bdi>
-      </a>
-      <a class="btn btn--quiet portal-link" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
+      <a class="header-portal" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
         {t('patientPortalCta')}
         <span class="sr-only">{t('inNewWindow')}</span>
       </a>
+      <Langs current={locale} class="langs--header" />
       <ThemeToggle {locale} />
+      <button
+        class="menu-btn"
+        type="button"
+        aria-expanded="false"
+        aria-controls={drawerId}
+        aria-label={t('menuOpen')}
+        data-drawer-open
+      >
+        <span class="menu-btn__lines" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+  <span class="site-header__progress" aria-hidden="true"></span>
+</header>
+
+<dialog class="drawer" id={drawerId} data-drawer aria-label={t('mainNav')}>
+  <div class="drawer__inner container">
+    <div class="drawer__top">
+      <span class="brand__name">{siteData.name}</span>
+      <button class="drawer__close" type="button" data-drawer-close aria-label={t('menuClose')}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+    </div>
+    <ul class="drawer__nav">
+      {navItems.filter((item) => !item.hasMenu).map((item, i) => (
+        <li style={`--i:${i}`}>
+          <a class="drawer__link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+            {t(item.key)}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="drawer__products">
+      <p class="drawer__label">{t('products')}</p>
+      <ul class="drawer__plist">
+        {products(locale).map((p, i) => (
+          <li style={`--i:${i + 3}`}>
+            <a href={withLocale(`/products/${p.slug}`, locale)}>
+              <span>{p.name}</span>
+              <span class="drawer__cat">{t(`cat_${p.categoryKey}` as never)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="drawer__foot">
+      <a class="link" href={siteData.phoneHref}><Icon name="phone" /><bdi dir="ltr">{siteData.phone}</bdi></a>
+      <a class="link" href={siteData.patientPortal} target="_blank" rel="noopener noreferrer">
+        {t('patientPortalCta')}
+        <Icon name="external" />
+      </a>
       <Langs current={locale} />
     </div>
   </div>
-</header>
+</dialog>
 
 <script>
   import { initProductMenu } from '../scripts/menu';

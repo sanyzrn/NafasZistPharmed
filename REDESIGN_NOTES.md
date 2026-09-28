@@ -1,5 +1,25 @@
 # Redesign notes
 
+## Phase 3 — "Particle & Breath" (current)
+- New visual system and tokens (`src/styles/tokens.css`), all pages rebuilt: see `DESIGN_PLAN.md`.
+- New scripts: `particles.ts` (powder-field canvas: hero word, product halo, 404),
+  `story.ts` (pinned breath story), `interactions.ts` (header, mobile dialog menu, cursor
+  preview, tilt, reveals, horizontal timeline, form tabs, split titles).
+- New component `BreathStory.astro`; `Header`, `Footer`, `ProductIndex`, `PageIntro` and all
+  templates rewritten.
+- Removed: the placeholder banner slider (`HeroSlider`, `BannerSlider`, `slider.ts`,
+  `data/banners.ts`, `public/banners/*`), `BreathField`, `BottomNav` + product sheet
+  (the sheet script looked up a wrong id, so it never opened), and the unused
+  `header.css`/`bottom-nav.css`. All recoverable from git history.
+- Fixed: 28px horizontal overflow on phones.
+- New dictionary keys (all four locales): `heroWord`, `heroHint*`, `menuOpen/Close`,
+  `formsTabs`, `story*`, `productsCount`, `notFoundHint`. Slider keys removed.
+  Please have the ar/ru story copy reviewed by a native medical translator.
+
+---
+
+## Phase 1 notes (historical)
+
 ## Assumptions (one line each)
 - Only the 5 products present in `src/data/site.ts` are shown. The brief's Budesonide/Formoterol/etc. are not in the repo, so none were added.
 - The site stays Persian-only (`lang="fa" dir="rtl"`). EN/RU/AR remain links to the existing external subdomains, so no in-repo i18n was built.
