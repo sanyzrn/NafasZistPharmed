@@ -164,5 +164,6 @@
   "breathCountAfter": " breaths.",
   "breathIn": "Inhale",
   "breathOut": "Exhale",
-  "breathHint": "Press and hold to breathe in; let go to breathe out."
+  "breathHint": "Press and hold to breathe in; let go to breathe out.",
+  "mobileNavLabel": "Bottom navigation"
 }

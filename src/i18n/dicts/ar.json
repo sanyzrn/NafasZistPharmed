@@ -164,5 +164,6 @@
   "breathCountAfter": " مرة.",
   "breathIn": "شهيق",
   "breathOut": "زفير",
-  "breathHint": "اضغط مطوّلًا للشهيق، وارفع إصبعك للزفير."
+  "breathHint": "اضغط مطوّلًا للشهيق، وارفع إصبعك للزفير.",
+  "mobileNavLabel": "التنقل السفلي"
 }

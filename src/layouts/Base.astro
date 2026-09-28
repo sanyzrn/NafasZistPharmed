@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Dock from '../components/Dock.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../data/site';
@@ -92,12 +93,30 @@ const themeColorDark = '#081c24';
     )}
   </head>
   <body>
+    <!-- Liquid filters: blur, then a hard alpha threshold, so nearby shapes
+         fuse like drops of liquid; the source is drawn back on top so edges
+         stay crisp. Used by .liquid layers (src/scripts/goo.ts). -->
+    <svg class="goo-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="goo" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="goo" />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+        </filter>
+        <filter id="goo-s" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8" result="goo" />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+        </filter>
+      </defs>
+    </svg>
     <a class="skip-link" href="#content">{t('skipToContent')}</a>
     <Header {locale} />
     <main id="content" tabindex="-1">
       <slot />
     </main>
     <Footer {locale} />
+    <Dock {locale} />
     <script>
       import { initParticles } from '../scripts/particles';
       import {
@@ -112,6 +131,7 @@ const themeColorDark = '#081c24';
       } from '../scripts/interactions';
       import { initStory } from '../scripts/story';
       import { initBreathLine } from '../scripts/breath';
+      import { initChipGoo, initDock, initGoDots, initNavGoo } from '../scripts/goo';
 
       initHeader();
       initDrawer();
@@ -124,6 +144,10 @@ const themeColorDark = '#081c24';
       initHorizontal();
       initTabs();
       initBreathLine();
+      initNavGoo();
+      initDock();
+      initChipGoo();
+      initGoDots();
     </script>
   </body>
 </html>

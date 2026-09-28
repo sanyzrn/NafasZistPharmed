@@ -31,31 +31,30 @@ export function initThemeToggle(): void {
   if (!toggle) return;
 
   const status = toggle.querySelector<HTMLElement>('[data-theme-status]');
-  const labels: Record<ColorMode, string> = {
-    light: toggle.dataset.labelLight ?? 'Light',
-    dark: toggle.dataset.labelDark ?? 'Dark',
-    system: toggle.dataset.labelSystem ?? 'System',
+  const sync = () => {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    toggle.setAttribute('aria-checked', String(dark));
   };
+  sync();
 
-  const announce = (mode: ColorMode) => {
-    if (status) status.textContent = labels[mode];
-  };
-
+  // a switch: flips the theme you see now and remembers it
   toggle.addEventListener('click', () => {
-    const order: ColorMode[] = ['light', 'dark', 'system'];
-    const current = (document.documentElement.dataset.colorMode as ColorMode) || 'system';
-    const next = order[(order.indexOf(current) + 1) % order.length];
+    const next: ColorMode = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     applyMode(next);
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
       /* storage unavailable; theme still applies for this page view */
     }
-    announce(next);
+    sync();
+    if (status) status.textContent = (next === 'dark' ? toggle.dataset.labelDark : toggle.dataset.labelLight) ?? '';
   });
 
   // Follow the OS when the user has not made an explicit choice.
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (!getStoredMode() || getStoredMode() === 'system') applyMode('system');
+    if (!getStoredMode() || getStoredMode() === 'system') {
+      applyMode('system');
+      sync();
+    }
   });
 }

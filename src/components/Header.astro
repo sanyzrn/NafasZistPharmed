@@ -41,7 +41,12 @@ const drawerId = `mobile-nav-${locale}`;
     </a>
 
     <nav class="nav" aria-label={t('mainNav')}>
-      <ul class="nav__list">
+      <ul class="nav__list" data-nav-goo>
+        <li class="liquid liquid--s nav__liquid" aria-hidden="true">
+          <span class="goo-head" data-goo-head></span>
+          <span class="goo-mid" data-goo-mid></span>
+          <span class="goo-tail" data-goo-tail></span>
+        </li>
         {navItems.map((item) =>
           item.hasMenu ? (
             <li class="nav__item" data-menu>
