@@ -165,5 +165,7 @@
   "breathIn": "دم",
   "breathOut": "بازدم",
   "breathHint": "نگه دارید تا دم بگیرید؛ رها کنید برای بازدم.",
-  "mobileNavLabel": "ناوبری پایین صفحه"
+  "mobileNavLabel": "ناوبری پایین صفحه",
+  "motionStates": "مراحل سازوکار",
+  "motionPause": "توقف حرکت"
 }

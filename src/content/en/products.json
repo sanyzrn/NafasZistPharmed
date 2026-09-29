@@ -11,10 +11,22 @@
     "image": "https://nafaspharmed.com/up/wp-content/uploads/2026/05/TiotorivaSq.webp",
     "summary": "The gold-standard therapy and first-line treatment for COPD; the first mass-produced dry powder inhalation product in Iran, built on domestic know-how.",
     "meta": [
-      { "label": "Generic name", "value": "Tiotropium bromide" },
-      { "label": "Drug class", "value": "Anticholinergic, antimuscarinic, antispasmodic" },
-      { "label": "Therapeutic class", "value": "Anti-asthmatic and bronchodilator" },
-      { "label": "Dosage form", "value": "DPI inhalation capsule containing 18 micrograms of tiotropium" }
+      {
+        "label": "Generic name",
+        "value": "Tiotropium bromide"
+      },
+      {
+        "label": "Drug class",
+        "value": "Anticholinergic, antimuscarinic, antispasmodic"
+      },
+      {
+        "label": "Therapeutic class",
+        "value": "Anti-asthmatic and bronchodilator"
+      },
+      {
+        "label": "Dosage form",
+        "value": "DPI inhalation capsule containing 18 micrograms of tiotropium"
+      }
     ],
     "sections": [
       {
@@ -46,7 +58,10 @@
           "Not recommended in children under six years"
         ]
       },
-      { "title": "Drug interactions", "body": "With other anticholinergics such as atropine and ipratropium." },
+      {
+        "title": "Drug interactions",
+        "body": "With other anticholinergics such as atropine and ipratropium."
+      },
       {
         "title": "Side effects",
         "body": "Dry mouth, constipation or dizziness may occur. If they persist or worsen, inform your physician."
@@ -55,14 +70,47 @@
         "title": "Pregnancy and lactation",
         "body": "Category C in pregnancy. Information on secretion into breast milk is limited; use with caution during lactation."
       },
-      { "title": "Storage", "body": "Room temperature, away from light and moisture." },
-      { "title": "Pack contents", "body": "Each canister contains 30 tiotropium bromide inhalation capsules." }
+      {
+        "title": "Storage",
+        "body": "Room temperature, away from light and moisture."
+      },
+      {
+        "title": "Pack contents",
+        "body": "Each canister contains 30 tiotropium bromide inhalation capsules."
+      }
     ],
     "catalogs": [
-      { "key": "catalogEn", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Tiotoriva_EN_.pdf" },
-      { "key": "catalogFa", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/tiotoriva_fa.pdf" },
-      { "key": "usageVideo", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Capsulizer_Use-1.mp4" }
-    ]
+      {
+        "key": "catalogEn",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Tiotoriva_EN_.pdf"
+      },
+      {
+        "key": "catalogFa",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/tiotoriva_fa.pdf"
+      },
+      {
+        "key": "usageVideo",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Capsulizer_Use-1.mp4"
+      }
+    ],
+    "motion": {
+      "title": "Tiotropium in the airway",
+      "lead": "A bronchus in cross-section: the smooth muscle around the airway contracts through M3 receptors.",
+      "states": [
+        {
+          "label": "Untreated",
+          "caption": "Acetylcholine binds the M3 receptors of the smooth muscle; the muscle contracts and the airway narrows."
+        },
+        {
+          "label": "Tiotropium",
+          "caption": "Tiotropium takes the place of acetylcholine on the M3 receptors and stays there for a long time."
+        },
+        {
+          "label": "Open airway",
+          "caption": "The muscle relaxes, the airway widens and air flows more easily — with one dose a day."
+        }
+      ]
+    }
   },
   {
     "slug": "coldanese-plus",
@@ -76,8 +124,14 @@
     "image": "https://nafaspharmed.com/up/wp-content/uploads/2026/05/Coldanesep.webp",
     "summary": "A nasal spray with over 90% effectiveness against cold and influenza viruses; moisturises the respiratory tract and is suitable for all ages.",
     "meta": [
-      { "label": "Drug class", "value": "Herbal medicines" },
-      { "label": "Dosage form", "value": "Nasal spray containing 1.2 mg carrageenan and 50 mg xylitol per millilitre" }
+      {
+        "label": "Drug class",
+        "value": "Herbal medicines"
+      },
+      {
+        "label": "Dosage form",
+        "value": "Nasal spray containing 1.2 mg carrageenan and 50 mg xylitol per millilitre"
+      }
     ],
     "sections": [
       {
@@ -115,18 +169,51 @@
         "title": "Warnings",
         "body": "Long-term use is safe. For people over one year of age. Each bottle should be used by one person only."
       },
-      { "title": "Drug interactions", "body": "No specific drug interactions have been reported." },
-      { "title": "Pregnancy and lactation", "body": "Safe and usable during pregnancy and lactation." },
-      { "title": "Packaging", "body": "Each bottle contains 20 ml of clear, colourless solution (about 200 sprays)." },
+      {
+        "title": "Drug interactions",
+        "body": "No specific drug interactions have been reported."
+      },
+      {
+        "title": "Pregnancy and lactation",
+        "body": "Safe and usable during pregnancy and lactation."
+      },
+      {
+        "title": "Packaging",
+        "body": "Each bottle contains 20 ml of clear, colourless solution (about 200 sprays)."
+      },
       {
         "title": "Storage",
         "body": "Below 30 degrees Celsius, away from light and freezing. Clean the nozzle after each use."
       }
     ],
     "catalogs": [
-      { "key": "catalogEn", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Coldanese_EN_G.pdf" },
-      { "key": "catalogFa", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Coldanese_FA_.pdf" }
-    ]
+      {
+        "key": "catalogEn",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Coldanese_EN_G.pdf"
+      },
+      {
+        "key": "catalogFa",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Coldanese_FA_.pdf"
+      }
+    ],
+    "motion": {
+      "title": "A carrageenan shield on the nasal lining",
+      "lead": "The nasal mucosa up close: cells, cilia and the viruses that arrive with the air.",
+      "states": [
+        {
+          "label": "Unprotected",
+          "caption": "Viruses reach the surface of the nasal cells and attach to them."
+        },
+        {
+          "label": "Spray",
+          "caption": "Carrageenan strands form a physical protective layer over the mucosa, and xylitol keeps it moist."
+        },
+        {
+          "label": "Trapped",
+          "caption": "Viruses are caught in the carrageenan mesh and cleared from the nose by cilia and secretions."
+        }
+      ]
+    }
   },
   {
     "slug": "folinozit",
@@ -140,8 +227,14 @@
     "image": "https://nafaspharmed.com/up/wp-content/uploads/2026/05/foli.webp",
     "summary": "A supplement effective in improving polycystic ovary syndrome, insulin resistance and type 2 diabetes; supplies myo-inositol and folic acid.",
     "meta": [
-      { "label": "Drug class", "value": "Nutrients and vitamins" },
-      { "label": "Dosage form", "value": "2 g sachet (2000 mg myo-inositol and 0.2 mg folic acid)" }
+      {
+        "label": "Drug class",
+        "value": "Nutrients and vitamins"
+      },
+      {
+        "label": "Dosage form",
+        "value": "2 g sachet (2000 mg myo-inositol and 0.2 mg folic acid)"
+      }
     ],
     "sections": [
       {
@@ -176,14 +269,47 @@
         "title": "Side effects",
         "body": "At doses of 12 g per day or more: nausea, bloating, sleep problems, headache, dizziness and fatigue."
       },
-      { "title": "Pregnancy and lactation", "body": "Use as advised by a physician." },
-      { "title": "Storage", "body": "Dry, cool place, away from direct sunlight." },
-      { "title": "Pack contents", "body": "Each box contains 30 sachets." }
+      {
+        "title": "Pregnancy and lactation",
+        "body": "Use as advised by a physician."
+      },
+      {
+        "title": "Storage",
+        "body": "Dry, cool place, away from direct sunlight."
+      },
+      {
+        "title": "Pack contents",
+        "body": "Each box contains 30 sachets."
+      }
     ],
     "catalogs": [
-      { "key": "brochureEn", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Folinozit_En.pdf" },
-      { "key": "brochureFa", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Folinozit_Fa.pdf" }
-    ]
+      {
+        "key": "brochureEn",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Folinozit_En.pdf"
+      },
+      {
+        "key": "brochureFa",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Folinozit_Fa.pdf"
+      }
+    ],
+    "motion": {
+      "title": "Myo-inositol and the insulin signal",
+      "lead": "A cell membrane: insulin sends a signal, and glucose transporters must come to the surface.",
+      "states": [
+        {
+          "label": "Insulin resistance",
+          "caption": "Insulin binds its receptor, but the signal inside the cell is weak; glucose stays outside."
+        },
+        {
+          "label": "Myo-inositol",
+          "caption": "Myo-inositol, the building block of insulin’s intracellular messengers, completes the signal path."
+        },
+        {
+          "label": "Glucose enters",
+          "caption": "Glucose transporters (GLUT4) move to the membrane and glucose enters the cell."
+        }
+      ]
+    }
   },
   {
     "slug": "meglozek",
@@ -197,10 +323,22 @@
     "image": "https://nafaspharmed.com/up/wp-content/uploads/2026/05/meglozeksq.webp",
     "summary": "A proton pump inhibitor for preparing an oral suspension; suitable for reflux and especially for infants and children.",
     "meta": [
-      { "label": "Generic name", "value": "Esomeprazole" },
-      { "label": "Drug class", "value": "Proton pump inhibitor" },
-      { "label": "Therapeutic class", "value": "Gastrointestinal drugs inhibiting gastric acid secretion and anti-ulcer" },
-      { "label": "Dosage form", "value": "1 g sachet containing 10 mg enteric-coated esomeprazole granules" }
+      {
+        "label": "Generic name",
+        "value": "Esomeprazole"
+      },
+      {
+        "label": "Drug class",
+        "value": "Proton pump inhibitor"
+      },
+      {
+        "label": "Therapeutic class",
+        "value": "Gastrointestinal drugs inhibiting gastric acid secretion and anti-ulcer"
+      },
+      {
+        "label": "Dosage form",
+        "value": "1 g sachet containing 10 mg enteric-coated esomeprazole granules"
+      }
     ],
     "sections": [
       {
@@ -227,7 +365,10 @@
         "title": "Contraindications",
         "body": "In case of hypersensitivity to esomeprazole or similar drugs (lansoprazole, omeprazole, pantoprazole, rabeprazole). In severe osteoporosis or chronic liver and kidney disease, consult a physician."
       },
-      { "title": "Drug interactions", "body": "As with esomeprazole interactions." },
+      {
+        "title": "Drug interactions",
+        "body": "As with esomeprazole interactions."
+      },
       {
         "title": "Side effects",
         "body": "Headache, diarrhoea, nausea, bloating, abdominal pain, dry mouth and constipation (adults), drowsiness (children) and rapid breathing (infants)."
@@ -236,13 +377,43 @@
         "title": "Precautions",
         "body": "Heartburn is sometimes mistaken for the signs of a heart attack. With chest pain, nausea or pain spreading to the arm, see a physician."
       },
-      { "title": "Pregnancy and lactation", "body": "Category B; probably secreted in breast milk." },
-      { "title": "Storage", "body": "Away from light and moisture, below 30 degrees Celsius, out of children's reach." }
+      {
+        "title": "Pregnancy and lactation",
+        "body": "Category B; probably secreted in breast milk."
+      },
+      {
+        "title": "Storage",
+        "body": "Away from light and moisture, below 30 degrees Celsius, out of children's reach."
+      }
     ],
     "catalogs": [
-      { "key": "brochureEn", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Megzolek_En.pdf" },
-      { "key": "brochureFa", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Meglozek_Fa.pdf" }
-    ]
+      {
+        "key": "brochureEn",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Megzolek_En.pdf"
+      },
+      {
+        "key": "brochureFa",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Meglozek_Fa.pdf"
+      }
+    ],
+    "motion": {
+      "title": "Proton pumps, switched off",
+      "lead": "A gastric parietal cell: H⁺/K⁺ pumps send hydrogen ions into the stomach and make acid.",
+      "states": [
+        {
+          "label": "Acid secretion",
+          "caption": "The proton pumps are active; hydrogen ions enter the stomach and acidity rises."
+        },
+        {
+          "label": "Esomeprazole",
+          "caption": "The enteric coating protects the granule from stomach acid; esomeprazole is released, absorbed and reaches the pumps."
+        },
+        {
+          "label": "Less acid",
+          "caption": "Blocked pumps stop sending ions; less acid is made and less of it flows back into the oesophagus."
+        }
+      ]
+    }
   },
   {
     "slug": "capsulizer",
@@ -256,8 +427,14 @@
     "image": "https://nafaspharmed.com/up/wp-content/uploads/2026/05/capsulizer1.webp",
     "summary": "Ergonomic design and easy to carry; delivers medication evenly deep into the lungs. Especially suitable for the elderly and COPD patients.",
     "meta": [
-      { "label": "Type", "value": "Dry powder inhaler device (DPI)" },
-      { "label": "Compatible with", "value": "Tiotoriva inhalation capsules" }
+      {
+        "label": "Type",
+        "value": "Dry powder inhaler device (DPI)"
+      },
+      {
+        "label": "Compatible with",
+        "value": "Tiotoriva inhalation capsules"
+      }
     ],
     "sections": [
       {
@@ -282,7 +459,28 @@
       }
     ],
     "catalogs": [
-      { "key": "usageVideo", "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Capsulizer_Use-1.mp4" }
-    ]
+      {
+        "key": "usageVideo",
+        "href": "https://nafaspharmed.com/wp-content/uploads/2025/11/Capsulizer_Use-1.mp4"
+      }
+    ],
+    "motion": {
+      "title": "Inside the Capsulizer",
+      "lead": "The path of air through the device, from the air inlet to the mouthpiece.",
+      "states": [
+        {
+          "label": "Pierce",
+          "caption": "Pressing the buttons drives the pins through both ends of the capsule."
+        },
+        {
+          "label": "Inhale",
+          "caption": "Inhaled air enters the chamber and sets the capsule spinning and vibrating."
+        },
+        {
+          "label": "Fine powder",
+          "caption": "Powder leaves through the holes, is broken up in the swirling air and exits through the mouthpiece."
+        }
+      ]
+    }
   }
 ]

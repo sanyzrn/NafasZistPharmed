@@ -44,6 +44,20 @@
   arrows lean a droplet toward the cursor.
 - New dict key `mobileNavLabel` (all locales).
 
+### Phase 3.3 — product mechanism panels
+- `ProductMotion.astro` + `src/scripts/motion.ts`: one schematic SVG animation per product
+  page, three states picked with liquid chips, auto-advancing (5.2 s) while on screen until
+  the visitor chooses a state; pause button freezes all looping motion.
+  Tiotoriva: ACh/M3 bronchoconstriction → tiotropium occupies M3 → airway opens.
+  Coldanese Plus: viruses attach to nasal cells → carrageenan mesh + xylitol moisture →
+  viruses trapped and cleared by cilia. Folinozit: weak insulin signal → myo-inositol
+  messengers → GLUT4 to membrane, glucose enters. Meglozek: H⁺/K⁺ pumps acidify →
+  enteric-coated granule releases esomeprazole that locks pumps → acid gauge falls.
+  Capsulizer: pins pierce capsule → inhaled air spins it → powder de-agglomerates out of
+  the mouthpiece.
+- Copy lives in `products.json` → `motion` (all four locales). **Please have the
+  scientific wording reviewed by the medical team**; drawings are schematic.
+
 ## Phase 1 notes (historical)
 
 ## Assumptions (one line each)

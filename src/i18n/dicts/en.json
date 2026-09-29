@@ -165,5 +165,7 @@
   "breathIn": "Inhale",
   "breathOut": "Exhale",
   "breathHint": "Press and hold to breathe in; let go to breathe out.",
-  "mobileNavLabel": "Bottom navigation"
+  "mobileNavLabel": "Bottom navigation",
+  "motionStates": "Mechanism steps",
+  "motionPause": "Pause motion"
 }
