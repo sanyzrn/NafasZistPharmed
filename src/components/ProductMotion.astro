@@ -1,0 +1,253 @@
+---
+/**
+ * "How it works" — one schematic, scientifically grounded animation per
+ * product, told in three states the visitor can switch between (liquid
+ * chips). States auto-advance while the panel is on screen and stop as soon
+ * as the visitor picks one or presses pause. Drawings are SVG; all motion is
+ * CSS keyed on [data-state] (see components.css → product motion).
+ *
+ *  tio-toriva      bronchus cross-section: ACh → M3 → constriction; tiotropium
+ *                  occupies M3, muscle relaxes, lumen opens
+ *  coldanese-plus  nasal mucosa: viruses attach; carrageenan gel mesh +
+ *                  xylitol moisture; viruses trapped and cleared by cilia
+ *  folinozit       cell membrane: weak insulin signal; myo-inositol messengers
+ *                  complete it; GLUT4 rises, glucose enters
+ *  meglozek        parietal cell: H+/K+ pumps acidify the lumen; enteric-coated
+ *                  granule releases esomeprazole that locks the pumps; pH rises
+ *  capsulizer      device section: pins pierce the capsule; inhaled air spins
+ *                  it; powder de-agglomerates and leaves the mouthpiece
+ */
+import type { Locale, Product } from '../data/site';
+import { digits, makeT } from '../i18n/index';
+
+interface Props {
+  locale: Locale;
+  product: Product;
+}
+
+const { locale, product } = Astro.props;
+const t = makeT(locale);
+const motion = product.motion;
+const slug = product.slug;
+const uid = `motion-${slug}`;
+
+// helpers for repeated geometry
+const range = (n: number) => Array.from({ length: n }, (_, i) => i);
+const hex = (cx: number, cy: number, r: number) =>
+  range(6)
+    .map((i) => {
+      const a = (Math.PI / 3) * i + Math.PI / 6;
+      return `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`;
+    })
+    .join(' ');
+---
+
+{motion && (
+  <section class="motion section--night" data-motion data-state="0" aria-labelledby={`${uid}-title`}>
+    <div class="motion__head">
+      <h2 class="motion__title" id={`${uid}-title`}>{motion.title}</h2>
+      <p class="motion__lead">{motion.lead}</p>
+    </div>
+
+    <div class="motion__stage">
+      {slug === 'tio-toriva' && (
+        <svg class="mo mo--tio" viewBox="0 0 600 400" aria-hidden="true" focusable="false">
+          <circle class="mo-line" cx="300" cy="200" r="170" />
+          <g class="tio__wall">
+            {range(10).map((i) => (
+              <path
+                class="tio__muscle"
+                transform={`rotate(${i * 36} 300 200)`}
+                d="M300 72 A128 128 0 0 1 364 89.1"
+              />
+            ))}
+            {range(10).map((i) => (
+              <g transform={`rotate(${i * 36 + 12} 300 200)`}>
+                <path class="tio__receptor" d="M292 102 q8 10 16 0" />
+                <circle class="tio__drug" cx="300" cy="104" r="7" style={`--i:${i}`} />
+              </g>
+            ))}
+          </g>
+          <circle class="tio__lumen" cx="300" cy="200" r="80" />
+          <circle class="tio__air" cx="300" cy="200" r="40" />
+          {range(10).map((i) => (
+            <g transform={`rotate(${i * 36 + 12} 300 200)`}>
+              <circle class="tio__ach" cx="300" cy="18" r="5" style={`--i:${i}`} />
+            </g>
+          ))}
+        </svg>
+      )}
+
+      {slug === 'coldanese-plus' && (
+        <svg class="mo mo--cold" viewBox="0 0 600 400" aria-hidden="true" focusable="false">
+          <g class="cold__cells">
+            {range(10).map((i) => (
+              <g>
+                <rect x={12 + i * 58} y="312" width="52" height="76" rx="14" />
+                {range(4).map((k) => (
+                  <line class="cold__cilium" x1={24 + i * 58 + k * 9} y1="312" x2={24 + i * 58 + k * 9} y2="298" style={`--k:${(i + k) % 5}`} />
+                ))}
+              </g>
+            ))}
+          </g>
+          <g class="cold__gel">
+            <rect class="cold__gelband" x="0" y="246" width="600" height="46" rx="10" />
+            {range(5).map((i) => (
+              <path
+                class="cold__strand"
+                pathLength="1"
+                d={`M0 ${254 + i * 8} C 80 ${236 + i * 11}, 160 ${290 - i * 9}, 240 ${258 + i * 6} S 400 ${240 + i * 10}, 480 ${262 + i * 5} S 580 ${250 + i * 8}, 600 ${256 + i * 7}`}
+                style={`--i:${i}`}
+              />
+            ))}
+            {range(9).map((i) => (
+              <circle class="cold__drop" cx={40 + i * 64} cy={262 + (i % 3) * 9} r="3.5" style={`--i:${i}`} />
+            ))}
+          </g>
+          {[90, 170, 255, 340, 425, 510].map((x, i) => (
+            <g class="cold__virus" style={`--i:${i}`}>
+              <g transform={`translate(${x} 36)`}>
+                {range(8).map((k) => (
+                  <line x1="0" y1="0" x2={(15 * Math.cos((k * Math.PI) / 4)).toFixed(1)} y2={(15 * Math.sin((k * Math.PI) / 4)).toFixed(1)} />
+                ))}
+                <circle r="10" />
+              </g>
+            </g>
+          ))}
+        </svg>
+      )}
+
+      {slug === 'folinozit' && (
+        <svg class="mo mo--fol" viewBox="0 0 600 400" aria-hidden="true" focusable="false">
+          <g class="fol__membrane">
+            {range(43).map((i) => (
+              <g>
+                <line x1={6 + i * 14} y1="164" x2={6 + i * 14} y2="180" />
+                <line x1={6 + i * 14} y1="190" x2={6 + i * 14} y2="206" />
+                <circle cx={6 + i * 14} cy="160" r="5" />
+                <circle cx={6 + i * 14} cy="210" r="5" />
+              </g>
+            ))}
+          </g>
+          <g class="fol__receptor">
+            <path d="M120 150 V120 M140 150 V120 M120 150 V222 M140 150 V222 M120 120 l-14 -18 M140 120 l14 -18" />
+            <rect class="fol__insulin" x="118" y="86" width="24" height="24" rx="6" />
+          </g>
+          <path class="fol__signal" pathLength="1" d="M130 226 C 170 300, 260 300, 330 300 S 470 290, 500 262" />
+          {[190, 260, 330, 400].map((x, i) => (
+            <polygon class="fol__ino" points={hex(x, 300 - (i % 2) * 6, 11)} style={`--i:${i}`} />
+          ))}
+          {[300, 400, 500].map((x, i) => (
+            <g class="fol__glut" style={`--i:${i}`}>
+              <rect x={x - 13} y="330" width="26" height="46" rx="10" />
+              <line x1={x} y1="340" x2={x} y2="366" />
+            </g>
+          ))}
+          {range(6).map((i) => (
+            <polygon class="fol__glucose" points={hex([300, 400, 500][i % 3], i > 2 ? 100 : 52, 9)} style={`--i:${i}`} />
+          ))}
+        </svg>
+      )}
+
+      {slug === 'meglozek' && (
+        <svg class="mo mo--meg" viewBox="0 0 600 400" aria-hidden="true" focusable="false">
+          <rect class="meg__lumen" x="0" y="0" width="520" height="168" />
+          <g class="meg__gauge">
+            <rect x="548" y="24" width="24" height="144" rx="12" />
+            <rect class="meg__acid" x="548" y="24" width="24" height="144" rx="12" />
+          </g>
+          <rect class="meg__membrane" x="0" y="168" width="520" height="30" />
+          {[110, 260, 410].map((x, i) => (
+            <g class="meg__pump" style={`--i:${i}`}>
+              <rect x={x - 24} y="160" width="48" height="46" rx="14" />
+              <line x1={x} y1="168" x2={x} y2="198" />
+              <rect class="meg__lock" x={x - 10} y="206" width="20" height="14" rx="5" />
+            </g>
+          ))}
+          {[110, 260, 410].flatMap((x, p) =>
+            range(3).map((k) => (
+              <g class="meg__ion" style={`--i:${p * 3 + k};--dx:${(k - 1) * 22}px`}>
+                <circle cx={x} cy="150" r="7" />
+                <path d={`M${x - 3.5} 150 h7 M${x} 146.5 v7`} />
+              </g>
+            ))
+          )}
+          <g class="meg__granule">
+            <circle class="meg__coat" cx="70" cy="340" r="26" />
+            <circle cx="70" cy="340" r="17" />
+          </g>
+          {[110, 260, 410].map((x, i) => (
+            <g class="meg__drug" style={`--i:${i};--tx:${x - 70}px`}>
+              <rect x="58" y="332" width="24" height="12" rx="6" />
+            </g>
+          ))}
+        </svg>
+      )}
+
+      {slug === 'capsulizer' && (
+        <svg class="mo mo--cap" viewBox="0 0 600 400" aria-hidden="true" focusable="false">
+          <path class="cap__mouth" d="M246 132 L262 40 H338 L354 132 Z" />
+          <line class="cap__mesh" x1="252" y1="124" x2="348" y2="124" />
+          <rect class="cap__body" x="186" y="132" width="228" height="220" rx="36" />
+          <circle class="cap__swirl" cx="300" cy="248" r="72" pathLength="1" />
+          <circle class="cap__swirl cap__swirl--in" cx="300" cy="248" r="56" pathLength="1" />
+          <g class="cap__btn cap__btn--a">
+            <rect x="150" y="226" width="36" height="44" rx="10" />
+            <line x1="186" y1="248" x2="226" y2="248" />
+          </g>
+          <g class="cap__btn cap__btn--b">
+            <rect x="414" y="226" width="36" height="44" rx="10" />
+            <line x1="374" y1="248" x2="414" y2="248" />
+          </g>
+          <g class="cap__capsule">
+            <rect class="cap__half-a" x="244" y="228" width="62" height="40" rx="20" />
+            <rect class="cap__half-b" x="294" y="228" width="62" height="40" rx="20" />
+            <circle class="cap__hole" cx="250" cy="248" r="3" />
+            <circle class="cap__hole" cx="350" cy="248" r="3" />
+          </g>
+          {[230, 300, 370].map((x, i) => (
+            <path class="cap__airin" d={`M${x} 392 V360`} style={`--i:${i}`} />
+          ))}
+          {range(34).map((i) => (
+            <circle
+              class={i % 6 === 0 ? 'cap__pw cap__pw--red' : 'cap__pw'}
+              cx="300"
+              cy="248"
+              r={i % 6 === 0 ? 3.6 : 2.2 + (i % 3) * 0.6}
+              style={`--i:${i};--sx:${((i * 37) % 90) - 45}px;--sy:${-190 - ((i * 23) % 40)}px`}
+            />
+          ))}
+        </svg>
+      )}
+    </div>
+
+    <div class="motion__controls">
+      <div class="motion__states" role="group" aria-label={t('motionStates')} data-chip-goo>
+        <span class="liquid liquid--s chip-liquid motion__liquid" aria-hidden="true">
+          <span class="goo-head" data-goo-head></span>
+          <span class="goo-mid" data-goo-mid></span>
+          <span class="goo-tail" data-goo-tail></span>
+        </span>
+        {motion.states.map((s, i) => (
+          <button class="chip motion__chip" type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-motion-step={i}>
+            <span class="motion__n" aria-hidden="true">{digits(String(i + 1), locale)}</span>
+            {s.label}
+          </button>
+        ))}
+      </div>
+      <button class="motion__pause" type="button" data-motion-pause aria-pressed="false" aria-label={t('motionPause')}>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="motion__icon-pause" d="M8 5v14M16 5v14" /><path class="motion__icon-play" d="M7 5l12 7-12 7z" /></svg>
+      </button>
+    </div>
+
+    <ol class="motion__captions" aria-live="off" data-motion-captions>
+      {motion.states.map((s, i) => (
+        <li class="motion__caption" data-motion-caption={i}>
+          <strong>{s.label}</strong>
+          <span>{s.caption}</span>
+        </li>
+      ))}
+    </ol>
+    <p class="motion__note">{t('storyNote')}</p>
+  </section>
+)}

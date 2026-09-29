@@ -165,5 +165,7 @@
   "breathIn": "شهيق",
   "breathOut": "زفير",
   "breathHint": "اضغط مطوّلًا للشهيق، وارفع إصبعك للزفير.",
-  "mobileNavLabel": "التنقل السفلي"
+  "mobileNavLabel": "التنقل السفلي",
+  "motionStates": "مراحل الآلية",
+  "motionPause": "إيقاف الحركة"
 }

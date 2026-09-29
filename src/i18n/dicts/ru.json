@@ -165,5 +165,7 @@
   "breathIn": "Вдох",
   "breathOut": "Выдох",
   "breathHint": "Нажмите и удерживайте — вдох; отпустите — выдох.",
-  "mobileNavLabel": "Нижняя навигация"
+  "mobileNavLabel": "Нижняя навигация",
+  "motionStates": "Этапы механизма",
+  "motionPause": "Остановить анимацию"
 }

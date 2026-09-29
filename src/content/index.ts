@@ -39,4 +39,6 @@ export interface Product {
   meta: { label: string; value: string }[];
   sections: { title: string; body?: string; items?: string[] }[];
   catalogs?: { key: string; href: string }[];
+  /** Three-state mechanism animation shown on the product page. */
+  motion?: { title: string; lead: string; states: { label: string; caption: string }[] };
 }

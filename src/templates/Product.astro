@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Bidi from '../components/Bidi.astro';
 import Icon from '../components/Icon.astro';
 import ProductIndex from '../components/ProductIndex.astro';
+import ProductMotion from '../components/ProductMotion.astro';
 import { products } from '../data/site';
 import type { Locale, Product } from '../data/site';
 import { makeT, withLocale } from '../i18n/index';
@@ -97,6 +98,8 @@ const catalogLabel = (key: string): string => {
           </div>
         ))}
       </dl>
+
+      <ProductMotion {locale} {product} />
 
       <div class="reading">
         <nav class="toc" aria-labelledby={`toc-${product.slug}`}>
